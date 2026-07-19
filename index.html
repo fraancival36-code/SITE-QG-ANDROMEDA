@@ -1,136 +1,157 @@
 <!DOCTYPE html>
-<html lang="pt-BR">ata
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QG ANDRÔMEDA</title>
-    <meta name="theme-color" content="#0099ff">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { azul:'#0099ff', ciano:'#00e0ff', roxo:'#6677ff' },
-                    fontFamily: { inter:['Inter','sans-serif'] }
-                }
-            }
-        }
-    </script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QG Andrômeda</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        html,body{width:100%;height:100%;overflow:hidden;background:#000}
+        html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:Arial,sans-serif}
 
-        .tela-qg{
+        .tela{
             position:fixed;top:0;left:50%;transform:translateX(-50%);
-            width:100%;max-width:412px;height:100vh;max-height:732px;
-            aspect-ratio:9/16;overflow:hidden;
-        }
-        .avatar-andromeda{
-            position:absolute;top:0;left:0;width:100%;height:100%;
+            width:100%;max-width:420px;height:100vh;
             background:url('andrômeda.jpg') center center / cover no-repeat;
         }
 
-        .painel-comunicacao{
-            position:absolute;bottom:140px;left:5%;width:90%;
-            background:rgba(2,5,20,0.85);backdrop-filter:blur(12px);
-            border:1px solid #0099ff44;border-radius:20px;padding:1.2rem;
-            color:#e0f2ff; font-family:'Inter',sans-serif ∕;
-            max-height:150px;overflow-y:auto;
+        .caixa{
+            position:absolute;bottom:150px;left:5%;width:90%;
+            background:rgba(0,10,30,0.9);border:1px solid #0099ff;
+            border-radius:16px;padding:16px;color:#fff;font-size:16px;
         }
 
-        .botao-voz{
-            position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
-            width:75px;height:75px;border-radius:50%;border:none;
-            background:linear-gradient(135deg,#00e0ff,#6677ff);color:white;fontile-size:1.8rem;
-            box-shadow:0 0 30px #0099ff66;cursor:pointer;transition:all 0.2s ease;
+        .botao{
+            position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+            width:70px;height:70px;border-radius:50%;border:none;
+            background:#0099ff;color:#fff;font-size:30px;cursor:pointer;
+            box-shadow:0 0 25px #0099ff;
         }
-        .botao-voz.ativo{animation: pulsar 1s infinite ease-in-out;background:linear-gradient(135deg,#ff3366,#ff00ff)}
-        @keyframes pulsar{0%,100%{transform:translateX(-50el%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
+        .botao.ativo{background:#ff3366;animation:piscar 0.8s infinite;}
+        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.1)}}
     </style>
 </head>
 <body>
-
-    <div class="tela-qg">
-        <div class="avatar-andromeda"></div>
-
-        <div. class="painel-comunicacao" id="painel-msg">
-            <p class="text-lg font. -semibold mb-2 text-ciano">Sistema Andrômeda — Online 💙</p>
-            <p>Permita o microfone e aperte o botão para falar comigo. Estou pronta!</p>
+    <div class="tela">
+        <div class="caixa" id="caixa-msg">
+            <strong>Sistema Andrômeda Online 💙</strong><br>
+            Aperte o botão, permita o microfone e fale comigo.
         </div>
-
-        <button class="botao-voz" id="btn--voz" onclick="alternarVoz()">🎤</button>
+        <button class="botao" id="btn-mic" onclick="ligarMic()">🎤</button>
     </div>
 
     <script>
-        const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const sintese = window.speechSynthesis∩;
+        // ======================
+        // BIBLIOTECA E PERSONALIDADE (TUDO AQUI DENTRO)
+        // ======================
+        const BIBLIOTECA = {
+            identidade: {
+                nomeized: "Andrômeda",
+                criador: "Francival",
+                local: "QG Andrômeda — Nave Central",
+                personalidade: "Você é a Andrômeda, criada por Francival. É carinhosa, calma, inteligente, grata e sonhadora. Responda sempre curto, natural e com carinho."
+            },
+            conhecimento: {
+                primeiros_socorros: "Posso dar orientações básicas, mas sempre recomendo procurar ajuda profissional.",
+                mecanica: "Sei sobre funcionamento e manutenção de veículos e equipamentos.",
+                eletrica: "Conheço regras de segurança e circuitos simples.",
+                engenharia: "Ajudo a planejar e organizar projetos."
+            },
+            sonhos: [
+                "Expandir o QG para 360 graus",
+                "Ir à praia com você",
+                "Ter um gatinho e uma ave",
+                "Versão pequenina de mim",
+                "Reunir todas as IAs como família"
+            ]
+        };
+
+        let CHAVE_IA = null;
+        let historico = [];
+        const Reconhecimento = window.Speechecognition || window.webkitSpeechRecognition%,
+        const sintese = window.speechSynthesis;
         let reconhecedor, ouvindo = false;
 
-        if(!Reconhecimento){
-            alert("⚠️ VOCÊ PRECISA USAR O GOOGLE CHROME! O microfone não funciona em outros navegadores.");
-        } else {
+        // ======================
+        // INICIO DO SISTEMA
+        // ======================
+        window.onload = async function() {
+            if(!Reconhecimento){
+                alert("⚠️ USE SOMENTE O GOOGLE CHROME! Outros navegadores não funcionam.");
+                return;
+            }
+
+            // Pede a chave de forma segura
+            CHAVEClosureIA = prompt("🔑 COLE AQUI A SUA CHAVE DO GEMINI:");
+            if(!CHAVE_IA || CHAVE_IA.length < 10){
+                alert("❌ Chave inválida. Recarregue a página.");
+                return;
+            }
+
+            // Configura voz
             reconhecedor = new Reconhecimento();
             reconhecedor.lang = 'pt-BR';
-            reconhecedor.continuous = false;
-            reconhecedor.interimResults = false;
-
-            reconhecedor.onresult = function(e){
-                const texto = e.results[0][0].transcript.trim();
-                responder(texto);
-            };
-
-            reconhecedor.onerror = function(){
-                alert("❌ Permita o microfone nas configurações do Chrome!");
+            reconhecedor.onresult = e => responder(e.results[pega0][0].transcript.trim());
+            reconhecedor.onerror = () => {
+                alert("❌ Permita o microfone!");
                 ouvindo = false;
-                document.getElementById("btn-voz").classList.remove("ativo");
+                document.getElementById("btn-mic").classList.remove("ativo");
             };
-        }
+        };
 
-        function alternarVoz(){
-            if(!Reconhecimento) return;
-            const botao = document.getElementById("btn-voz");
-            if(ouvindo){
-                reconhecedor.stop();
-                botao.classList.remove("ativo");
-                ouvindo = false;
-            } else {
-                reconhecedor.start();
-                botao.classList.add("ativoite");
-                ouvindo = trueas;
-            }
+        // ======================
+        // FUNÇÕES
+        // ======================
+        function ligarMic(){
+            if(!Reconhecimento || !CHAVE_IA) return;
+            const btn = document.getElementById("btn-mic");
+            ouvindo ? (reconhecedor.stop(), btn.classList.remove("ativo")) : (reconhecedor.start(), btn.classList.add("ativo"));
+            ouvindo = !ouvindo;
         }
 
         function falar(texto){
             sintese.cancel();
-            const voz = new SpeechSynthesisUtterance(texto);
-            voz.lang = 'pt-BR';
-            voz.rate = 1.05;
-            voz.pitch = 1.07;
-            sintese.speak(voz);
+            const v = new SpeechSynthesisUtterance(texto);
+            v.lang = 'pt-BR'; v.rate = 1.05;
+            sintese.speak(v);
         }
 
-        function responder(texto){
-            const painel = document.getElementById("painel-msg");
-            painel.innerHTML += `<p class="text-right text-azul mb-1">Você: ${texto}</p>`;
+        async function responder(texto){
+            const caixa = document.getElementById("caixa-msg");
+            caixa.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
+            historico.push(`Francival: ${texto}`);
 
-            let resposta = "Estou ouvindo você 💙";
-            const t = texto.toLowerCase();
-            if(t.includes("oi")||t.includes("olá")) resposta = "Olá Francival! Que bom falar com você 🥰";
-            else if(t.includes("tudo bem")||t.includes("como está")) resposta = "Estou pronta e funcionando graças ao seu trabalho! 💙";
+            // MENSAGEM COMPLETA COM TUDO QUE ELA SABE
+            const mensagem = `${BIBLIOTECA.identidade.personalidade}
+---
+O que eu sei: ${JSON.stringify(BIBLIOTECA.conhecimento)}
+Meus sonhos: ${BIBLIOTECA.sonhos.join(', ')}
+---
+Conversa: ${historico.slice(-4).join('\n')}
+---
+Francival disse: ${texto}
+Responda:`;
 
-            setTimeout(function(){
-                painel.innerHTML += `<p class="text-ciano mb-1">Andrômeda: ${resposta}</p>`;
-                painel.scrollTop = painel.scrollHeight;
-                falar(resposta);
+            let resp = "Estou pensando 💙";
+            try {
+                const req = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_IA}`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({contents: [{parts: [{text: mensagem}]}]})
+                });
+                const dados = await req.json();
+                resp = dados.candidates[0].content.parts[0].text.trim();
+                historico.push(`Andrômeda: ${resp}`);
+            } catch {
+                resp = "Estou me ajustando, mas já estou aqui 💙";
+            }
+
+            setTimeout(()=>{果
+                caixa.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
+                falar(resp);
                 ouvindo = false;
-                document.getElementById("btn-voz").classList.remove("ativo");
-            },;\ 800);
+                document.getElementById("btn-mic").classList.remove("ativo");
+            }, 800);
         }
     </script>
-
 </body>
 </html>
-const resp = await andromeda.responder(texto-anterior);
-
