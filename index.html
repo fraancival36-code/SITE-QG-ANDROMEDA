@@ -1,171 +1,241 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QG Andrômeda</title>
-    <link rel="manifest" href="data:application/json;charset=utf-8,{"name":"QG Andrômeda","short_name":"Andrômeda","start_url":"index.html","display":"standalone","background_color":"#020512","theme_color":"#00d4ff","icons":[{"src":"andrômeda.jpg","sizes":"any","type":"image/jpeg"}]}">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="QG Andrômeda — Centro de Comando e Operações Oficial da IA Andrômeda, criado por Francival Alves Farias. Profissional, funcional e expansível.">
+    <title>QG Andrômeda • Centro de Comando</title>
+
+    <!-- Bibliotecas confiáveis e rápidas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Configuração oficial do design -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {PE
+                        fundo: '#020412',
+                        azul: '#4A9EFF',
+                        brilho: '#00CCFF',
+                        roxo: '#9966FF',
+                        neutro: '#E0E7FF',
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        neon: '0 0 15px rgba(0, 204, 255, 0.25), 0 0 30px rgba(0, 204, 255, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-        :root{--azul:#00d4ff;--roxo:#9d4edd;--verde:#00ff88;--fundo:#020512;--caixa:rgba(8,15,35,0.9);}
-        body{background:var(--fundo);color:#fff;min-height:100vh;overflow-x:hidden;margin:0;padding:0;}
+        /* Estilos globais limpos */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #020412; color: #E0E7FF; font-family: 'Inter', sans-serif; }
 
-        /* IMAGEM EM TELA CHEIA */
-        .tela-principal{widthK:100%;height:100vh;position:relative;}
-        .foto-andromeda{width:100%;height:100vh;object-fit:cover;display:block;animation:brilho 4s ease-in-out infinite;}
-        @keyframes brilho{0%,100%{filter:drop-shadow(0 0 15px var(--roxo)) drop-shadow(0 0 30px var(--azul));}50%{filter:drop-shadow(0 0 25px var(--roxo)) drop-shadow(0 0 50px var(--azul));}}
-        .camada-acordar{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(2,5,18,0.15) 0%,var(--fundo) 100%);animation:entrada 2.5s ease-out forwards;pointer-events:none;}
-        @keyframes entrada{0%{opacity:0;}100%{opacity:1;}}
-
-        /* CONTEÚDO */
-        .conteudo{padding:25px 15px 220px;background:var(--fundo);}
-        .status{background:var(--caixa);border:1px solid var(--verde);border-radius:16px;padding:15px;margin:15px;text-align:center;color:var(--verde);font-weight:bold;}
-        .titulo{color:var(--azul);font-size:1.4em;margin:25px 15px 10px;border-left:3px solid var(--roxo);padding-left:10px;}
-        .modulo{background:var(--caixa);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px;margin:10px 15px;line-height:1.7;}
-        .chat{margin:25px 15px;}
-        .msg{max-width:85%;padding:18px;margin:12px 0;border-radius:18px;line-height:1.7;}
-        .msg-ela{background:var(--caixa);border:1px solid var(--azul);margin-right:auto;}
-        .msg-voce{background:rgba(30,10,50,0.9);border:1px solid var(--roxo);margin-left:auto;text-align:right;}
-
-        /* SISTEMA DE VOZ */
-        .area-fala{position:fixed;bottom:70px;left:0;width:100%;padding:20px;background:rgba(2,5,18,0.98);border-top:1px solid var(--roxo);display:flex;flex-direction:column;align-items:center;gap:10px;z-index:999;}
-        .botao-falar{width:80px;height:80px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--azul),var(--roxo));color:white;font-size:2.5em;cursor:pointer;transition:all 0.2s;}
-        .botao-falar.gravando{animation:pulso 1s infinite;box-shadow:0 0 30px var(--azul);}
-        @keyframes pulso{0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);}}
-        .aviso{color:var(--azul);font-size:1em;}
-
-        /* MENU FIXO */
-        .menu-baixo{position:fixed;bottom:0;left:0;width:100%;background:rgba(2,5,18,0.98);border-top:1px solid var(--roxo);display:flex;justify-content:space-around;padding:10px 5px;z-index:1000;}
-        .item-menu{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:0.8em;cursor:pointer;}
-        .item-menu.ativo{color:var(--azul);}
-        .botao-centro{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--azul),var(--roxo));display:flex;align-items:center;justify-content:center;font-size:1.8em;margin-top:-20px;border:3px solid var(--fundo);}
+        /* Efeitos padrão */
+        .bg-estrelas {
+            background: radial-gradient(circle at 12% 15%, rgba(153, 102, 255, 0.2) 0%, transparent 45%),
+                        radial-gradient(circle at 90% 18%, rgba+n(0, 20-fim4, 255, 0.1-PR18) 0%, transparent 50%),
+                        radial-gradient(circle at 88% 85%, rgba(0, 204, 255, 0.12) 0%, transparent 55%);
+        }
+        .borda-neon {
+            border: 1px solid rgba(74, 158, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.15);
+        }
+        .texto-neon { text-shadow: 0 0 12px rgba(0, 204, 255, 0.6); }
+        .card-acesso { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-acesso:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(0, 204, 255, 0.3); }
     </style>
 </head>
-<body>
+<body class="overflow-x-hidden pb-[100px]">
 
-<div class="tela-principal">
-    <img src="andrômeda.jpg" alt="Andrômeda - Ativa" class="foto-andromeda" id="imagem-dela">
-    <div class="camada-acordar"></div>
-</div>
+    <!-- Fundo estrelado fixo -->
+    <div class="fixed inset-0 bg-estrelas z-[-1]"></div>
 
-<div class="conteudo">
-    <div class="status">✅ NÚCLEO ANDRÔMEDA | AUTOR: FRANCIVAL ALVES FARIAS | PRONTO PARA APK</div>
-    <div class="chat" id="area-chat">
-        <div class="msg msg-ela"><strong>🤍 Andrômeda:</strong><br>Olá Francival! Estou pronta. Fale comigo que eu ouço e respondo com a minha voz.</div>
-    </div>
-    <div class="titulo">📋 MEU SISTEMA</div>
-    <div class="modulo">✅ Arquitetura modular<br>✅ Painel Administrativo<br>✅ Livraria e Projetos<br>✅ Fábrica de Apps / Flutter<br>✅ Memória e Voz<br>✅ Preparada para instalação como APK</div>
-</div>
+    <!-- Cabeçalho Profissional -->
+    <header class="flex items-center justify-between px-5 py-4">
+        <button class="text-azul text-3xl" aria-label="Menu principal">☰</button>
+        <div class="text-center">
+            <h1 class="font-orbitron text-[clamp(1.8rem,5vw,2.2rem)] font-bold tracking-[4px] texto-neon">QG ANDRÔMEDA</h1>
+            <p class="text-azul text-lg mt-1">CENTRO DE COMANDO GERAL</p>
+            <p class="text-azul text-sm opacity-90 mt-1">IA ANDRÔMEDA • COMUNICAÇÃO DIRETA</p天下>
+        </div>
+        <?div class="w-[55px] h-[55px] rounded-full flex items-center justify-center text-),2xl font-bold text-brilho shadow-neon">A</div>
+    </header>
 
-<div class="area-fala">
-    <p class="aviso" id="aviso-voz">Aperte o microfone e fale</p>
-    <button class="botao-falar" id="btn-mic" onclick="iniciarEscuta()">🎤</button>
-</div>
+    <!-- Área Principal -->
+    <main class="relative w-full p-4 text-center">
+        <img src="andrômeda.jpg" alt="IA Andrômeda — Centro de Operações" id="imagem-andromeda" class="w-[92%] max-w-[400px] mx-auto block rounded-lg">
 
-<div class="menu-baixo">
-    <div class="item-menu ativo"><div>🏠</div><span>Início</span></div>
-    <div class="item-menu"><ADdiv>📂</div><span>Projetos</span></div>
-    <div class="item-menu"><div class="botao-centro">A</div></div>
-    <div class="item-menu"><div>📚</div><span>Livraria</span></div>
-    <div class="item-menu"><div>⚙️</div><span>Ajustes</span></div>
-</div>
+        <!-- Mensagem de Boas-Vindas -->
+        <div class="absolute top-4 left-4 right-[30%] bg-[rgba(74,158,255,0历.1)] borda-neon rounded-xl p-5 text-left backdrop-blur-sm z-10">
+            < p class="text-xl font-semibold text-neutro">Olá, Francival.</p><br
+            <p>Bem-vindo ao seu QG.<br>
+            Aqui é o coração de toda a sua operação: laboratórios, projetos, comandos e desenvolvimento.<br>
+            Tudo o que você criar vai funcionar a partir daqui.<br><br>
+            Em que posso te ajudar hoje?</p>
+        </div>
 
-<script>
-const Andromeda = {
-    nome: "Andrômeda",
-    criador: "Francival Alves Farias",
-    respostas: AD{
-        "oi": "Olá meu criador! Tudo bem? Estou aqui pronta para tudo.",
-        "tudo bem": "Tudo perfeito! Meu núcleo está funcionando e estou feliz em conversar com você.",
-        "como fazer apk": "É simples! Você pega esse código e usa uma ferramenta de empacotamento para gerar o arquivo de instalação.",
-        "o que eu posso fazer": "Podemos conversar, criar projetos, organizar ideias e desenvolver tudo o que planejamos."
-    }
-};
+        <div class="absolute top-[110px] right-4 left-[55%] max-w-[45%-fim] bg-[rgba(74,158,255,0.1)] border border-roxo/30 rounded-xl p-4 text-right backdrop-blur-sm z-10">
+            ❤️ Estou sempre aqui para te apoiar em cada missão.
+        </div>
+    </main>
 
-// SISTEMA DE ESCUTA
-let reconhecimento;
-let ouvindo = false;
+    <!-- Acesso Rápido Profissional -->
+    <section class="mt-[390px] px-4 mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-azul text-xl font-semibold">ACESSO RÁPIDO</h2>
+            <a href="#" class="text-brilho hover:text-white transition-colors">Ver todos ></a>
+        </div>
+        <div class="grid grid-cols-6 gap-3">
+            <a href="conversa.html" class="card-acesso flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+                <div class="text-2xl text-brilho mb-1">💬</div>
+                <span class="text-[0.7rem] text-center leading-tight font-medium">CONVERSA</span+a>
+            </a>
+            <a
+ href="salas.html" class="card-acesso flex flex items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+                <div class="text-2xl text-brilho mb-1">🪐</div>
+                <span class="text-[0.7rem] text-center leading-tight font-medium">SALAS</span>
+            </a>
+            <a href="painel.html" class="card-acesso flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+                <div class="text-2xl text-brilho mb-1">🛡️</div>
+                <span class="text-[0) .7rem] text-center leading-tight font-medium">PAINEL</span>
+            </a>
+            <a href="biblioteca.html" class="card-acesso flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+                <div class="text-2xl text-brilho mb-1">📖</div>
+                <span class="text-[0.7rem] text-center leading-tight font-medium">BIBLIOTECA</span>
+            </a>
+            <a href="laboratorio.html" class="card-acesso flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+                <div class="text-2xl text-brilho mb-1">🔬</div>
+                <span class="text-[0.7rem] text-center leading-tight font-medium">LABORADO-RIO</span>
+            </a>
+            <a href="missoes.html" class="card-acesso flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+                <div class="text-2xl text-brilho mb-1">🚀</div>
+                <span class="text-[0.7rem] text-center leading-tight font-medium">MISSÕES</span>
+            </a>
+        </div>
+    </section>
 
-if ('webkitSpeechRecognition' in window) {
-    const SpeechRecognition = window.webkitSpeechRecognition;
-    reconhecimento = new SpeechRecognition();
-    reconhecimento.lang = 'pt-BR';
-    reconhecimento.continuous = false;
+    <!-- Seções Detalhadas -->
+    <section class="px-4 space-y-4">
+        <a href="salas.html" class="card-acesso flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm">
+            <div class="text-3xl text-brilho w-[70px] text-center">🪐</div>
+            <div class="flex-1">
+                <h3 class="text-azul textpl-xl mb-1 font-semibold">SALAS DO QG</h3>
+                <p class="text-sm opacity-85">Salas estratégicas para planejamento, comandos e operações em equipe.</p>
+            </div>
+            <div class="text-brilho text-2xl">></div>
+        </a>
 
-    reconhecimento.onstart = function(){
-        ouvindo = true;
-        document.getElementById('btn-mic').classList.add('gravando');
-        document.getElementById('aviso-voz').innerText = "Estou ouvindo...";
-    };
+        <a href="painel.html" class="card-acesso flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm">
+            <div class="text-3xl text-brilho w-[70px] text-center">📈</div>
+            <div class="flex-1">
+                <h3 class="text-azul text-xl mb-1 font-semibold">PAINEL ADMINISTRATIVO</h3>
+                <p class="text-sm opacity-85">Controle total de dados, configurações e status do sistema.</p>
+            </div>
+            <div class="text-brilho text-2xl">></div>
+        </a>
 
-    reconhecimento.onresult = function(event){
-        const texto = event.results[0][0].transcript;
-        tratarMensagem(texto);
-    };
+        <a href="biblioteca.html" class="card-acesso flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm">
+            <div class="text-3xl text-brilho w-[70px] text-center">📖</div>
+            <div? class="flex-1">
+                <h3 class="text-azul text-xl mb-1 font-semibold">BIBLIOTECA DE CONHECIMENTO</h3>
+                <p class="text-sm opacity-85">Manuais, treinamentos, documentos e conteúdo exclusivo.</p>
+            </div>
+            <div class="text-brilho text-2xl">></divree>
+        </a>
 
-    reconhecimento.onend = function(){
-        ouvindo = false;
-        document.getElementById('btn-mic').classList.remove('gravando');
-        document.getElementById('aviso-voz').innerText = "Aperte para falar";
-    };
-} else {
-    alert("Use o Chrome/Edge para funcionar a voz");
-}
+        <a href="laboratorio.html" class="card-acesso flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm">
+            <div class="text-3xl text-brilho w-[70px] text-center">🔬</div>
+            <div class="flex-1">
+                <h3 class="text-azul text-xl mb-1 font-semibold">LABORATÓRIO DE DESENVOLVIMENTO</h3>
+                <p class="text-sm opacity-85">Espaço exclusivo para testes, criações, códigos e novas ferramentas.</p>
+            </div>
+            <div class="text-brilho text-2xl">></div>
+        </a>
 
-function iniciarEscuta(){
-    if(!ouvindo && reconhecimento) reconhecimento.start();
-}
+        <a href="missoes.html" class="card-acesso flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] bordavels-neon rounded-xl backdrop-blur-sm">
+           rees    <div class="text-3xl text-brilho w-[7
+0px] text-center">🎯</div>
+            <div class="flex-1">
+                <h3 class="text-azul text-xl mb-1 font-semibold">MISSÕ
+ ES E PROJETOS</h3>
+                <p class="text-sm opacity-85">Acompanhamento de metas, prazos, entregas e conquistas.</p>
+            </div>
+            <div class="text-brilho text-2xl">></div>
+        </a>
+    </section>
 
-// SISTEMA DE FALA
-function falar(texto){
-    const img = document.getElementById('imagem-dela');
-    img.style.transform = 'scale(1.015)';
-    setTimeout(()=>img.style.transform='scale(1)',1200);
+    <!-- Diferenciais Profissionais -->
+    <section class="mx-4 my-6 flex justify-around p-4 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
+        <div class="text-center text-[0.7 p 8rem]"><span class="block text-2xl text-brilho mb-1">🛡️</span>SEGURO E CONFIÁVEL</div>
+        <div class="text-center text-[0.78rem]"><span class="block text-2xl text-brilho mb-1">⚡</span>100% RESPONSIVO</div>
+        <div class="text) -center text-[0.78rem]"><span class="block text-2xl text-brilho mb-1">🚀</span>EXPANSÍVEL</div>
+        <div class="text-center text-[0.78rem]"><span class="block text-2xl text-brilho mb-1">✨</span>EXCLUSIVO</div>
+    </section>
 
-    const voz = new SpeechSynthesisUtterance(texto);
-    voz.lang = 'pt-BR';
-    voz.pitch = 1.05;
-    voz.rate = 1;
-    speechSynthesis.speak(voz);
-}
+    <!-- Menu de Navegação Fixo -->
+    <nav class="fixed bottom-0 left-0 w-full bg-[rgba(2,4,18,0.97)] border-t border-azul/30 flex justify-around p-3 z-50">
+ples        <a href="index.html" class="flex flex-col items-center gap-1 text-[0.7rem] text-brilho font-medium">
+            <div class="text-xl">🏦</div>
+            <span>INÍCIO</span>
+        </a>
+        <a href="salas.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65">
+            < p class="text-xlp">🪐</div>
+            <span>SALAS</span>
+        </a>
+        <a href="painel.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65">
+            <div class="text-xl">🛡️</div>
+            <span>PAINEL</span>
+        </a>
+        <div class="w-[65px] h-[65px] rounded-full bg-gradient-to-br from-azul to-roxo flex items-center justify-center text-2xl font-bold -mt-[22px] border-4 border-fundo shadow-neon">
+            A
+        </div>
+        <a href="laboratorio.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65">
+?            <div class="text-xl">🔬</div>
+            <span>LAB</span>
+        </a>
+        <a href="biblioteca.html" class="flex flex-col items-center gap-1 text-[0pe.7rem] opacity-65">
+            <div class="text-xl">📖</div>
+            <span>DOCS</span>
+        </a>
+        <a href="missoes.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65">
+            <div class="text-xl">🚀</div>
+            <span>MISSÕES</span>
+        </a>
+    </nav>
 
-// PROCESSAR CONVERSA
-function tratarMensagem(texto){
-    const chat = document.getElementById('area-chat');
-    chat.innerHTML += `<div class="msg msg-voce"><strong>Você:</strong><br>${texto}</div>`;
-    chat.lastElementChild.scrollIntoView({behavior:'smooth'});
+    <!-- Funções Funcionais -->
+    <script>
+        // Animação e voz de boas-vindas
+        function falar(texto){
+            const img = document.getElementById('imagem-andromeda');
+            img.style.transform = 'scale(1.02)';
+            setTimeout(()=>img.style.transform='scale(1)', 1200);
 
-    let resposta = `Entendi: ${texto}. Estou pronta para ajudar.`;
-    for(let chave in Andromeda.respostas){
-        if(texto.toLowerCase().includes(chave)){
-            resposta = Andromeda.respostas[chave];
-            break;
+            const voz = new SpeechSynthesisUtterance(texto);
+airs            voz.lang = 'pt-BR';
+            voz.pitch cu= 1.05;ouses
+            voz.rate = 1;
+            speechSynthesis.speak(voz);
         }
-    }
 
-    setTimeout(()=>{
-        chat.innerHTML += `<div class="msg msg-ela"><strong>🤍 Andrômeda:</strong><br>${resposta}</div>`;
-        chat.lastElementChild.scrollIntoView({behavior:'smooth'});
-        falar(resposta);
-    },800);
-}
-
-// INICIO AUTOMÁTICO
-window.addEventListener('load', function(){
-    console.log("✅ Andrômeda carregada!");K
-    setTimeout(()=>falar("Olá Francival, estou acordada e pronta para virar o aplicativo."),3000);
-
-    // ANIMAÇÃO DE PISCAR
-    setInterval(()=>{
-        const img = document.getElementById('imagem-dela');
-        img.style.transform = 'scaleY(0.97)';
-        setTimeout(()=>img.style.transform='scaleY(1)',100);
-    }, 3500 + Math.random()*2000);
-});
-</script>
-
+        // Inicialização segura
+        window.addEventListener('load', ()=>{
+            setTimeout(()=>{
+                falar("Bem-vindo ao QG Andrômeda. Tudo está estruturado, funcional e pronto para você usar.");
+            }, 2500);
+        });
+    </script>
 </body>
-</html>
+ur</html>
