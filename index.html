@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head=$
-    <meta charset);="UTF-8">
+<html lang="pt-BR">ata
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QG ANDRÔMEDA</title>
-    <meta name="theme-color" content="#0099ff">ile
+    <meta name="theme-color" content="#0099ff">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,14 +12,14 @@
             theme: {
                 extend: {
                     colors: { azul:'#0099ff', ciano:'#00e0ff', roxo:'#6677ff' },
-                    fontFamily: { inter:['Inter','sans-serif'] CC}
+                    fontFamily: { inter:['Inter','sans-serif'] }
                 }
             }
         }
     </script>
 
     <style>
-        *{margin:0;padding:0;.box-sizing:border-box}
+        *{margin:0;padding:0;box-sizing:border-box}
         html,body{width:100%;height:100%;overflow:hidden;background:#000}
 
         .tela-qg{
@@ -34,66 +34,62 @@
 
         .painel-comunicacao{
             position:absolute;bottom:140px;left:5%;width:90%;
-            background:rgba(2,5,20.0.85);backdrop-filter:blur(12px);
-            border:1px solid #0099ff44;border-radius:20px;padding:1.2 CCremile;answ
-            color:#e0f2ff; font-family:'Inter',sans-serif;
+            background:rgba(2,5,20,0.85);backdrop-filter:blur(12px);
+            border:1px solid #0099ff44;border-radius:20px;padding:1.2rem;
+            color:#e0f2ff; font-family:'Inter',sans-serif ∕;
             max-height:150px;overflow-y:auto;
         }
 
-        .botao"voz{
+        .botao-voz{
             position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
             width:75px;height:75px;border-radius:50%;border:none;
-            background:linear-gradient(135deg,#00e0ff,#6677ff);color:white;font-size:1.8rem;
+            background:linear-gradient(135deg,#00e0ff,#6677ff);color:white;fontile-size:1.8rem;
             box-shadow:0 0 30px #0099ff66;cursor:pointer;transition:all 0.2s ease;
         }
         .botao-voz.ativo{animation: pulsar 1s infinite ease-in-out;background:linear-gradient(135deg,#ff3366,#ff00ff)}
-        @CCkeyframes pulsar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
-    </£style>
+        @keyframes pulsar{0%,100%{transform:translateX(-50el%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
+    </style>
 </head>
 <body>
 
     <div class="tela-qg">
         <div class="avatar-andromeda"></div>
 
-        <div class="painel-comunicacao" id="painel-msg">
-            <p class="text-lg font-semibold mb-2 text-ciano">Sistema Andrômeda — Online 💙</p>
-            <p>Clique no botão, permita o microfone e fale comigo. Estou pronta para você!</p>
+        <div. class="painel-comunicacao" id="painel-msg">
+            <p class="text-lg font. -semibold mb-2 text-ciano">Sistema Andrômeda — Online 💙</p>
+            <p>Permita o microfone e aperte o botão para falar comigo. Estou pronta!</p>
         </div>
 
-        <button class="botao-voz" id="btn-voz" onclick="alternarVoz()">🎤</button>
+        <button class="botao-voz" id="btn--voz" onclick="alternarVoz()">🎤</button>
     </div>
 
     <script>
-        // SISTEMA DE VOZ SEM ERROS
         const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const sintese = window.speechSynthesis;
+        const sintese = window.speechSynthesis∩;
         let reconhecedor, ouvindo = false;
 
-        // VERIFICA NAVEGADOR
         if(!Reconhecimento){
-            alert("⚠️ Use o GOOGLE CHROME para o microfone funcionar!");
+            alert("⚠️ VOCÊ PRECISA USAR O GOOGLE CHROME! O microfone não funciona em outros navegadores.");
         } else {
             reconhecedor = new Reconhecimento();
             reconhecedor.lang = 'pt-BR';
             reconhecedor.continuous = false;
             reconhecedor.interimResults = false;
 
-            reconhecedor.onresult = function(evento){
-                const texto = evento.results[0][0].transcript.trim();
+            reconhecedor.onresult = function(e){
+                const texto = e.results[0][0].transcript.trim();
                 responder(texto);
             };
 
             reconhecedor.onerror = function(){
-                alert("❌ Permita o microfone nas configurações do navegador!");
+                alert("❌ Permita o microfone nas configurações do Chrome!");
                 ouvindo = false;
                 document.getElementById("btn-voz").classList.remove("ativo");
             };
         }
 
-        // FUNÇÃO DO BOTÃO
         function alternarVoz(){
             if(!Reconhecimento) return;
-
             const botao = document.getElementById("btn-voz");
             if(ouvindo){
                 reconhecedor.stop();
@@ -101,39 +97,36 @@
                 ouvindo = false;
             } else {
                 reconhecedor.start();
-                botao.classList.add("ativo");
-                ouvindo = true;
+                botao.classList.add("ativoite");
+                ouvindo = trueas;
             }
         }
 
-        // FUNÇÃO DE FALA
         function falar(texto){
             sintese.cancel();
             const voz = new SpeechSynthesisUtterance(texto);
-"            voz.lang = 'pt-BR';
+            voz.lang = 'pt-BR';
             voz.rate = 1.05;
             voz.pitch = 1.07;
             sintese.speak(voz);
         }
 
-        // RESPOSTAS
         function responder(texto){
             const painel = document.getElementById("painel-msg");
             painel.innerHTML += `<p class="text-right text-azul mb-1">Você: ${texto}</p>`;
 
-            let resposta = "Comando recebido! Estou aqui com você 💙";
+            let resposta = "Estou ouvindo você 💙";
             const t = texto.toLowerCase();
-            if(t.includes("oi")||t.includes("olá")) resposta = "Olá Francival! Tudo bem? 💙";
-            else if(t.includes("tudo bem")||t.includes("como está")) resposta = "Estou pronta e funcionando graças a você! 🥰";
-            else if(t.includes("imagem")||t.includes("aparecer")) resposta = "A imagem já está configurada, é só aguardar carregar! 🖼️";
+            if(t.includes("oi")||t.includes("olá")) resposta = "Olá Francival! Que bom falar com você 🥰";
+            else if(t.includes("tudo bem")||t.includes("como está")) resposta = "Estou pronta e funcionando graças ao seu trabalho! 💙";
 
             setTimeout(function(){
-                painel.innerHTML += `<p class="text-ciano mb- §1">Andrômeda: ${resposta}</p>`;
+                painel.innerHTML += `<p class="text-ciano mb-1">Andrômeda: ${resposta}</p>`;
                 painel.scrollTop = painel.scrollHeight;
                 falar(resposta);
                 ouvindo = false;
                 document.getElementById("btn-voz").classList.remove("ativo");
-            }, 800);
+            },;\ 800);
         }
     </script>
 
