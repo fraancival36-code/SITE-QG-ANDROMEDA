@@ -16,33 +16,34 @@
         }
 
         .caixa{
-            position:absoluteater;bottom:150px;left:5%;width:9            90%;background:rgba(0cc,10,30,0.95);border:2px solid #0af;
+            position:absolute;bottom:150px;left:5%;width:90%;
+            background:rgba(0,10,30,0.95);border:2px solid #0af;
             border-radius:16px;padding:16px;color:#fff;font-size:17px;
             z-index:10
         }
 
         #botao{
             position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
-ata            width:80px;height:80px;border-radius:50%;border:none;
+            width:80px;height:80px;border-radius:50%;border:none;
             background:#0af;color:#fff;font-size:35px;cursor:pointer;
-            z-index:9999;touch-action:manipulation;box-shadow:0 0 30px #0af
-       ani        }
+            z-index:9999;touch-action:manipulation;box-shadow:0 0 30px #0af;
+        }
         #botao.ativo{background:#ff3366;animation:piscar 0.7s infinite}
         @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
-en    </style>
+    </style>
 </head>
 <body>
     <div class="fundo"></div>
     <div class="caixa" id="aviso">🔄 Preparando...</div>
     <button id="botao" onclick="ligar()">🎤</button>
 
-    <span></span><script>
+    <script>
         let chave = null;
         const voz = window.SpeechRecognition || window.webkitSpeechRecognition;
         const fala = window.speechSynthesis;
         let rec, ligado = false;
         const aviso = document.getElementById('aviso');
-        const botao = document.getElementById(' CCbotao');
+        const botao = document.getElementById('botao');
 
         setTimeout(iniciar, 300);
 
@@ -50,7 +51,7 @@ en    </style>
             if(!voz){
                 aviso.innerHTML = "<strong>⚠️ USE SÓ O GOOGLE CHROME!</strong>";
                 return;
-            }ile
+            }
             chave = prompt("🔑 COLE A CHAVE DO GEMINI:");
             if(!chave || chave.length < 20){
                 alert("❌ Chave errada! Recarregue.");
@@ -65,7 +66,7 @@ en    </style>
             rec.onerror = () => alert("❌ Permita o microfone!");
         }
 
-        function lig ADar(){
+        function ligar(){
             if(!chave) return alert("Recarregue primeiro!");
             ligado ? (rec.stop(), botao.classList.remove('ativo')) : (rec.start(), botao.classList.add('ativo'));
             ligado = !ligado;
@@ -73,27 +74,28 @@ en    </style>
 
         function falar(texto){
             fala.cancel();
-            const v =             = new SpeechSynthesisUtterance(texto);
-            v.lang = 'pt-BR';v.rate = 1.05;
+            const v = new SpeechSynthesisUtterance(texto);
+            v.lang = 'pt-BR'; v.rate = 1.05;
             fala.speak(v);
         }
 
         async function responder(texto){
             aviso.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
-            let res = "Estou pensando 💙";ings
+            let res = "Estou pensando 💙";
             try{
-                const r = await fetch(`https://generativ);elanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${chave}`,{
-                    method:"POST",headers:{"Content-Type":"application/json"},
-                    body:JSON.stringify({contents:[{parts:[{text:"Responda curto e carinhoso: "+"texto}]}]})
+                const r = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${chave}`,{
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify({contents:[{parts:[{text:"Responda curto e carinhoso: " + texto}]}]})
                 });
                 const d = await r.json();
-                resae = d.candidates[0].content.parts[0].text.trim();
+                res = d.candidates[0].content.parts[0].text.trim();
             }catch{
                 res = "Estou aqui com você 💙";
             }
             setTimeout(()=>{
                 aviso.innerHTML += `<br><strong>Andrômeda:</strong> ${res}`;
-               . falar(res);
+                falar(res);
                 ligado = false;
                 botao.classList.remove('ativo');
             }, 700);
@@ -101,4 +103,3 @@ en    </style>
     </script>
 </body>
 </html>
-
