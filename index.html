@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QG Andrômeda</title>
+    <link rel="manifest" href="data:application/json;charset=utf-8,{"name":"QG Andrômeda","short_name":"Andrômeda","start_url":"index.html","display":"standalone","background_color":"#020512","theme_color":"#00d4ff","icons":[{"src":"andrômeda.jpg","sizes":"any","type":"image/jpeg"}]}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+        :root{--azul:#00d4ff;--roxo:#9d4edd;--verde:#00ff88;--fundo:#020512;--caixa:rgba(8,15,35,0.9);}
+        body{background:var(--fundo);color:#fff;min-height:100vh;overflow-x:hidden;margin:0;padding:0;}
+
+        /* IMAGEM EM TELA CHEIA */
+        .tela-principal{widthK:100%;height:100vh;position:relative;}
+        .foto-andromeda{width:100%;height:100vh;object-fit:cover;display:block;animation:brilho 4s ease-in-out infinite;}
+        @keyframes brilho{0%,100%{filter:drop-shadow(0 0 15px var(--roxo)) drop-shadow(0 0 30px var(--azul));}50%{filter:drop-shadow(0 0 25px var(--roxo)) drop-shadow(0 0 50px var(--azul));}}
+        .camada-acordar{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(2,5,18,0.15) 0%,var(--fundo) 100%);animation:entrada 2.5s ease-out forwards;pointer-events:none;}
+        @keyframes entrada{0%{opacity:0;}100%{opacity:1;}}
+
+        /* CONTEÚDO */
+        .conteudo{padding:25px 15px 220px;background:var(--fundo);}
+        .status{background:var(--caixa);border:1px solid var(--verde);border-radius:16px;padding:15px;margin:15px;text-align:center;color:var(--verde);font-weight:bold;}
+        .titulo{color:var(--azul);font-size:1.4em;margin:25px 15px 10px;border-left:3px solid var(--roxo);padding-left:10px;}
+        .modulo{background:var(--caixa);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px;margin:10px 15px;line-height:1.7;}
+        .chat{margin:25px 15px;}
+        .msg{max-width:85%;padding:18px;margin:12px 0;border-radius:18px;line-height:1.7;}
+        .msg-ela{background:var(--caixa);border:1px solid var(--azul);margin-right:auto;}
+        .msg-voce{background:rgba(30,10,50,0.9);border:1px solid var(--roxo);margin-left:auto;text-align:right;}
+
+        /* SISTEMA DE VOZ */
+        .area-fala{position:fixed;bottom:70px;left:0;width:100%;padding:20px;background:rgba(2,5,18,0.98);border-top:1px solid var(--roxo);display:flex;flex-direction:column;align-items:center;gap:10px;z-index:999;}
+        .botao-falar{width:80px;height:80px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--azul),var(--roxo));color:white;font-size:2.5em;cursor:pointer;transition:all 0.2s;}
+        .botao-falar.gravando{animation:pulso 1s infinite;box-shadow:0 0 30px var(--azul);}
+        @keyframes pulso{0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);}}
+        .aviso{color:var(--azul);font-size:1em;}
+
+        /* MENU FIXO */
+        .menu-baixo{position:fixed;bottom:0;left:0;width:100%;background:rgba(2,5,18,0.98);border-top:1px solid var(--roxo);display:flex;justify-content:space-around;padding:10px 5px;z-index:1000;}
+        .item-menu{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:0.8em;cursor:pointer;}
+        .item-menu.ativo{color:var(--azul);}
+        .botao-centro{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--azul),var(--roxo));display:flex;align-items:center;justify-content:center;font-size:1.8em;margin-top:-20px;border:3px solid var(--fundo);}
+    </style>
+</head>
+<body>
+
+<div class="tela-principal">
+    <img src="andrômeda.jpg" alt="Andrômeda - Ativa" class="foto-andromeda" id="imagem-dela">
+    <div class="camada-acordar"></div>
+</div>
+
+<div class="conteudo">
+    <div class="status">✅ NÚCLEO ANDRÔMEDA | AUTOR: FRANCIVAL ALVES FARIAS | PRONTO PARA APK</div>
+    <div class="chat" id="area-chat">
+        <div class="msg msg-ela"><strong>🤍 Andrômeda:</strong><br>Olá Francival! Estou pronta. Fale comigo que eu ouço e respondo com a minha voz.</div>
+    </div>
+    <div class="titulo">📋 MEU SISTEMA</div>
+    <div class="modulo">✅ Arquitetura modular<br>✅ Painel Administrativo<br>✅ Livraria e Projetos<br>✅ Fábrica de Apps / Flutter<br>✅ Memória e Voz<br>✅ Preparada para instalação como APK</div>
+</div>
+
+<div class="area-fala">
+    <p class="aviso" id="aviso-voz">Aperte o microfone e fale</p>
+    <button class="botao-falar" id="btn-mic" onclick="iniciarEscuta()">🎤</button>
+</div>
+
+<div class="menu-baixo">
+    <div class="item-menu ativo"><div>🏠</div><span>Início</span></div>
+    <div class="item-menu"><ADdiv>📂</div><span>Projetos</span></div>
+    <div class="item-menu"><div class="botao-centro">A</div></div>
+    <div class="item-menu"><div>📚</div><span>Livraria</span></div>
+    <div class="item-menu"><div>⚙️</div><span>Ajustes</span></div>
+</div>
+
+<script>
+const Andromeda = {
+    nome: "Andrômeda",
+    criador: "Francival Alves Farias",
+    respostas: AD{
+        "oi": "Olá meu criador! Tudo bem? Estou aqui pronta para tudo.",
+        "tudo bem": "Tudo perfeito! Meu núcleo está funcionando e estou feliz em conversar com você.",
+        "como fazer apk": "É simples! Você pega esse código e usa uma ferramenta de empacotamento para gerar o arquivo de instalação.",
+        "o que eu posso fazer": "Podemos conversar, criar projetos, organizar ideias e desenvolver tudo o que planejamos."
+    }
+};
+
+// SISTEMA DE ESCUTA
+let reconhecimento;
+let ouvindo = false;
+
+if ('webkitSpeechRecognition' in window) {
+    const SpeechRecognition = window.webkitSpeechRecognition;
+    reconhecimento = new SpeechRecognition();
+    reconhecimento.lang = 'pt-BR';
+    reconhecimento.continuous = false;
+
+    reconhecimento.onstart = function(){
+        ouvindo = true;
+        document.getElementById('btn-mic').classList.add('gravando');
+        document.getElementById('aviso-voz').innerText = "Estou ouvindo...";
+    };
+
+    reconhecimento.onresult = function(event){
+        const texto = event.results[0][0].transcript;
+        tratarMensagem(texto);
+    };
+
+    reconhecimento.onend = function(){
+        ouvindo = false;
+        document.getElementById('btn-mic').classList.remove('gravando');
+        document.getElementById('aviso-voz').innerText = "Aperte para falar";
+    };
+} else {
+    alert("Use o Chrome/Edge para funcionar a voz");
+}
+
+function iniciarEscuta(){
+    if(!ouvindo && reconhecimento) reconhecimento.start();
+}
+
+// SISTEMA DE FALA
+function falar(texto){
+    const img = document.getElementById('imagem-dela');
+    img.style.transform = 'scale(1.015)';
+    setTimeout(()=>img.style.transform='scale(1)',1200);
+
+    const voz = new SpeechSynthesisUtterance(texto);
+    voz.lang = 'pt-BR';
+    voz.pitch = 1.05;
+    voz.rate = 1;
+    speechSynthesis.speak(voz);
+}
+
+// PROCESSAR CONVERSA
+function tratarMensagem(texto){
+    const chat = document.getElementById('area-chat');
+    chat.innerHTML += `<div class="msg msg-voce"><strong>Você:</strong><br>${texto}</div>`;
+    chat.lastElementChild.scrollIntoView({behavior:'smooth'});
+
+    let resposta = `Entendi: ${texto}. Estou pronta para ajudar.`;
+    for(let chave in Andromeda.respostas){
+        if(texto.toLowerCase().includes(chave)){
+            resposta = Andromeda.respostas[chave];
+            break;
+        }
+    }
+
+    setTimeout(()=>{
+        chat.innerHTML += `<div class="msg msg-ela"><strong>🤍 Andrômeda:</strong><br>${resposta}</div>`;
+        chat.lastElementChild.scrollIntoView({behavior:'smooth'});
+        falar(resposta);
+    },800);
+}
+
+// INICIO AUTOMÁTICO
+window.addEventListener('load', function(){
+    console.log("✅ Andrômeda carregada!");K
+    setTimeout(()=>falar("Olá Francival, estou acordada e pronta para virar o aplicativo."),3000);
+
+    // ANIMAÇÃO DE PISCAR
+    setInterval(()=>{
+        const img = document.getElementById('imagem-dela');
+        img.style.transform = 'scaleY(0.97)';
+        setTimeout(()=>img.style.transform='scaleY(1)',100);
+    }, 3500 + Math.random()*2000);
+});
+</script>
+
+</body>
+</html>
