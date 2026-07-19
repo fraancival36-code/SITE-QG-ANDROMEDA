@@ -160,5 +160,40 @@ Você é a Andrômeda, criada por Francival. Responda curto, direto, com carinho
             }, 600);
         }
     </script>
-</body>
+</body> <!-- Campo para o usuário digitar e o botão de enviar -->
+<div id="chat-input-container">
+  <input type="text" id="user-text-input" placeholder="Digite sua mensagem aqui..." />
+  <button id="send-text-btn">Enviar Texto</button>
+</div>
+// 1. Pegar os elementos do HTML
+const textInput = document.getElementById('user-text-input');
+const sendBtn = document.getElementById('send-text-btn');
+
+// 2. Função que lida com o envio do texto
+function enviarTextoDigitado() {
+  const texto = textInput.value.trim();
+  
+  if (texto !== "") {
+    console.log("Enviando texto:", texto);
+    
+    // CHAMADA DA SUA FUNÇÃO:
+    // Aqui você vai chamar a mesma função que o seu microfone chamava 
+    // quando terminava de transcrever a voz. Exemplo:
+    // suaFuncaoDeEnviarParaIA(texto);
+    
+    // Limpa o campo depois de enviar
+    textInput.value = ""; 
+  }
+}
+
+// 3. Ouvir o clique do botão
+sendBtn.addEventListener('click', enviarTextoDigitado);
+
+// 4. Ouvir a tecla 'Enter' para facilitar o envio
+textInput.addEventListener('keypress', function(evento) {
+  if (evento.key === 'Enter') {
+    enviarTextoDigitado();
+  }
+});
+
 </html>
