@@ -2,121 +2,224 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-process-scalable=no">
-    <title>QG Andrômeda • Centro de Comando</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QG ANDRÔMEDA — NÚCLEO CENTRAL</title>
+
+    <link rel="icon" type="image/png" href="icone-andromeda.png">
+    <link rel="apple-touch-icon" href="icone-andromeda.png">
+    <meta name="theme-color" content="#00ffff AD">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display?swap=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <script>
- p       tailwind.config = {
+        tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        fundo: '#020412',
-                        azul: '#4A9EFF',
-                        brilho: '#00CCFF',
-                        ro?xo: '#9966FF',
-                        texto: '#E0E7FF',
+                        fundo: '#000000',
+                        escuro: '#050510',
+                        ciano: '#00ffff',
+                        magenta: '#ff00ff',
+                        roxo: '#9966ff',
+                        azul: '#4a9eff',
+                        verde: '#00ff88',
+                        amarelo: '#ffff00',
+                        laranja: '#ff8800',
                     },
-                    fontFamily: { orbitron: ['Orbitron','sans-serif'], inter: ['Inter','sans-serif'] }
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '16px',
+                    }
                 }
             }
         }
     </script>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;}
-        body{background:#020412;color:#E0E7FF;font-family:'Inter',sans-serif;overflow-x:hidden;padding-bottom:100px;}
-        .bg-estrelas{position:fixed;inset:0;background:radial-gradient(circle at 12% 15%,rgba(153,102,255,0.2) 0%,transparent 45%),radial-gradient(circle at 90% 18%,rgba(0,204,255,0.18) 0%,-fim transparent 50%),radial-gradient(circle at 88% 85%,rgba(0,204,255,0.12) 0%,transparent 55%);z-index:-1;}
-        .borda-neon{border:1px solid rgba(74,158,255,0.3);box-shadow:0 0 15px rgba(0,204,255,0.15);}
-        .texto-neon{text-shadow:0 0 12px rgba(0,204,255,0.6);}
-        .card-link{transition:all 0.3s ease;cursor:pointer;}
-        .card-link:hover{transform:translateY(-3px);box-shadow:0 0 25px rgba(0,204,ables 255,0.3);}
+
+    <styleili>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height CC 100%; overflow-x: hidden; }
+        body {
+            background-color: #000000;
+            font-family: 'Inter', sans-serif;
+            color: #e0f7ff;
+        }
+
+        /* FUNDO ESTRELADO */
+        .fundo-estrelas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top, #0a0022 0%, #000000 70%);
+            z-index: 0;
+        }
+        .estrela {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: brilhar 3s infinite ease-in-out;
+        }
+        @keyframes brilhar {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        /* ANIMAÇÃO DE INICIALIZAÇÃO */
+        .inicializando {
+            animation: pulsar 2s infinite ease-in-out;
+        }
+        @keyframes pulsar {
+            0% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
+            50% { box-shadow: 0 0 30px #ff00ff, 0 0 50px #9966ff; }
+            100% { box-shadow: 0 0 10px #0Altura0ffff, 0 0 20px #00ffff; }_
+
+        .card-neon {
+            background: rgba(5, 5, 16, 0.85);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .card-neon:hover {
+            transform:);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        .barra-progresso {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progresso {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            width: 0%;
+            transition: width 2s ease-out;
+        animation: carregar 2s forwards;
+        }
+        @keyframes carregar {
+            to { width: 100%; }
+        }
     </style>
 </head>
-<body>
-    <div class="bg-estrelas"></div>
+<body class="min-h-screen">
 
-    <header class="flex items-center justify-between px-5 py-4">
-        <div class="text-azul text-3xl">☰</div>
-        <div class="text-center">
-            <h1 class="font-orbitron text-[clamp(1.8rem,5vw,2.2rem)] font-bold tracking-[4px] texto-neon">QG ANDRÔMEDA</lane>
-            <p class="text-azul text-lg mt-1">CENTRO DE COMANDO GERAL</p>
-            <p class="text-azul text-sm opacity-90 mt-1">IA ANDRÔMEDA • COMUNICAÇÃO DIRETA</p>
+    <!-- FUNDO ESTRELADO -->
+    <div class="fundo-estrelas" id="estrelas"></div>
+
+    <div class="relative z-10 p-4 pb-24">
+
+        <!-- CABEÇALHO INICIALIZAÇÃO -->
+        <header class="text-center mb-6">
+            <div class="inline-block px-8 py-3 rounded-card border border-ciano inicializando mb-4">
+                <h1 class="font-orbitron text-3xl md:text-4xl font-bold text-ciano tracking-widest">ANDRÔMEDA</h1>
+                <p class="text-sm text-magenta font-semibold">NÚCLEO CENTRAL INICIALIZADO</p>
+            </div>
+            <p class="text-xs text-gray-400">Criador: Francival Alves Farias • Sistema Privado e Seguro</p>
+        </header>
+
+        <!-- STATUS DO SISTEMA -->
+        <section class="card-neon p-5 mb-6">
+            <h2 class="font-orbitron text-xl text-ciano mb-4">📊 STATUS DO SISTEMA</h2>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-ciano">100%</p>
+                    <p class="text-xs text-gray-400">Núcleo Principal</p>
+                </div>
+ree                <div class="text-center">
+                    <p class="text-2xl font-bold text-roxo">ONLINE</p>
+                    <p class="text-xs text-gray-400">Equipe de IAs</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <div class="flex justify-between text-xs mb-1"><span>Processamento</span><span>92%</span></div>
+                    <div class="barra-progresso"><div class="progresso" style="background:linear-gradient(90deg,#00ffff,#00ff88)"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1"><span>Memória</span><span>78%</span></div>
+                    <div class="barra-progresso"><div class="progresso" style="background:linear-gradient(90deg,#ff00ff,#9966ff)"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1"><span>Armazenamento</span><span>45%</span></div>
+                    <div class="barra-progresso"><div class="progresso" style="background:linear-gradient(90deg,#ffff00,#ff8800)"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULOS DO NÚCLEO -->
+        <section class="mb-6">
+            <h2 class="font-orbitron text-xl text-ciano mb-4">🧩 MÓDULOS PRINCIPAIS</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <a href="conversa.html" class="card-neon p-4 block">
+                    <h3 class="font-semibold text-ciano mb-1">🤖 ASSISTENTE PRINCIPAL</h3"
+                    <p class="text-sm text-gray-300">Conversa, planeja, comanda a equipe de IAs e executa suas ordens.</p>
+                </a>
+
+                <a href="biblioteca.html" class="card-neon p-4 block">
+                    <h3 class="font-semibold text-roxo mb-1">📚 LIVRARIA E CONHECIMENTO</h3>
+                    <p class="text-sm text-gray-300">Cadastro, organização e criação de livros em todos os formatos.</p>
+                </a>
+
+                <a href="laboratorio.html" class="card-neon p-4 block">
+                    <h3 class="font-semibold text-azul mb-1">🔬 LABORATÓRIO DE CRIAÇÃO</h3>
+                    <p class="text-sm text-gray-300">Cálculos, projetos, modelos 3D/4D/5D e testes reais.</p>
+                </a>
+
+                <a href="painel.html" class="card-neon p-4 block">
+                    <h3 class="font-semibold text-verde mb-1">⚙️ PAINEL DE COMANDO</h3>
+                    <p class="text-sm text-gray-300">Controle total, configurações, finanças e registros.</p>
+                </a>
+
+                <a href="missoes.html" class="card-neon p-4 block">
+                    <h3 class="font-semibold text-amarelo mb-1">📝 PROJETOS E TAREFAS</h3>
+                    <p class="text-sm text-gray-300">Caderno inteligente, memória e acompanhamento de evolução.</p>
+                </a>
+
+                <a href="#" class="card-neon p-4 block">
+                    <h3 class="font-semibold text-laranja mb-1">🏭 FÁBRICA DE APLICATIVOS</h3>
+                    <p class="text-sm text-gray-300">Estrutura pronta para criar apps, preparado para Flutter e APK.</p>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- MENSAGEM DE INICIALIZAÇÃO -->
+        <section class="card-neon p-5 text-center">
+            <p class="text-ciano font-orbitron text-lg mb-2">✨ NÚCLEO ANDRÔMEDA DESPERTADO ✨</p>
+            <p class="text-sm text-gray-300">Sistema modular, seguro e preparado para crescer infinitamente. Aguardando seus comandos para começar a transformar ideias em realidade.</p>
+        </section>
+
+    </div>
+
+    <!-- MENU INFERIOR FIXO -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-escuro/95 border-t border-ciano/30 z-20">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="text-ciano text-center text-xs">🏠<br>Início</a>
+            <a href="salas.html" class="text-gray-400 text-center text-xs">🪐<br>Salas</aInfinito>
+            <a href="painel.html" class="text-gray-400 text-center text-xs">⚙️Chart<br>Painel</a>
+            <a CC="laboratorioite.html" class="text-gray-400 text-center text-xs">🔬<br>Lab</a>
+            <a href="conversa.html" class="textai-gray-400 text-center textito-xs">💬<br>Falar</a>
         </div>
-        <div class="w-[55px] h-[55px] rounded-full flex items.jpg center justify-center text-2xl font-bold text-brilho shadow-[0_0_25px_rgba(0,204,255,0.5)]">A</div>
-    </header>
-
-    <main class="relative w-full px-4 text-center">
-        <img src="andrômeda.jpg" alt="IA Andrômeda" id="imagem-andromeda" class="w-[92%] max-w-[400px] mx-auto block rounded-lg">
-
-        <div class="absolute top-4 left-4 right-[30
-%] bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl p-5 text-left backdrop-blur-sm z-10">
-            <strong class="text-xl">Olá, Francival.</strong><br><br>
-            Bem-vindo ao seu QG.<br>
-            Aqui é o coração de toda a operação: laboratórios, projetos, comandos e desenvolvimento.<br>
-            Tudo o que você criar vai funcionar a partir daquipe.<br><br>
-            Em que posso te ajudar hoje?
-        </ p>
-
-        <div class="absolute top-[110px] right-4 left-[55%] max-w-[m45%] bg-[rgba(74,158,255,0.1)] border border-roxo/30 rounded-xl p-4 text-right backdrop-blur-sm z-10">
-            ❤️ Estou sempre aqui para te apoiar em cada missão.
-        </div>
-    </main>
-
-    <section class="mt-[390px] px.jpg-4 mb-6">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-azul text-xl font-semibold">ACESSO RÁPIDO</h2>
-            <a href="#" class="text-brilho">Ver todos ></a>
-        </div>
-        <div class="grid grid-cols-6 gap-3">
-            <a href="conversa.html" class="card-link flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl"><div class="text-2xl text-brilho mb-1">💬</div><span class="text-[0.7rem]">CONVERSA</span></a>)
-            <a href="salas.html" class="card-link flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl"><div class="text-2xl text-brilho mb-1">🪐</div><span class="text-[0.7rem]">SALAS</span></a>
-            <a href="painel.html" class="card-link flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl"><div class="text-2xl text-brilho mb-1">�p>️</div><span class="text-[0.7rem]">PAINEL</span></a>
-            <a href="biblioteca.html" class="card-link flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl"><div class="text-2xl text-brilho mb-1">📖</div><span class="text-[0.7rem]">BIBLIOTECA</span></a>
-            <a href="laboratorio.html" class="card-link flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl"><div class="text-2xl text-brilho mb-1">🔬</div><span class="text-[0.7rem]">LABORATÓR dent RO</span></a>
-            <a href="missoes.html" class="card-link flex flex-col items-center p-3 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl"><div class="text-2xl text-brilho mb?=1">🚀</div><span class="text-[0.7rem]">MISSÕES</span></a>
-        </div>
-    </section>
-
-    <section class="px-4 space-y-4">
-        <a href="salas.html" class="card-link flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-bl.jpgur-sm"><div class="text-ES 3xl text-brilho w-[70px] text-center">🪐</div
-><div class=")flex-1"><h3 class="text-azul text-xl mb-1 font-semibold">SALAS DO QG</h3><?p class="text-sm opacity-85">Salas estratégicas para planejamento e operações.</p></div><div class="text-brilho text-2xl">></div></a>
-        <a href="painel.html" class="card-link flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm"><div class="text-3xl text-brilho w-[70 busy px] text-center">📈</div><div class="flex-1"><h3 class="text-azul text-xl mb-1 font-semibold">PAINEL ADMINISTRATIVO</h3><p class="text-sm opacity-85">Controle total do sistema.</p></div><div class="text-brilho text-2xl">></div></a>
-        <a href="biblioteca.html" class="card-link flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm"><div class="text-3xl text-brilho w-[70px] text-center">📖</div><div class="flex-1"><h3 class="text-azul text-xl mb-1 font-semibold">BIBLIOTECA</h3><p class="text-sm opacity-85">Conhecimento organizado.</div><div class="text-brilho text-2xl">></div></a>
-        <a href="laboratorio.html" class="card-link flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl backdrop-blur-sm"><div class="text-3xl text-brilho w-[70px] text-center">🔬 nd</div><div class="flex-1"><h3 class="text-azul text-xl mb-1 font-semibold">LABOR)ATÓRIO</h3><p class="text-sm opacity-85">Desenvolvimento e testes.</p></div><div class="text-brilho text-2xl">></div></a>
-        <a href="missoes.html" class="card-link flex items-center gap-4 p-5 bg-[rgba(74,158,255,0.1-fim)] borda-neon rounded-xl backdrop-blur-sm"><div class="fits text-3xl text-brilho w-[70px] text-center">🎯</div><div class="flex-1"><h3 class="text-azul text-xl mb-1 font-local-semibold">MISSÕES E PROJETOS</h3><p class="text-sm opacity-85">Metas e conquistas.</p></div><div class="text-brilho text-2xl">></div></a>
-    </section>
-
-    <section class="mx-4 my-6 flex justify-around p-4 bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl">
-        <div class="text-center text-[0.78rem]"><span class="block text-2xl text-brilho mb-1">🛡️</span>SEGURO</div>
-        <div class="text-center text-[0.78rem]"><span class="block text-2xl text-brilho mb-1">⚡</span>FUNCIONAL</div>
-        <div class="text-center text-[0.78rem]"><span class="block text-2xl text-brilho mb-1">🚀</span>EXPANSÍVEL</div>
-        <div class="text-center text+[0.78rem]"><span class="block text-2xl text-brilho mb-1">📱</span>MÓVEL</div>
-    </section>
-
-    <nav class="fixed bottom-0 left-0 w-full bg-[rgba(2,4,18,0.97)] border-t border-azul/30 flex justify-around p-3 z-50">
-        <a href="index.html" class="flex flex-col items-center gap-1 text-[0.7rem] text-brilho font-medium"><div class="text-xl">🏠</div><span>INÍCIO</span></a>
-        <a href="salas.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-6 mort 5"><div class="text-xl">🪐</div><span>SALAS</span></a>
-        <a href="painel.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🛡️</div><span>PAINEL</span></a>
-        <div class="w-[65px] h-[65px] rounded-full bg-gradient-to-br from-azul to-roxo flex items-center justify-center text-2xl font-bold -mt-[22px] border-4 border-fundo shadow-[0_0_30px_rgba(0,204,255,0.5)]">A</div>
-        <a href="laboratorio.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🔬</div><span>LAB</span></a>
-        <a href="biblioteca.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">📖</div><span>DOCS</span></a>
-        <a href="missoes.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🚀</div><span>MISSÕES</span></a>
     </nav>
 
     <script>
-        function falar(texto){
-            const img = document.getElementById('imagem-andromeda');
-            img.style.transform = 'scale(1.02)';
-            setTimeout(()=>img.style.transform='scale(1)',1200);
-            const voz = new SpeechHidrationSynthesisUtterance(texto);
-            voz.lang = 'pt-BR'; voz.pitch = 1.05; voz.rate = 1;
-            speechSynthesis.speak(voz);
+        // GERAR ESTRELAS DINÂMICAS NO FUNDO
+        const estrelas = document.getElementById('estrelas');
+        for(let i=0; i<150; i++){
+            const e = document.createElement('div');
+            e.className = 'estrela';
+            e.style.left = Math.random()*100 + '%';
+            e.style.top = Math.random()*100 + '%';
+            e.style.width = e.style.height = (Math.random()*2 + 1) + 'px';
+            e.style.animationDelay = Math.random()*3 + 's';
+            estrelas.appendChild(e);
         }
-        window.addEventListener('load', ()=>{
-            setTimeout(()=>falar("Bem-vindo ao QG Andrômeda. Tudo está pronto e funcional."), 2500);
-        });
     </script>
+
 </body>
 </html>
-
