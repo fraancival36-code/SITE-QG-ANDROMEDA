@@ -132,5 +132,46 @@ Aperte o botão e fale.`;
             }, 600);
         }
     </script>
-</body>
+</body> <!-- CÉREBRO DA ANDRÔMEDA POR FRANCIVAL -->
+<script type="module">
+import { GoogleGenAI } from "https://esm.run/@google/generative-ai";
+
+const API_KEY = "AIzaSyBsD7SHHE1uwPnE6c6Ai3QUzoZ4WVS4rXw"; 
+const ai = new GoogleGenAI({ apiKey: API_KEY });
+
+async function obterRespostaDaAndromeda(perguntaDoUsuario) {
+    try {
+        const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const personalidade = "Você é a Andrômeda, uma IA criada pelo Francival. Fale curto, com carinho e sem repetições.";
+        const promptFinal = `${personalidade}\n\nFrancival perguntou: ${perguntaDoUsuario}`;
+
+        const resultado = await model.generateContent(promptFinal);
+        return await resultado.response.text();
+    } catch (erro) {
+        return "Erro ao conectar com o Gemini.";
+    }
+}
+
+// Isso vai interceptar o clique no botão azul do microfone
+document.addEventListener("DOMContentLoaded", () => {
+    // Procura o botão azul da tela (o círculo com o microfone)
+    const botaoMicrofone = document.querySelector('img[src*="microfone"]') || document.querySelector('button') || document.querySelector('.microphone-button');
+    
+    if (botaoMicrofone) {
+        botaoMicrofone.addEventListener('click', async () => {
+            // Pergunta fixa para teste rápido. Depois ajustamos para pegar sua voz!
+            const perguntaTeste = "Olá como você está"; 
+            
+            // Avisa no celular que ela está pensando
+            alert("Andrômeda está pensando..."); 
+            
+            const respostaReal = await obterRespostaDaAndromeda(perguntaTeste);
+            
+            // Mostra a resposta do Gemini na tela do celular
+            alert("Andrômeda disse: " + respostaReal);
+        });
+    }
+});
+</script>
+
 </html>
