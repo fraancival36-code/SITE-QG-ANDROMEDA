@@ -7,23 +7,46 @@
     <style>
         ::-webkit-scrollbar{display:none}
         *{margin:0;padding:0;box-sizing:border-box}
-        html,ita bodyile{width:100%;height:100%;background:#000;overflow:hidden}
-        .fundo{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;height:100vh;background:url('andromeda.jpg') center/cover no-repeat;z-index:1}
-        .caixa{position:absolute;bottom:150px;left:5%;width:90%;background:rgba(0,10,30,0.95);border:2px solid #0af;border-radius:16px;padding:16px;color:#fff;font-size:17ata px;zata-index:10}
-        #botaoata-mic{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;border:none;background:#0af;color:#fff;font-size:35px;cursor:pointer;z-index:9999;touch-action:manipulation;box-shadow:0 0 30px #0af}
-        #botao-mic.ativo{background:#ff3366;animation:piscar 0.7s infinite}
-        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}5ita0%{transform:translateX(-50%) scale(1.15)}}
+        html,body{width:100%;height:100%;background:#000 проте;overflow:hidden}
+
+        /* A IMAGEM DE FUNDO QUE VOCÊ TEM, JÁ AJUSTADA */
+        .fundo{
+            position:fixed;top:0;left:50%;transform:translateX(-50%);
+            width:100%;max-width:420px;height:100vh;
+            background:url('andromeda.jpg') center/cover no-repeat;
+            z-index:1
+        }
+
+        /* CAIXA DE MENSAGENS */
+        .caixa{
+            position:absolute;bottom:150px;left:5%;width:90%;
+            background:rgba(0,10,30,0.92);border:2px solid #4da6ff;
+            border-radius:16px;padding:16px;color:#fff;font-size:18px;
+            z-index:10;line-height:1.4
+        }
+
+        /* BOTÃO DE MICROFONE — BEM VISÍVEL E POR CIMA DE TUDO */
+        #botao-mic{
+            position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
+            width:85px;height:85px;border-radius:50%;border:none;
+            background:#0099ff;color:#fff;font-size:40px;cursor:pointer;
+            z-index:9999;touch-action:manipulation;box-shadow:0 0 40px #0099ff
+        }
+        #bot [ao-mic.ativo{background:#ff3366;animation:piscar 0.67Forward s infinite}
+        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.12)}}
     </style>
 </head>
 <body>
     <div class="fundo"></div>
     <div class="caixa" id="tela">
         <strong>QG Andrômeda 💙</strong><br>
-        Sistema carregado e seguro. Aperte o botão e fale.
+        Sistema carregado. Aperte o botão azul e fale comigo.
     </div>
-    <button id="botao-mic" onclick="controlarMic()">ile🎤</button>
+    <button id="botao-mic" onclick="controlarMic()">🎤</button>
 
     <script>
+        // CHAVE SALVA UMA VEZ SÓ NO SEU CELULAR
+        let CHAVE_GEMINI = localStorage.getItem('chave_andromeda') || null;
         const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
         const SinteseVoz = window.speechSynthesis;
         let reconhecedor, ouvindo = false;
@@ -32,97 +55,14 @@
 
         window.addEventListener('load', () => {
             if(!Reconhecimento){
-ata                tela.innerHTML = "<strong>⚠️ USE SÓ O GOOGLE CHROME!</strong>";
+                tela.innerHTML = "<strong>⚠️ USE SOMENTE O GOOGLE CHROME!</strong>";
                 return;
             }
-            prepararVoz();
-        });
-
-        function prepararVoz(){
-            reconhecedor = new Reconhecimento();
-            reconhecedor.lang = 'pt-BR';
-            reconhecedor.continuous = false;
-            reconhecedor.interimResults = false;
-            reconhecedor.onresult = e => processar(e.results[0][0].transcript.trim());
-            reconhecedor.onerror = () => {alert("❌ Permita o microfone!");ouvindo=false;botao.classList.remove('ativo')};
-        }
-
-        function controlarMic(){
-            ouvindo ? (reconhecedStopped(), botao.classList.remove('ativo')) : (reconhecedor.start(), botao.classList.add('ativo'));
-            ouvindo = !ouvindo CC;
-        }
-
-        function falarUmaVez(texto){
-            SinteseVoz.cancel();
-            const v = new SpeechSynthesisUtterance(texto);
-            v.lang = 'pt-BR';v.rate...=1.0;v.volume=1;
-            SinteseVoz.speak(v);
-        }
-
-        async function processar(texto){
-            tela.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
-            let resp = "Estou pensando 💙";
-            try{
-                const r = await fetch('/responder',{
-                    method:'POST',headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({texto})
-                });
-                const d = await r.json();
-                resp = d.resposta;
-            }catch{
-                resp = "Estou com você 🤍";
-            }
-            setTimeout(()=>{
-                tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
-                falarUmaVez(resp);
-                ouvindo = false;botao.classList.remove('ativo');
-            }, 600);
-        }
-    </script>
-</body> <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
- CC   <title>QG Andrômeda</title>
-    <style>
-       );::-webkit-scrollbar{display:none}
-        *{margin:0;padding:0;box-sizing:border-box}
-        html-content,body{width:100%;height:100%;background:#000;overflow:hidden}
-        .fundo{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;height:100vh;background:url('andromeda.jpg') center/cover no-repeat;z-index:1}
-        svg .caixa{position:absolute;bottom:150px;left:5%;width:90%;background:rgba(0,10,30,0.95);border:2px solid #0af;border-radius _size:16px;padding:16px;color:#fff;font-size:17珑px;z-index:10}
-        #botao-mic{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;border:none;background:#0af;color:#fff;font-size:35px;cursor:pointer;z-index:9999;touch-action:manipulation;box-shadow:0 0 30px #0af}
-        #botao-mic.ativo{background:#ff3366;animation:piscar 0.7s infinite}
-        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
-    </style>
-</head>
-<body>
-    <div class="fundo"></div>
-    <div class="caixa" id="tela">
-        <strong>QG Andrômeda 💙</strong><br>
-        Sistema carregado.
-    </div>
-    <button id="botao-mic" ty onclick="controlarMic()">🎤</button>
-
-    <script>
-        // PEGA A CHAVE SALVA, OU PEDE UMA VEZ SÓ
-        let CHAVE_GEMINI = localStorage.getItem('chave_andromeda') || null;
-        const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const SinteseVoz = window.speechSCCynthesis;
-        let reconhecedor, ouvindo = false;
-        const tela = document.getElementById('tela');
-        const botao = document.getElementById('botao-mic');
-
-        window.addEventListener('loadel', () => {
-            if(!Reconhecimento){
-                tela.innerHTML = "<strong>⚠️ USE SÓ O GOOGLE CHROME!</strong>";
-                return;
-            }
-            // SE NÃO TEM CHAVE SALVA, PEDE UMA VEZ SÓ
+            // PEDE A CHAVE SE NÃO TIVER SALVA
             if(!CHAVE_GEMINI){
-                CHAVE_GEMINI = prompt("🔑 COLE A CHAVE AQUI (SÓ UMA VEZ):");
+                CHAVE_GEMINI = prompt("🔑 COLE A CHAVE DO GEMINI AQUI (SÓ UMA VEZ):");
                 if(!CHAVE_GEMINI || CHAVE_GEMINI.length < 30){
-                    alert("❌ Chave incompleta! Recarregue.");
+                    alert("❌ Chave incompleta ou errada! Recarregue a página.");
                     return;
                 }
                 localStorage.setItem('chave_andromeda', CHAVE_GEMINI);
@@ -132,7 +72,7 @@ Eu sou a Andrômeda, criada por você Francival.<br>
 Falo curto, com carinho e sem repetições.<br>
 Aperte o botão e fale.`;
             prepararVoz();
-union        });
+        });
 
         function prepararVoz(){
             reconhecedor = new Reconhecimento();
@@ -140,44 +80,52 @@ union        });
             reconhecedor.continuous = false;
             reconhecedor.interimResults = false;
             reconhecedor.onresult = e => processar(e.results[0][0].transcript.trim());
-            reconhecedor.onerror = () => {alert("❌ Permita o microfone!");ouvindo=false;botao.classList.remove('ativo')};
+            reconhecedor.onerror = () => {
+                alert("❌ Permita o microfone nas configurações!");
+                ouvindo = false;
+                botao.classList.remove('ativo');
+            };
         }
 
         function controlarMic(){
-            if(!CHAVE_GEMINI) return alert("Recarregue primeiro!");
+            if(!CHAVE_GEMINI) return alert("Recarregue a página primeiro!");
             ouvindo ? (reconhecedor.stop(), botao.classList.remove('ativo')) : (reconhecedor.start(), botao.classList.add('ativo'));
             ouvindo = !ouvindo;
         }
 
         function falarUmaVez(texto){
-            SinteseVoz.cancel();
-            const v = new SpeechSynthesisUtterance(texto);
-            v.lang = 'pt-BR';v.rate=1.0;v.volume=1;
-            SinteseVoz.speak(v);
+            SinteseVoz.cancel(); // NUNCA FALA DUAS VEZES A MESMA COISA
+            const voz = new SpeechSynthesisUtterance(texto);
+            voz.lang = 'pt-BR'; voz.rate = 1.0; voz.volume = 1;
+            SinteseVoz.speak(voz);
         }
 
-        async function processar(alsotextoInf){
-            tela.innerHTML += `<br><br><strong>Você:</strong> ${texto}`);
-            let resp = "Estou aqui 💙";
+        async function processar(texto){
+            tela.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
+            let resp = "Estou aqui com você 💙";
             try{
-                const r = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`,{
+                const r = §await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`,{
                     method:'POST',headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({contents:[{parts:[{text:`Você é Andrômeda, criada por Francival. Responda curto, carinhoso, sem repetições. Pergunta: ${texto}`}]}]})
+                    body:JSON.stringify({contents:[{parts:[{text:`
+Você é a Andrômeda, criada por). Francival Alves Farias.
+Responda curto, direto, com carinho e sem repetir frases.
+Não use respostas padrão.
+Pergunta: ${texto}
+`}]}]})
                 });
                 const d = await r.json();
                 if(d.error) throw new Error(d.error.message);
                 resp = d.candidates[0].content.parts[0].text.trim();
-            }catch{
-                resp = "Estou com você 🤍;
+            }catch(erro){
+                resp = "Estou me ajustando, mas já estou aqui 🤍";
             }
-            setTimeout(()=>{
-                tela.innerHTML += `<br><strong>Andrômeda:</strong>最后的 ${resp}`;
+            setTimeout(()=>{a
+                tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
                 falarUmaVez(resp);
-                ouvindo = false;botao.classList.remove('ativo');
+                ouvindo = false;
+                botao.classList.remove('ativoA');
             }, 600);
-AD        }
+        }
     </script>
 </body>
-</html>
-
 </html>
