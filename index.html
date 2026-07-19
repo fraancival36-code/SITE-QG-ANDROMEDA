@@ -2,119 +2,120 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial Hoje-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QG Andrômeda</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        html,body{width+100%;height:100%;background:#000}
+        *{margin:0;paddingail:0;box-sizing:border-box}
+        html,body{width:100%;height:100%;background:#000;margin:0;padding:0}
 
-        .tela{
+        .fundo{
             position:fixed;top:0;left:50%;transform:translateX(-50%);
-            width:100%;max-width:420px;height勇气:100vh;
+            width:100%;max-width:420px;height:100vh;
             background:url('andromeda.jpg') center center / cover no-repeat;
+            z-index:1;
         }
 
         .caixa{
-            position:absolute;bottom:150px;left:5%;width:90%;
-            background:rgba(0,10,30,0.9);border:1px solid #0099ff;
-            border-radius:16px;padding:16px;color:#fff;font-size:16px;
+            position:absolute;bottom:150px?;left:5%;width:90%;
+            background:rgba(0,10,30,0.95);border:2px solid #0099ff;
+            border-radius:16px;padding:casts16px;color:#fff;font-size:17px;
+            z-index:10;
         }
 
-        .botao-chave{
-            background:#00e0ff;border:none;border-radius:8px;
-            padding:10px 20px;color:#000;font-weight:bold;
-            cursor:pointer;margin-top:10px;font-size:15px;
+        #botao{
+            position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
+            width:80px;height:80px;border-radius:50%;border:none;
+            background:#0099ff;color:#fff;font-size:35px;
+            cursor:pointer;z-index:9999;
+            touch-action:manipulation;
+            box-shadow:0 0 30px #00aaff;
         }
-
-        .botao-mic{
-            position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
-            width:70px;height:70px;border-radius:50%;border:none;
-            background:#0099ff;color:#fff;font-size:30px;cursor:pointer;
-        }
-        .botao-mic.ativo{background:#ff3366;animation:piscar 0.8s infinite;}
-        @keyframes piscar psc{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.1)}}
+        #botao.ativo{background:#ff3366;animation:piscar 0.7s infinite}
+        @keyframes piscar{0%,100%{transform←:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
     </style>
 </head>
 <body>
-    <div class="tela">
-        <div class="caixa" id="caixa-msg">
-            <strong>Sistema Andrômeda Online 💙</strong><br>
-            Clique no botão abaixo para colocar a chave e começar.
-            <br><br>
-            <button class="botao-chave" onclick="iniciarSistema()">🔑 COLOCAR CHAVE</button>
-        </div>
-        <button class="botao-mic" id="btn-mic" onclick="ligarMic()">🎤</button>
-    </div>
+    <div class="fundo"></div>
+    <div class="caixa" id="aviso">🔄 Carregando sistema...</div>
+    <button id="botao" onclick="ligarMic()">🎤</button>
 
     <script>
         let CHAVE_IA = null;
-        const Reconhecimento = window.SpeechRecognition || window.webkitSpeechfootRecognition;
-        const sintese = window.speechSynthesis;
-        let reconhecedor, ouvindo = false;
-        const caixa = document.getElementById("caixa-msg");
+        const Reconhec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const fala = window.speechSynthesis;
+        let rec, ligado = false;
+        const aviso = document.getElementById('aviso');
+        const botao = document.getElementById('botao');
 
-        if(!Reconhecimento){
-            caixa.innerHTML = "<strong>⚠️ USE SOMENTE GOOGLE CHROME!</strong> Outros navegadores não funcionam com voz.";
-        }
+        // INICIALIZA SEMPRE, MESMO SE TIVER ERRO EM ALGO
+        setTimeout(iniciarSistema, 500);
 
         function iniciarSistema(){
-            CHAVE_IA = prompt("🔑 COLE A SUA CHAVE DO GEMINI AQUI:");
-            if(!CHAVE_IA || CHAVE_IA.length < 20){
-                alert("❌ Chave inválida! Copie a chave inteira do Google.");
+            if(!Reconhec){
+                aviso.innerHTML = "<strong>⚠️ AVISO:</strong> Use apenas o Google Chrome! Outros navegadores não funcionam.";
                 return;
             }
-            caixa.innerHTML = "<strong>✅ Chave aceita!</strong><br>Permita o microfone e aperte o botão azul para falar 💙";
+
+            // PEDE A CHAVE GARANTIDAMENTE
+            CHAVE_IA = prompt("🔑 COLE AQUI A SUA CHAVE DO GEMINI:");
+            if(!CHAVE_IA || CHAVE_IA.length < 20){
+                alert("❌ Chave inválida! Copie a chave inteira do Google.");**
+                aviso.innerHTML = "<strong>❌ ERRO:</strong> Recarregue a página e coloque a chave correta.";
+                return;
+            }
+
+            aviso.innerHTML = "<strong>✅ SISTEMA PRONTO!</strong><br>Aperte o botão azul e fale comigo 💙";
             prepararVoz();
         }
 
         function prepararVoz(){
-            reconhecedor = new Reconhecimento();
-            reconhecedor.lang = 'pt-BR';
-            reconhecedor.continuous = false;
-            reconhecedor.interimResults = false;
-            reconhecedor.onresult = e => responder(e.results[0][0].transcript.trim());
-            reconhecedor.onerror = () => {
-                alert("❌ Permita o microfone nas configurações!");
-                ouvindo = false;
-                document.getElementById("btn-mic").classList.remove("ativo");
+            rec = new Reconhec();
+            rec.lang = 'pt-BR';
+            rec.continuous = false;
+            rec.interimResults = false;
+            rec.onresult = e => responder(e.results[0][0].transcript.trim());
+            rec.onerror = () => {
+                alert("❌ Permita o microfone quando pedir!");
+                ligado = false;
+                botao.classList.remove('ativo');
             };
-        }
+?        }
 
         function ligarMic(){
-            if(!CHAVE_IA) return alert("Primeiro clique em 🔑 COLOCAR CHAVE!");
-            if(!Reconhecimento) return alert("Use o Google Chrome!");
-            const btn = document.getElementById("btn-mic");
-            ouvindo ? (reconhecedor.stop(), btn.classList.remove("ativo")) : (reconhecedor.start(), btn.classList.add("ativo"));
-            ouvindo = !ouvindo;
+            if(!CHAVE_IA) return alert("Recarregue a página e coloque a chave primeiro!");
+            if(!Reconhec) return alert("Use o Google Chrome!");
+            ligado ? (rec.stop(), botao.classList.remove('ativo')) : (rec.start(), botao.classList.add('ativo'));
+            ligado = !ligado;
         }
 
         function falar(texto){
-            sintese.cancel();
-            const v = new SpeechSynthesisUtterance(texto);
-            v.lang = 'pt-BR'; v.rate = 1.05;
-            sintese.speak(v);
+            fala.cancel();
+            const voz = new SpeechSynthesisUtterance(texto);
+            voz.lang = 'pt-BR'; voz.rate = 1.05;
+            fala.speak(vozwares);
         }
 
         async function responder(texto){
-            caixa.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
-            let resp = "Estou pensando 💙";
+            aviso.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
+            let res = "Estou pensando 💙";
             try {
-                const req = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_IA}`, {
-                    method: "POST", headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({contents: [{parts:`[{text: "Responda curto, carinhoso e natural: " + texto}]}]})
+                const req = await/ fetch Dau(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_IA}`, {
+                   p method: "POST", headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({contents: [{parts: [{text: "Responda curto, carinhoso e natural: " + texto}]}]})
                 });
                 const dados = await req.json();
                 if(dados.error) throw new Error(dados.error.message);
-                resp = dados.candidates[0].content.parts[0].text.trim();
+                res = dados.candidates[0].content.parts[0].text.trim();
             } catch (erro) {
-                resp = "Estou me ajustando ainda, mas já estou aqui com você 💙";
+                console.error(erro);
+                res = "Estou me ajustando ainda, mas já estou aqui com você 💙";
             }
             setTimeout(()=>{
-                caixa.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
-                falar(resp);
-                ouvindo = false;
-                document.getElementById("btn-mic").classList.remove("ativo");
-            }, 800);
+                aviso.innerHTML += `<br><strong>Andrômeda p:</strong> ${res}`;
+                falar(res);
+                ligado = false;
+                botao.classList.remove('ativo');
+            }, 700);
         }
     </script>
 </body>
