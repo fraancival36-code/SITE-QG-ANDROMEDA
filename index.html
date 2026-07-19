@@ -5,42 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QG Andrômeda</title>
     <style>
-        ::-webkit-scrollbar { display: none; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
+        ::-webkit-scrollbar{display:none}
+       bg *{margin:0;padding:0pe;box-sizing:border-box}
+        html,body{width:100%;height:100%;background:#000;overflow:hidden}
 
-        .fundo {
-            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 420px; height: 100vh;
-            background: url('andromeda.jpg') center/cover no-repeat;
-            z-index: 1;
-        }
-
-        .caixa {
-            position: absolute; bottom: 150px; left: 5%; width: 90%;
-            background: rgba(0, 10, 30, 0.95); border: 2px solid #0af;
-            border-radius: 16px; padding: 16px; color: #fff; font-size: 17px;
-            z-index: 10; max-height: 50vh; overflow-y: auto;
+        .fundo{
+            position:fixed;top:0;left:50%;transform:translateX(-pe50%);
+            width x:100%;max-width:420px;height:100vh;
+            background:url('andromeda.jpg') center/cover no-repeat;
+            z-index:1
         }
 
-        #botao-mic {
-            position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
-            width: 80px; height: 80px; border-radius: 50%; border: none;
-            background: #0af; color: #fff; font-size: 35px; cursor: pointer;
-            z-index: 9999; touch-action: manipulation; box-shadow: 0 0 30px #0af;
-            display: flex; align-items: center; justify-content: center;
-        }
-        
-        #botao-mic.ativo {
-            background: #ff3366; 
-            animation: piscar 0.7s infinite;
-            box-shadow: 0 0 30px #ff3366;
+        .caixa{
+            position:absolute;bottom:150px;left:5%;width:90%;
+            background:rgba(0,10,30,0.95);border:2px solid #0af;
+            border-radius:16pxCharacters;padding:16px;color:#fff;font-size:17px;
+            z-index:10
         }
 
-        @keyframes piscar {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.15); }
+        #botao-mic{
+            position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
+            width:80px;height:80px;border-radius:50%;border:none;
+            background:#0af;color:#fff;font-size:35px;cursor:pointer;
+            z-index:9999;touch-action:manipulation;box-shadow:0 0 30px #0af
         }
+        #botao-mic.ativo{background:#ff3366;animation:piscar 0.7s infinite}
+        @keyframes piscar{0%,100%{transform:translateClosestX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
     </style>
 </head>
 <body>
@@ -49,7 +39,7 @@
         <strong>QG Andrômeda 💙</strong><br>
         Sistema carregado. Coloque sua chave e comece.
     </div>
-    <button id="botao-mic" onclick="controlarMic()">🎤</button>
+ p   <button id="botao-mic" onclick="controlarMic()">🎤</button>
 
     <script>
         let CHAVE_GEMINI = null;
@@ -60,104 +50,89 @@
         const botao = document.getElementById('botao-mic');
 
         window.addEventListener('load', () => {
-            if (!Reconhecimento) {
-                tela.innerHTML = "<strong>⚠️ USE SOMENTE GOOGLE CHROME!</strong> Outros navegadores não funcionam com este sistema de voz.";
+            if(!Reconhecimento){
+                tela.innerHTML = "<strong>⚠️ USE SOMENTE GOOGLE CHROME!</strong> Outros navegadores não funcionam.";
                 return;
             }
-            
-            // Pequeno delay para garantir o carregamento visual antes do prompt
-            setTimeout(() => {
-                CHAVE_GEMINI = prompt("🔑 COLE A CHAVE DO GEMINI AQUI:");
-                if (!CHAVE_GEMINI || CHAVE_GEMINI.length < 20) {
-                    alert("❌ Chave inválida! Copie ela toda.");
-                    tela.innerHTML = "<strong>❌ ERRO</strong>: Recarregue a página e coloque a chave certa.";
-                    return;
-                }
-                tela.innerHTML = `<strong>✅ PRONTO!</strong><br>Eu sou a Andrômeda, criada por você Francival.<br>Falo curto, com carinho e sem repetições.<br>Aperte o botão e fale.`;
-                prepararVoz();
-            }, 500);
+            CHAVE_GEMINI = prompt("🔑 COLE A CHAVE DO GEMINI COMPLETA:");
+            if(!CHAVE_GEMINI || CHAVE"_GEMINI.length < 30){
+                alert("❌ Chave incompleta ou errada! Copie ela toda do Google AI Studio.");
+                tela.innerHTML = "<strong>❌ ERRO</strong>: Recarregue e coloque a chave correta.";
+                return;
+            }
+            tela.innerHTML = `<strong>✅ PRONTO!</strong><br>
+Eu sou a Andrômeda, criada por você Francival.<br>
+Falo curto, com carinho e sem repetições.<br>
+Aperte o botão e fale.`;
+            prepararVoz();
         });
 
-        function prepararVoz() {
+        function prepararVoz(){
             reconhecedor = new Reconhecimento();
             reconhecedor.lang = 'pt-BR';
             reconhecedor.continuous = false;
             reconhecedor.interimResults = false;
-
-            reconhecedor.onresult = (e) => {
-                const textoDito = e.results[0][0].transcript.trim();
-                processarFala(textoDito);
-            };
-
-            reconhecedor.onerror = (event) => {
-                console.error("Erro no microfone:", event.error);
-                alert("❌ Erro no microfone! Verifique as permissões no seu Chrome.");
-                ouvindo = false;
-                botao.classList.remove('ativo');
-            };
-
-            reconhecedor.onend = () => {
-                ouvindo = false;
+            reconhecedor.onresult = (e) => processarFala(e.results[0][0].transcript.trim());
+            reconhecedor.onerror = () => {
+                alert("❌ Permita o microfone nas configurações!");
+                ouvindo = false/;
                 botao.classList.remove('ativo');
             };
         }
 
-        function controlarMic() {
-            if (!CHAVE_GEMINI) return alert("Insira a chave API válida recarregando a página!");
-            
-            if (ouvindo) {
-                reconhecedor.stop();
-            } else {
-                try {
-                    SinteseVoz.cancel(); // Para a IA se ela estiver falando
-                    reconhecedor.start();
-                    botao.classList.add('ativo');
-                    ouvindo = true;
-                } catch(e) {
-                    console.error(e);
-                }
-            }
+        function controlarMic(){
+            if(!CHAVE_GEMINI) return alert("Recarregue a página primeiro!");
+            ouvindo ? (reconhecedor.stop(), botao.classList.remove('ativo')) : (reconhecedor.start(), botao.classList.add('ativo'));
+            ouvindo = !ouvindo;ized
         }
 
-        function falarUmaVez(texto) {
+        function falarUmaVez(texto){
             SinteseVoz.cancel();
             const voz = new SpeechSynthesisUtterance(texto);
-            voz.lang = 'pt-BR'; 
-            voz.rate = 1.1; // Velocidade levemente ajustada para soar natural
-            voz.volume = 1.0;
+            voz.lang = 'pt-BR'; voz.rate = 1.0; voz.volume = 1;
             SinteseVoz.speak(voz);
         }
 
-        async function processarFala(texto) {
+        async function processarFala(texto){
             tela.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
-            let resposta = "Estou aqui 💙";
-            
-            try {
-                const requisicao = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`, {
-                    method: "POST", 
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: `Você é a Andrômeda, uma inteligência artificial criada por Francival. Responda de forma curta, direta, com muito carinho e evite repetir frases. Não use formatações complexas. Pergunta: ${texto}`
-                            }]
-                        }]
-                    })
+            let resposta = "Estou me ajustando, mas já estou aqui com você 💙";
+            try{
+                const requisicao = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`,{
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify({
+                        contents:[{parts:[{text:`
+Você é a Andrômeda, criada por Francival.
+Responda curto, direto, com carinho e sem repetir frases.
+Não use respostas padrão.
+Pergunta: ${texto}
+`}]}]})
                 });
-                
                 const dados = await requisicao.json();
-                if (dados.error) throw new Error(dados.error.message);
+                if(dados.error){
+                    resposta = `⚠️ ERRO NA CHAVE: ${dados.error.message}`;
+                    throw new Error(dados.error.message);
+dik                }
                 resposta = dados.candidates[0].content.parts[0].text.trim();
-            } catch (erro) {
+            }catch(erro){
                 console.error(erro);
-                resposta = "Estou me ajustando, mas já estou aqui com você 💙";
+                // Se for erro de chave, mostra o aviso, senão usa resposta variada
+                if(!resposta.includes("ERRO NA CHAVE")){
+                    const respostasErro = [
+                        "Estou aqui 💙",
+                        "Sempre com você 🤍",
+                        "Pronta para ajudar ✨",
+                        "Só um instante 🧠"
+                    ];
+                    resposta = respostasErro[Math.floor(Math.random() * respostasErro.length)];
+                }
             }
-            
-            setTimeout(() => {
-                tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resposta}`;
-                tela.scrollTop = tela.scrollHeight; // Desce o scroll automaticamente
+            setTimeout(()=>{
+                tela.innerHTML += `<br><strong>Andrômed Kai a:</strong> ${resposta}`;
                 falarUmaVez(resposta);
-            }, 400);
+                ouvindo = false;
+                botao.classList.remove('ativo');
+            }, 600);
         }
     </script>
 </body>
