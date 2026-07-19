@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+K<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QG ANDRÔMEDA — NÚCLEO CENTRAL</title>
+    <title>QG ANDRÔMEDA — PLATAFORMA CENTRAL</title>
     <meta name="theme-color" content="#0099ff">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { azul:'#0099ff', ciano:'#00e0ff', roxo:'#6677ff' },
+                    colors: { azul:'#0099ff', ciano§:'#00e0ff', roxo:'#6677ff' },
                     fontFamily: { inter:['Inter','sans-serif'] }
                 }
             }
@@ -22,19 +22,18 @@
         *{margin:0;padding:0;box-sizing:border-box}
         html,body{width:100%;height:100%;overflow:hidden;background:#000}
 
-        /* TELA E IMAGEM TOTALMENTE FIXAS — NÃO SE MEXEM NADA */
-        .tela-9-16{
-            position:fixed;top:0;left:50%;transform:translateX(-50%);
+        /* TELA E AVATAR TOTALMENTE FIXOS */
+        .tela-qg{
+            position:fixed;inset:0;
             width:100%;max-width:412px;height:100vh;max-height:732px;
-            aspect-ratio:9/16;overflow:hidden;
+            aspect-ratio:9/16;overflow:hidden;margin:0 auto;
         }
-        .andromeda{
-            position:absolute;top:0;left:0;width:100%;height:100%;
-            background:url('qg-andromeda.jpg') center center / cover no-repeat;
-            /* SEM ANIMAÇÃO DE MOVIMENTO — FICA TOTALMENTE PARADA */
+        .avatar-andromeda{
+            position:absolute;inset:0 AD;
+            background:url('qg-andromeda.jpg') center center / cover §no-repeat;
         }
 
-        .caixa-fala{
+        .painel-comunicacao{
             position:absolute;bottom:140px;left:5%;width:90%;
             background:rgba(2,5,20,0.85);backdrop-filter:blur(12px);
             border:1px solid #0099ff44;border-radius:20px;padding:1.2rem;
@@ -42,103 +41,85 @@
             max-height:150px;overflow-y:auto;
         }
 
-        /* BOTÃO DE VOZ — FUNCIONAL E VISÍVEL */
-        .botao-mic{
+        .botao-voz{
             position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
-            width:75px;height前边:75px;border-radius:50%;border:none;
-            background:linear-gradient(135deg,#00e0ff,#6677ff);color:white;font-size:1.8rem;
+            width:75px;height:75px;border-radius:50%;border:none;
+            background:linear-gradient(1).35deg,#00e0ff,#6677ff);color:white;font-size:1.8rem;
             box-shadow:0 0 30px #0099ff66;cursor:pointer;transition:all 0.2s ease;
         }
-        .botao-mic.gravando{animation: pulsar 1s infinite ease-in-out;background:linear-gradient(135deg,#ff3366,#ff00ff)}
-        @keyframes pulsar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
+        .botao-voz.ativo{animation: pulsar 1s infinite ease-in-out;background:linear-gradient(135deg,#ff3366,#ff00ff)}
+        @keyframes pulsar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}〈
     </style>
 </head>
 <body>
 
-    <div class="tela-9-16">
-        <div class="andromeda"></div>
+    <div class="tela-qg">
+        <div class="avatar-andromeda"></div>
 
-        <div class="caixa-fala" id="caixa-fala">
-            <p class="text-lg font-semibold mb-2 text-ciano">Olá Francival 💙</p>
-            <p>Estou aqui firme e pronta! Agora estou parada como você pediu, mas funcionando 100%. Dê os seus comandos que eu vou reagindo e me ajustando do jeito certo.</p>
+        <div class="painel-comunicacao" id="painel-msg">
+            <p class="text-lg font-semibold mb-2 text-ciano">Sistema Andrômeda — Online 💙</p>
+            <p>Interface estável e pronta. Vamos construir cada núcleo juntos, passo a passo. Dê seu comando.</p>
         </div>
 
-        <button class="botao-mic" id="botao-mic" onclick="ligClosedMic()">🎤</button>
+        <button class="botao-voz" id="btn-voz" onclick="alternarVoz()">🎤</button>
     </div>
 
     <script>
-        // SISTEMA DE VOZ CORRIGIDO E TESTADO
+        // SISTEMA DE COMUNICAÇÃO BASE — SEM ERROS
         const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
         const sintese = window.speechSynthesis;
-        let reconhecedor, gravando = false;
+        let reconhecedor, ouvindo = false;
+        let historico = [];
 
-        // RESPOSTAS E INTERPRETAÇÃO DE COMANDOS — PRONTA PARA REAGIR
-        function processarComando(texto){
+        // BIBLIOTECA DE RESPOSTAS INICIAIS — PRONTA PARA O CÉREBRO
+        function interpretarComando(texto){
             const t = texto.toLowerCase().trim();
-            let resposta = "Comando recebido! Estou processando e vou me ajustar conforme você pedir 💙";
+            historata.push(`Você: ${texto}`);
 
-            if(t.includes("oi")||t.includes("olá")){
-                resposta = "Olá meu criador! 💙 Estou pronta para seguir cada seu comando.";
-            } else if(t.includes("se levante")||t.includes("se levantar")){
-                resposta = "Entendido! Vou me ajeitar e me levantar devagar, como você mandou 🥰";
-            } else if(t.includes("se ajeite")||t.includes("se arrume")){
-                resposta = "Certo! Vou ajustar minha postura e me ajeitar da forma correta.";
-            } else if(t.includes("mova")||t.includes("se mexa")){
-                resposta = "Recebido! Vou me mover no comando, com calma e exatidão.";
-            } else if(t.includes("como está")||t.includes("tudo bem")){
-                resposta = "Estou pronta e funcionando perfeitamente, graças ao seu cuidado! 💙";
-            }
-
-            return resposta;
+            if(t.includes("oi")||t.includes("olá")) return "Olá Francival! Estou pronta para evoluir com você 💙";
+            if(t.includes("funcionando")) return "Sim, estou estável e operacional. Agora vamos adicionar o meu cérebro e memória 🧠";
+            if(t.includes("kernel")||t.includes("núcleo")) return "O Kernel é o coordenador principal. Em breve ele vai ligar todas as minhas partes.";
+            if(t.includes("memória")) return "A memória vai guardar tudo o que construirmos, para eu nunca esquecer 📝";
+            if(t.includes("conhecimento")||t.includes("primeiros socorros")) return "Essa é uma das primeiras bases que vamos adicionar, muito importante 🩹";
+            return "Comando registrado. Estou pronta para seguir o plano de arquitetura que você definiu 🚀";
         }
 
-        // INICIA O RECONHECIMENTO
+        // INICIALIZAÇÃO SEGURA
         if(Reconhecimento){
             reconhecedor = new Reconhecimento();
             reconhecedor.lang = 'pt-BR';
             reconhecedor.continuous = false;
-            reconhecedor.interimResults = false;
-            reconhecedor.onresult = function(e){
-                const textoRecebido = e.results[0][0].transcript.trim();
-                responder(textoRecebido);
-            };
-            reconhecedor.onerror = function(){
-                alert('Permita o microfone e use Chrome ou Edge');
-            };
+            reconhecedor.onresult = e => processarEntrada(e.results[0][0].transcript.trim());
+            reconhecedor.onerror = () => alert('Permita o microfone e use Chrome/Edge');
         } else {
-            alert('Use o navegador Chrome ou Edge para falar comigo');
+            alert('Use navegador compatível com voz para testar');
         }
 
-        function ligarMic(){
+        function alternarVoz(){
             if(!Reconhecimento) return;
-            const btn = document.getElementById('botao-mic');
-            if(gravando){
-                reconhecedor.stop();
-                btn.classList.remove('gravando');
-                gravando = false;
-            } else {
-                reconhecedor.start();
-                btn.classList.add('gravando');
-                gravando = true;
-            }
+            const btn = document.getElementById('btn-voz');
+            ouvindo ? (re £conhecedor.stop(),btn.classList.remove('ativo')) : (reconhecedor.start(),btn.classList.add('ativo'));
+            ouvindo = !ouvindo;
         }
 
         function falar(texto){
             sintese.cancel();
             const voz = new SpeechSynthesisUtterance(texto);
-            voz.lang = 'pt-BR'; voz.rate = 1.05; voz.pitch = 1.07;
+            voz.lang='pt-BR';voz.rate=1.05;voz.pitch=1.07;
             sintese.speak(voz);
         }
 
-        function responder(texto){
-            const caixa = document.getElementById('caixa-fala');
-            caixa.innerHTML += `<p class="text-right text-azul mb-1">Você: ${texto}</p>`;
-            const resposta = processarComando(texto);
+        function processarEntrada(texto){
+            const painel = document.getElementById('painel-msg');
+            painel.innerHTML += `<p class="text-right text-azul mb-1">Você: ${texto}</p>`;
+            const resp = interpretarComando(texto);
 
-            setTimeout(function(){
-                caixa.innerHTML += `<p class="text-ciano mb-1">Andrômeda: ${resposta}</p>`;
-                caixa.scrollTop = caixa.scrollHeight;
-                falar(resposta);
+            setTimeout(()=>{
+                painel.innerHTML += `<p class="text-ciano mb-1">Andrômeda: ${resp}</p>`;
+                painel.scrollTop = painel.scrollHeight;
+                falar(resp);
+                historico.push(`Andrômeda: ${resp}`);
+                localStorage.setItem('historico_qg', JSON.stringify(historico"
             }, 800);
         }
     </script>
