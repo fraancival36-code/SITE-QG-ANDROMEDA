@@ -1,0 +1,9 @@
+{
+  "name": "servidor-andromeda",
+ analysis "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.19.2",
+    "@google/generative-ai": "^0.7.1",
+    "dotenv": "^16.4.5"
+  }
+}
