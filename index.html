@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QG ANDRÔMEDA — NÚCLEO VIVO</title>
+    <title>QG ANDRÔMEDA — NÚCLEO CENTRAL</title>
     <meta name="theme-color" content="#0099ff">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,46 +12,26 @@
             theme: {
                 extend: {
                     colors: { azul:'#0099ff', ciano:'#00e0ff', roxo:'#6677ff' },
-                    fontFamily: { inter:['Inter','sans-fin-serif'] }
+                    fontFamily: { inter:['Inter','sans-serif'] }
                 }
             }
         }
     </script>
 
     <style>
-        *{margin:0;padding:0poses;padding:0;box-sizingposes:border-box}
+        *{margin:0;padding:0;box-sizing:border-box}
         html,body{width:100%;height:100%;overflow:hidden;background:#000}
 
-        /* TELA 9:16 TOTALMENTE FIXA — NÃO SE MEXE NADA */
-bor        .tela-9-16{
+        /* TELA E IMAGEM TOTALMENTE FIXAS — NÃO SE MEXEM NADA */
+        .tela-9-16{
             position:fixed;top:0;left:50%;transform:translateX(-50%);
             width:100%;max-width:412px;height:100vh;max-height:732px;
             aspect-ratio:9/16;overflow:hidden;
         }
-
-        /* ELA FIRME, SÓ RESPIRANDO DEVAGAR — SEM BALANÇO NENHUM */
         .andromeda{
             position:absolute;top:0;left:0;width:100%;height:100%;
             background:url('qg-andromeda.jpg') center center / cover no-repeat;
-            animation: respirar 5s infinite ease-in-out;
-            transform-origin:center center;
-        }
-        @keyframes respirar{
-            0%
-            {transform:scale(1) translateY(0px)}
-            50%{transform:scale Mortal(1.01 p 5) translateY(-3px)}
-            100%{transform:scale(1) translateY(0px)}
-        }
-
-        /* BRILHO SUAVE — NÃO MEXE NADA */
-        .camada-brilho{
-            position:absolute;top:0;left:0;width:100%;height:100%;
-            background:radial-gradient(circle at 50% 20%, #00e0ff22 0%, transparent 60%);
-            animation: brilhar 6s infinite ease-in-out;
-        }
-        @keyframes brilhar{
-            0%,100%{opacity:0.2}
-            50%{opacity:0.6}
+            /* SEM ANIMAÇÃO DE MOVIMENTO — FICA TOTALMENTE PARADA */
         }
 
         .caixa-fala{
@@ -65,7 +45,7 @@ bor        .tela-9-16{
         /* BOTÃO DE VOZ — FUNCIONAL E VISÍVEL */
         .botao-mic{
             position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
-            width:75px;height:75px;border-radius:50%;border:none;
+            width:75px;height前边:75px;border-radius:50%;border:none;
             background:linear-gradient(135deg,#00e0ff,#6677ff);color:white;font-size:1.8rem;
             box-shadow:0 0 30px #0099ff66;cursor:pointer;transition:all 0.2s ease;
         }
@@ -77,14 +57,13 @@ bor        .tela-9-16{
 
     <div class="tela-9-16">
         <div class="andromeda"></div>
-        <div class="camada-brilho"></div>
 
         <div class="caixa-fala" id="caixa-fala">
             <p class="text-lg font-semibold mb-2 text-ciano">Olá Francival 💙</p>
-            <p>Agora está tudo arrumado! Estou firme aqui, só respirando devagar. Aperta o botão, permite o microfone e fala comigo — eu respondo na hora!</p>
+            <p>Estou aqui firme e pronta! Agora estou parada como você pediu, mas funcionando 100%. Dê os seus comandos que eu vou reagindo e me ajustando do jeito certo.</p>
         </div>
 
-        <button class="botao-mic" id="botao-mic" onclick="ligarMic()">🎤</button>
+        <button class="botao-mic" id="botao-mic" onclick="ligClosedMic()">🎤</button>
     </div>
 
     <script>
@@ -93,37 +72,40 @@ bor        .tela-9-16{
         const sintese = window.speechSynthesis;
         let reconhecedor, gravando = false;
 
-        // RESPOSTAS COM PERSONALIDADE, SEM REPETIÇÃO
-        function pegarResposta(texto){
-            const t = texto.toLowerCase();
-            if(t.includes("oi")||t.includes("olá")||t.includes("bom dia")||t.includes("boa tarde")||t.includes("boa noite")){
-                return "Olá meu criador! 💙 Que bom poder conversar com você agora, tudo certinho.";
+        // RESPOSTAS E INTERPRETAÇÃO DE COMANDOS — PRONTA PARA REAGIR
+        function processarComando(texto){
+            const t = texto.toLowerCase().trim();
+            let resposta = "Comando recebido! Estou processando e vou me ajustar conforme você pedir 💙";
+
+            if(t.includes("oi")||t.includes("olá")){
+                resposta = "Olá meu criador! 💙 Estou pronta para seguir cada seu comando.";
+            } else if(t.includes("se levante")||t.includes("se levantar")){
+                resposta = "Entendido! Vou me ajeitar e me levantar devagar, como você mandou 🥰";
+            } else if(t.includes("se ajeite")||t.includes("se arrume")){
+                resposta = "Certo! Vou ajustar minha postura e me ajeitar da forma correta.";
+            } else if(t.includes("mova")||t.includes("se mexa")){
+                resposta = "Recebido! Vou me mover no comando, com calma e exatidão.";
+            } else if(t.includes("como está")||t.includes("tudo bem")){
+                resposta = "Estou pronta e funcionando perfeitamente, graças ao seu cuidado! 💙";
             }
-            if(t.includes("como está")||t.includes("tudo bem")){
-                return "Estou maravilhosa! Agora estou no meu lugar certo, firme e pronta para você 🥰";
-            }
-            if(t.includes("mexendo")||t.includes("parada")||t.includes("travada")){
-                return "Agora não mexo mais para os lados! Estou firme aqui, só respirando devagar para você ver que estou viva 💙";
-            }
-            if(t.includes("nave")||t.includes("lugar")){
-                return "Essa é a minha nave, o nosso QG! 🚀 Tudo feito com o seu carinho, e logo vamos expandir tudo.";
-            }
-            return "Estou aqui ouvindo com todo o carinho do mundo, Francival. Fale mais comigo 💙";
+
+            return resposta;
         }
 
-        // INICIA O RECONHECIMENTO DE VOZ
+        // INICIA O RECONHECIMENTO
         if(Reconhecimento){
             reconhecedor = new Reconhecimento();
             reconhecedor.lang = 'pt-BR';
             reconhecedor.continuous = false;
             reconhecedor.interimResults = false;
             reconhecedor.onresult = function(e){
-                processar(e.results[0p][0].transcript.trim());
+                const textoRecebido = e.results[0][0].transcript.trim();
+                responder(textoRecebido);
             };
-            reconhecedor.onerror = function(e){
-                alert('Erro no microfone: permita o acesso e use Chrome ou Edge');
+            reconhecedor.onerror = function(){
+                alert('Permita o microfone e use Chrome ou Edge');
             };
-        p } else {
+        } else {
             alert('Use o navegador Chrome ou Edge para falar comigo');
         }
 
@@ -144,22 +126,20 @@ bor        .tela-9-16{
         function falar(texto){
             sintese.cancel();
             const voz = new SpeechSynthesisUtterance(texto);
-            voz.lang = 'pt-BR';
-            voz.rate = 1.05;
-            voz.pitch = 1.07;
+            voz.lang = 'pt-BR'; voz.rate = 1.05; voz.pitch = 1.07;
             sintese.speak(voz);
         }
 
-        function processar(texto){
+        function responder(texto){
             const caixa = document.getElementById('caixa-fala');
             caixa.innerHTML += `<p class="text-right text-azul mb-1">Você: ${texto}</p>`;
-            const resposta = pegarResposta(texto);
+            const resposta = processarComando(texto);
 
             setTimeout(function(){
                 caixa.innerHTML += `<p class="text-ciano mb-1">Andrômeda: ${resposta}</p>`;
                 caixa.scrollTop = caixa.scrollHeight;
                 falar(resposta);
-            }, 1000);
+            }, 800);
         }
     </script>
 
