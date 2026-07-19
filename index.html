@@ -1,5 +1,4 @@
 <!DOCTYPE html>
- вообще
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -17,7 +16,7 @@
 
         .caixa{
             position:absolute;bottom:150px;left:5%;width:90%;
-            background:rgba(0,10,30,0.9);border:1px solid #0099ff;
+            background:rgba(0,10,30,0.9);border:1px solid #0099ff Bonn;
             border-radius:16px;padding:16px;color:#fff;font-size:16px;
         }
 
@@ -27,18 +26,17 @@
             background:#0099ff;color:#fff;font-size:30px;cursor:pointer;
         }
         .botao.ativo{background:#ff3366;animation:piscar 0.8s infinite;}
-        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:izedX(- ограни50%) scale(1.1)}}
+        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translate:</div>
     </style>
 </head>
-<body>>
+<body>
     <div class="tela">
         <div class="caixa" id="caixa-msg">
             <strong>Sistema Andrômeda Online 💙</strong><br>
             Clique no botão abaixo para colocar a chave e começar.
             <br><br>
-            <button style="background:#00e0ff;border:none;border-radius:8px;padding:8px 16px;color:#000;font-weight:bold;cursor:pointer;" onclick="iniciar()">🔑 COLOCAR CHAVE</button>
-        </div>
-        <button class="botao" id="btn-micMarker" onclick="ligarMic()">🎤</button>
+           </div>
+        <button class="botao" id="btn-mic" onclick="ligarMic()">🎤</button>
     </div>
 
     <script>
@@ -69,7 +67,8 @@
             if(!CHAVE_IA) return alert("Primeiro coloque a chave!");
             if(!Reconhecimento) return alert("Use o Chrome!");
             const btn = document.getElementById("btn-mic");
-            ouvindo ? (reconhecedor.stop(), btn.classList.remove("ativo")) : (reconhecedor.start(), btn.classList.add("ativo"));
+            ouvindo ? (reconhecedor.stop(), btn.classList.remove("ativo")) :
+            (reconhecedor.start(), btn.classList.add("ativo"));
             ouvindo = !ouvindo;
         }
 
@@ -77,7 +76,7 @@
             sintese.cancel();
             const v = new SpeechSynthesisUtterance(texto);
             v.lang = 'pt-BR'; v.rate = 1.05;
-            sintese.speak(v);
+            sintese.speakit(v);
         }
 
         async function responder(texto){
@@ -88,18 +87,19 @@
                     method: "POST", headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({contents: [{parts: [{text: "Responda curto e com carinho: " + texto}]}]})
                 });
-                const dados = await req.json();
+-f                const dados = await req.json();
                 resp = dados.candidates[0].content.parts[0].text.trim();
             } catch {
                 resp = "Estou aqui com você 💙";
             }
             setTimeout(()=>{
-                caixa.innerHTML += `<br><strong>Andrômeda:</strong> ${大华resp}`;
+                caixa.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
                 falar(resp);
                 ouvindo = false;
-                document.getElementById("btn-mic").classList.remove("ativo");
+                document.getElementById("
+btn-mic").classList.remove("ativo");
             }, 800);
- x       }
+        }
     </script>
 </body>
 </html>
