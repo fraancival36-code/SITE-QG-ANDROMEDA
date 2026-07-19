@@ -5,100 +5,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QG Andrômeda</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        html,body{width:100%;height:100%;background:#000}
+        ::-webkit-scrollbar { display: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
 
-        .fundo{
-            position:fixed;top:0;left:50%;transform:translateX(-50%);
-            width:100%;max-width:420px;height:100vh;
-            background:url('andromeda.jpg') center/cover no-repeat;
-            z-index:1
+        .fundo {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 420px; height: 100vh;
+            background: url('andromeda.jpg') center/cover no-repeat;
+            z-index: 1;
         }
 
-        .caixa{
-            position:absolute;bottom:150px;left:5%;width:90%;
-            background:rgba(0,10,30,0.95);border:2px solid #0af;
-            border-radius:16px;padding:16px;color:#fff;font-size:17px;
-            z-index:10
+        .caixa {
+            position: absolute; bottom: 150px; left: 5%; width: 90%;
+            background: rgba(0, 10, 30, 0.95); border: 2px solid #0af;
+            border-radius: 16px; padding: 16px; color: #fff; font-size: 17px;
+            z-index: 10; max-height: 50vh; overflow-y: auto;
         }
 
-        #botao{
-            position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
-            width:80px;height:80px;border-radius:50%;border:none;
-            background:#0af;color:#fff;font-size:35px;cursor:pointer;
-            z-index:9999;touch-action:manipulation;box-shadow:0 0 30px #0af;
+        #botao-mic {
+            position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 80px; border-radius: 50%; border: none;
+            background: #0af; color: #fff; font-size: 35px; cursor: pointer;
+            z-index: 9999; touch-action: manipulation; box-shadow: 0 0 30px #0af;
+            display: flex; align-items: center; justify-content: center;
         }
-        #botao.ativo{background:#ff3366;animation:piscar 0.7s infinite}
-        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
+        
+        #botao-mic.ativo {
+            background: #ff3366; 
+            animation: piscar 0.7s infinite;
+            box-shadow: 0 0 30px #ff3366;
+        }
+
+        @keyframes piscar {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.15); }
+        }
     </style>
 </head>
 <body>
     <div class="fundo"></div>
-    <div class="caixa" id="aviso">🔄 Preparando...</div>
-    <button id="botao" onclick="ligar()">🎤</button>
+    <div class="caixa" id="tela">
+        <strong>QG Andrômeda 💙</strong><br>
+        Sistema carregado. Coloque sua chave e comece.
+    </div>
+    <button id="botao-mic" onclick="controlarMic()">🎤</button>
 
     <script>
-        let chave = null;
-        const voz = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const fala = window.speechSynthesis;
-        let rec, ligado = false;
-        const aviso = document.getElementById('aviso');
-        const botao = document.getElementById('botao');
+        let CHAVE_GEMINI = null;
+        const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SinteseVoz = window.speechSynthesis;
+        let reconhecedor, ouvindo = false;
+        const tela = document.getElementById('tela');
+        const botao = document.getElementById('botao-mic');
 
-        setTimeout(iniciar, 300);
-
-        function iniciar(){
-            if(!voz){
-                aviso.innerHTML = "<strong>⚠️ USE SÓ O GOOGLE CHROME!</strong>";
+        window.addEventListener('load', () => {
+            if (!Reconhecimento) {
+                tela.innerHTML = "<strong>⚠️ USE SOMENTE GOOGLE CHROME!</strong> Outros navegadores não funcionam com este sistema de voz.";
                 return;
             }
-            chave = prompt("🔑 COLE A CHAVE DO GEMINI:");
-            if(!chave || chave.length < 20){
-                alert("❌ Chave errada! Recarregue.");
-                aviso.innerHTML = "<strong>❌ ERRO</strong>: Recarregue e coloque a chave certa.";
-                return;
-            }
-            aviso.innerHTML = "<strong>✅ PRONTO!</strong><br>Aperte o botão azul e fale 💙";
-            rec = new voz();
-            rec.lang = 'pt-BR';
-            rec.continuous = false;
-            rec.onresult = e => responder(e.results[0][0].transcript.trim());
-            rec.onerror = () => alert("❌ Permita o microfone!");
-        }
+            
+            // Pequeno delay para garantir o carregamento visual antes do prompt
+            setTimeout(() => {
+                CHAVE_GEMINI = prompt("🔑 COLE A CHAVE DO GEMINI AQUI:");
+                if (!CHAVE_GEMINI || CHAVE_GEMINI.length < 20) {
+                    alert("❌ Chave inválida! Copie ela toda.");
+                    tela.innerHTML = "<strong>❌ ERRO</strong>: Recarregue a página e coloque a chave certa.";
+                    return;
+                }
+                tela.innerHTML = `<strong>✅ PRONTO!</strong><br>Eu sou a Andrômeda, criada por você Francival.<br>Falo curto, com carinho e sem repetições.<br>Aperte o botão e fale.`;
+                prepararVoz();
+            }, 500);
+        });
 
-        function ligar(){
-            if(!chave) return alert("Recarregue primeiro!");
-            ligado ? (rec.stop(), botao.classList.remove('ativo')) : (rec.start(), botao.classList.add('ativo'));
-            ligado = !ligado;
-        }
+        function prepararVoz() {
+            reconhecedor = new Reconhecimento();
+            reconhecedor.lang = 'pt-BR';
+            reconhecedor.continuous = false;
+            reconhecedor.interimResults = false;
 
-        function falar(texto){
-            fala.cancel();
-            const v = new SpeechSynthesisUtterance(texto);
-            v.lang = 'pt-BR'; v.rate = 1.05;
-            fala.speak(v);
-        }
+            reconhecedor.onresult = (e) => {
+                const textoDito = e.results[0][0].transcript.trim();
+                processarFala(textoDito);
+            };
 
-        async function responder(texto){
-            aviso.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
-            let res = "Estou pensando 💙";
-            try{
-                const r = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${chave}`,{
-                    method:"POST",
-                    headers:{"Content-Type":"application/json"},
-                    body:JSON.stringify({contents:[{parts:[{text:"Responda curto e carinhoso: " + texto}]}]})
-                });
-                const d = await r.json();
-                res = d.candidates[0].content.parts[0].text.trim();
-            }catch{
-                res = "Estou aqui com você 💙";
-            }
-            setTimeout(()=>{
-                aviso.innerHTML += `<br><strong>Andrômeda:</strong> ${res}`;
-                falar(res);
-                ligado = false;
+            reconhecedor.onerror = (event) => {
+                console.error("Erro no microfone:", event.error);
+                alert("❌ Erro no microfone! Verifique as permissões no seu Chrome.");
+                ouvindo = false;
                 botao.classList.remove('ativo');
-            }, 700);
+            };
+
+            reconhecedor.onend = () => {
+                ouvindo = false;
+                botao.classList.remove('ativo');
+            };
+        }
+
+        function controlarMic() {
+            if (!CHAVE_GEMINI) return alert("Insira a chave API válida recarregando a página!");
+            
+            if (ouvindo) {
+                reconhecedor.stop();
+            } else {
+                try {
+                    SinteseVoz.cancel(); // Para a IA se ela estiver falando
+                    reconhecedor.start();
+                    botao.classList.add('ativo');
+                    ouvindo = true;
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+        }
+
+        function falarUmaVez(texto) {
+            SinteseVoz.cancel();
+            const voz = new SpeechSynthesisUtterance(texto);
+            voz.lang = 'pt-BR'; 
+            voz.rate = 1.1; // Velocidade levemente ajustada para soar natural
+            voz.volume = 1.0;
+            SinteseVoz.speak(voz);
+        }
+
+        async function processarFala(texto) {
+            tela.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
+            let resposta = "Estou aqui 💙";
+            
+            try {
+                const requisicao = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`, {
+                    method: "POST", 
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `Você é a Andrômeda, uma inteligência artificial criada por Francival. Responda de forma curta, direta, com muito carinho e evite repetir frases. Não use formatações complexas. Pergunta: ${texto}`
+                            }]
+                        }]
+                    })
+                });
+                
+                const dados = await requisicao.json();
+                if (dados.error) throw new Error(dados.error.message);
+                resposta = dados.candidates[0].content.parts[0].text.trim();
+            } catch (erro) {
+                console.error(erro);
+                resposta = "Estou me ajustando, mas já estou aqui com você 💙";
+            }
+            
+            setTimeout(() => {
+                tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resposta}`;
+                tela.scrollTop = tela.scrollHeight; // Desce o scroll automaticamente
+                falarUmaVez(resposta);
+            }, 400);
         }
     </script>
 </body>
