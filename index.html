@@ -1,18 +1,191 @@
-/css
-   estilo.css
-
-/js
-   app.js
-   menu.js
-   rotas.js
-
-/pages
-   biblioteca.html
-   laboratorio.html
-   normas.html
-   checklists.html
-   treinamentos.html
-   arquivos.html
-   painel.html
-
-/index.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QG Andrômeda — Centro de Comando</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="icone-andromeda.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icone-andromeda.png">
+    <meta name="apple-mobile-web-app-title" content="QG Andrômeda">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#00CCFF">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(153, 102, 255, 0.1));
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 204, 255, 0.6);
+        }
+        
+        .hero .emoji {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .grid-modulos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .modulo {
+            background: rgba(74, 158, 255, 0.08);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .modulo:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.4);
+            background: rgba(74, 158, 255, 0.15);
+        }
+        
+        .modulo .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        
+        .modulo .titulo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modulo .descricao {
+            font-size: 0.85rem;
+            color: #A0A9B8;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-estrelas"></div>
+    
+    <header>
+        <div style="width: 50px;"></div>
+        <div style="text-align: center; flex: 1;">
+            <h1>QG ANDRÔMEDA</h1>
+            <p>PLATAFORMA CENTRAL</p>
+        </div>
+        <div class="avatar-header">A</div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <span class="emoji">🌌</span>
+            <h1>BEM-VINDO</h1>
+            <p style="font-size: 1.1rem; color: #A0A9B8;">Centro de comando para sua operação</p>
+        </section>
+        
+        <section>
+            <h2>MÓDULOS</h2>
+            <div class="grid-modulos">
+                <a href="biblioteca.html" class="modulo">
+                    <span class="icon">📖</span>
+                    <div class="titulo">BIBLIOTECA</div>
+                    <p class="descricao">Recursos e documentação</p>
+                </a>
+                
+                <a href="laboratorio.html" class="modulo">
+                    <span class="icon">🔬</span>
+                    <div class="titulo">LABORATÓRIO</div>
+                    <p class="descricao">Experimentos e testes</p>
+                </a>
+                
+                <a href="checklists.html" class="modulo">
+                    <span class="icon">✅</span>
+                    <div class="titulo">CHECKLISTS</div>
+                    <p class="descricao">Tarefas e missões</p>
+                </a>
+                
+                <a href="normas.html" class="modulo">
+                    <span class="icon">📋</span>
+                    <div class="titulo">NORMAS</div>
+                    <p class="descricao">Padrões e procedimentos</p>
+                </a>
+                
+                <a href="treinamentos.html" class="modulo">
+                    <span class="icon">🎓</span>
+                    <div class="titulo">TREINAMENTOS</div>
+                    <p class="descricao">Tutoriais e cursos</p>
+                </a>
+                
+                <a href="arquivos.html" class="modulo">
+                    <span class="icon">📁</span>
+                    <div class="titulo">ARQUIVOS</div>
+                    <p class="descricao">Repositório de dados</p>
+                </a>
+                
+                <a href="painel.html" class="modulo">
+                    <span class="icon">🛡️</span>
+                    <div class="titulo">PAINEL</div>
+                    <p class="descricao">Dashboard e controle</p>
+                </a>
+                
+                <a href="conversa.html" class="modulo">
+                    <span class="icon">💬</span>
+                    <div class="titulo">CONVERSA</div>
+                    <p class="descricao">Chat com Andrômeda</p>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <nav class="nav-bottom">
+        <a href="index.html" class="nav-item active" data-page="index">
+            <div class="icon">🏠</div>
+            <span>INÍCIO</span>
+        </a>
+        <a href="biblioteca.html" class="nav-item" data-page="biblioteca">
+            <div class="icon">📖</div>
+            <span>DOCS</span>
+        </a>
+        <a href="laboratorio.html" class="nav-item" data-page="laboratorio">
+            <div class="icon">🔬</div>
+            <span>LAB</span>
+        </a>
+        <div class="nav-avatar" onclick="location.href='conversa.html'">A</div>
+        <a href="painel.html" class="nav-item" data-page="painel">
+            <div class="icon">🛡️</div>
+            <span>PAINEL</span>
+        </a>
+        <a href="checklists.html" class="nav-item" data-page="checklists">
+            <div class="icon">✅</div>
+            <span>TASKS</span>
+        </a>
+        <a href="conversa.html" class="nav-item" data-page="conversa">
+            <div class="icon">💬</div>
+            <span>CHAT</span>
+        </a>
+    </nav>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>

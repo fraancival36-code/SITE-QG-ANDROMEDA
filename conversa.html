@@ -4,72 +4,278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CONVERSA • QG Andrômeda</title>
-
     <link rel="icon" type="image/png" sizes="192x192" href="icone-andromeda.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icone-andromeda.png">
     <meta name="apple-mobile-web-app-title" content="QG Andrômeda">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#00CCFF">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300-fim;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        fundo: '#020412',
-                        azul: '#4A9EFF',
-                        brilho: '#00CCFF',
-                        roxo: '#9966FF',
-                        texto: '#E0E7FF',
-                    },
-                    fontFamily: { orbitron: ['Orbitron','sans-serif'], inter: ['Inter','sans-serif'] }
-                }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 200px);
+            background: rgba(5, 11, 24, 0.6);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .mensagens {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+        
+        .mensagem {
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .mensagem.usuario {
+            justify-content: flex-end;
+        }
+        
+        .mensagem.ia {
+            justify-content: flex-start;
+        }
+        
+        .bubble {
+            max-width: 70%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            word-wrap: break-word;
+        }
+        
+        .bubble.usuario {
+            background: linear-gradient(135deg, #4A9EFF, #00CCFF);
+            color: #050B18;
+            border: 1px solid rgba(0, 204, 255, 0.4);
+        }
+        
+        .bubble.ia {
+            background: rgba(153, 102, 255, 0.15);
+            color: #E0E7FF;
+            border: 1px solid rgba(153, 102, 255, 0.3);
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(74, 158, 255, 0.1);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 0.75rem;
+        }
+        
+        .input-container input {
+            flex: 1;
+            background: rgba(5, 11, 24, 0.5);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            color: #E0E7FF;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .input-container input::placeholder {
+            color: #A0A9B8;
+        }
+        
+        .input-container input:focus {
+            outline: none;
+            border-color: #00CCFF;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+        }
+        
+        .btn-enviar {
+            background: linear-gradient(135deg, #4A9EFF, #00CCFF);
+            border: none;
+            color: #050B18;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-enviar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+        }
+        
+        .btn-enviar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    </script>
-
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;}
-        body{background:#020412;color:#E0E7FF;font-family:'Inter',sans-serif;overflow-x:hidden;padding-bottom:100px;}
-        .bg-estrelas{position:fixed;inset:0;background:radial-gradient(circle at 12% 15%,rgba(153,102,255,0.2) 0%,transparent 45%),radial-gradient(circle at 90% 18%,rgba(0,204,255,0.18) 0%,transparent 50%),radial-gradient(circle at 88% 85%,rgba(0,204,255,0.12) 0%,transparent 55%);z-index:-1;}
-        .borda-neon{border:1px solid rgba(74,158,255,0.3);box-shadow:0 0 15px rgba(0,204,255,0.15);}
-        .texto-neon{text-shadow:0 0 12px rgba(0,204,255,0.6);} p
+        
+        .setup-container {
+            background: rgba(74, 158, 255, 0.1);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .setup-container input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            background: rgba(5, 11, 24, 0.5);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            color: #E0E7FF;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .setup-container button {
+            background: linear-gradient(135deg, #4A9EFF, #00CCFF);
+            border: none;
+            color: #050B18;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .setup-container button:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
     <div class="bg-estrelas"></div>
-
-    <header class="flex items-center justify-between px-5 py-4">
-        <a href="index.html" class="text-azul text-3xl">←</a>
-        <div class="text-center">
-            <h1 class="font-orbitron text-[clamp(1.6rem,5vw,2rem)] font-bold tracking-[3px] texto-neon">CONVERSA COM ANDRÔMEDA</h1>
-            <p class="text-azul text-sm mt-1">CANAL DIRETO DE COMANDO</p>
+    
+    <header>
+        <a href="index.html" class="back-button">←</a>
+        <div style="text-align: center; flex: 1;">
+            <h1>CONVERSA COM ANDRÔMEDA</h1>
+            <p>Fale com a IA do seu QG</p>
         </div>
-        <div class="w-[50px] h-[50px] rounded-full flex items-center justify-center text-xl font-bold text-brilho shadow-[0_0_25px_rgba(0,204,255,0.5)]">A</div>
+        <div class="avatar-header">A</div>
     </header>
-
-   ?<section class="px-4 mt-4 mb-6">
-        <div class="bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl p-5 backdrop-blur-sm">
-            <p class="text-2xl font-semibold mb-2">💬 SEU CONTATO EXCLUSIVO</p>
-            <p>Aqui você fala diretamente com a Andrômeda, dá comandos, solicita criações, ajustes e tudo o que precisar para fazer o projeto crescer e chegar ao mundo todo.</p>
+    
+    <main>
+        <div class="setup-container" id="setupContainer" style="display: block;">
+            <h2>🔑 ATIVE ANDRÔMEDA</h2>
+            <p style="margin-bottom: 1rem; color: #A0A9B8;">Cole sua chave do Gemini API para despertar a IA</p>
+            <input type="password" id="chaveInput" placeholder="Cole aqui sua chave do Google Gemini...">
+            <button onclick="ativarAndromeda()">🚀 DESPERTAR ANDRÔMEDA</button>
+            <p style="font-size: 0.85rem; margin-top: 1rem; color: #9966FF;">
+                📖 Não tem chave? <a href="https://ai.google.dev/" target="_blank" style="color: #00CCFF; text-decoration: underline;">Crie uma gratuitamente aqui</a>
+            </p>
         </div>
-    </section>
-
-    <nav class="fixed bottom-0 left-0 w-full bg-[rgba(2,4,18,0.97)] border-t border-azul/30 flex justify-around p-3 z-50">
-        <a href="index.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🏠</div><span>INÍCIO</span></a>
-        <a href="salas.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🪐</div><span>SALAS</span></a>
-        <a href="painel.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🛡️</div><span>PAINEL</span></a>
-        <div class="w-[65px] h-[65px] rounded-full bg-gradient-to-br from-azul to-roxo flex items-center justify-center text-2xl font-bold -mt-[22px] border-4 border-fundo shadow-[0_0_30px_rgba(0,20**4,25
-5,0.5)]">A</div>
-        <a href="laboratorio.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🔬</div><span>LAB</span></a>
-        <a href="biblioteca.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">📖</div><span>DOCS</span></a>
-        <a href="missoes.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🚀</div><span>MISSÕES</span></a>
+        
+        <div class="chat-container" id="chatContainer" style="display: none;">
+            <div class="mensagens" id="mensagens">
+                <div class="mensagem ia">
+                    <div class="bubble ia">Olá! Sou a Andrômeda, sua IA do QG. Como posso ajudá-lo? 💙</div>
+                </div>
+            </div>
+            <div class="input-container">
+                <input type="text" id="inputMensagem" placeholder="Escreva sua mensagem..." onkeypress="if(event.key==='Enter') enviarMensagem()">
+                <button class="btn-enviar" onclick="enviarMensagem()">Enviar</button>
+            </div>
+        </div>
+    </main>
+    
+    <nav class="nav-bottom">
+        <a href="index.html" class="nav-item" data-page="index">
+            <div class="icon">🏠</div>
+            <span>INÍCIO</span>
+        </a>
+        <a href="biblioteca.html" class="nav-item" data-page="biblioteca">
+            <div class="icon">📖</div>
+            <span>DOCS</span>
+        </a>
+        <a href="laboratorio.html" class="nav-item" data-page="laboratorio">
+            <div class="icon">🔬</div>
+            <span>LAB</span>
+        </a>
+        <div class="nav-avatar" onclick="location.href='conversa.html'">A</div>
+        <a href="painel.html" class="nav-item" data-page="painel">
+            <div class="icon">🛡️</div>
+            <span>PAINEL</span>
+        </a>
+        <a href="checklists.html" class="nav-item" data-page="checklists">
+            <div class="icon">✅</div>
+            <span>TASKS</span>
+        </a>
+        <a href="conversa.html" class="nav-item active" data-page="conversa">
+            <div class="icon">💬</div>
+            <span>CHAT</span>
+        </a>
     </nav>
-
-    <script>console.log("✅ Canal de conversa carregado!");</script>
+    
+    <script src="js/kernel.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function ativarAndromeda() {
+            const chave = document.getElementById('chaveInput').value;
+            if (!chave) {
+                alert('Por favor, cole sua chave!');
+                return;
+            }
+            
+            andromeda.iniciar(chave).then(sucesso => {
+                if (sucesso) {
+                    document.getElementById('setupContainer').style.display = 'none';
+                    document.getElementById('chatContainer').style.display = 'flex';
+                    console.log('✅ Andrômeda ativa!');
+                } else {
+                    alert('Erro ao ativar Andrômeda');
+                }
+            });
+        }
+        
+        async function enviarMensagem() {
+            const input = document.getElementById('inputMensagem');
+            const mensagem = input.value.trim();
+            
+            if (!mensagem) return;
+            
+            const container = document.getElementById('mensagens');
+            
+            // Mensagem do usuário
+            const divUsuario = document.createElement('div');
+            divUsuario.className = 'mensagem usuario';
+            divUsuario.innerHTML = `<div class="bubble usuario">${mensagem}</div>`;
+            container.appendChild(divUsuario);
+            
+            input.value = '';
+            input.disabled = true;
+            
+            // Resposta da Andrômeda
+            const resposta = await andromeda.responder(mensagem);
+            const divAndromeda = document.createElement('div');
+            divAndromeda.className = 'mensagem ia';
+            divAndromeda.innerHTML = `<div class="bubble ia">${resposta}</div>`;
+            container.appendChild(divAndromeda);
+            
+            input.disabled = false;
+            input.focus();
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
 </body>
 </html>
