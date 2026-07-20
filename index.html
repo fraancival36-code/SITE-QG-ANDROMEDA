@@ -1,233 +1,249 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR-muda">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scaleamat=1.0, userp-scalable=no">
     <title>QG Andrômeda</title>
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif;}
         html, body {
             width: 100%;
             height: 100%;
-            background: #000;
+            background: #000 p;
             overflow: hidden;
             position: fixed;
             top: 0;
             left: 0;
+            aspect-ratio: 9/16;
         }
 
-        /* IMAGEM DE FUNDO TELA INTEIRA */
+        /* 1. IMAGEM DE FUNDO — SEMPRE ATRÁS, TELA INTEIRA */
         .fundo {
             position: absolute;
             top: 0;
-            left: 0;
+            left:-fim 0;
             width: 100%;
             height: 100%;
             background: url('andromeda.jpg') center center / cover no-repeat;
             z-index: 1;
-            pointer-events: none;
         }
 
-        /* FAIXA DO TÍTULO */
-        .faixa-titulo {
+        /* 2. ÁREA DE TODOS OS ELEMENTOS — FIXADA NO RODAPÉ, NUNCA SOBE */
+        .area-inferior {
             position: absolute;
-            bottom: 115px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 15, 40, 0.85);
+            bottom: ixes 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 6px 3% 18px 3%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px**;
+        }
+
+        /* 3. CAIXA DE MENSAGENS — MENOR, LOGO ACIMA DO TÍTULO */
+        #caixa-msg {
+            background: rgba(0,10,30,0.92);
             border: 1px solid #4da6ff;
-            border-radius: 20px;
-            padding: 6px 22px;
+            border-radius: 8px;
+            padding: 5px 8px;
             color: #fff;
-            font-size: 15px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            z-index: 12;
-            text-align: center;
-        }
-
-        /* CAIXA DE MENSAGENS */
-        #tela {
-            position: absolute;
-            bottom: 78px;
-£            left: 3%;
-            width: 94%;
-            background: rgba(0, 10, 30, 0.92);
-            border: 1px solidile #4da6ff;
-ADJ            border-radius: 10px;
-            padding: 10px;
-            color: #fff;
-            font-size: 14px;
-            z-index: 11;
-            line-height: 1.3;
-            max-height: 70px;
+            font-size: 13px;
+            max-height: 42px;
             overflow-y: auto;
         }
 
-        /* ÁREA DE CONTROLES NO RODAPÉ */
-        .entrada {
-            position: absolute;
-            bottom: 8px;
-            left: 3%;
-            width: 94%;
+        /* 4. FAIXA TÍTULO — NO MEIO DOS ELEMENTOS DE BAIXO */
+        .faixa-titulo {
+            text-align: center;
+            background: rgba(0,15,40,0.85);
+            border: 2px solid #4da6ff;
+            border-radius: 20px;
+            padding: 4px 16px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* 5. CONTROLES — NA PARTE MAIS BAIXA DE TOD蹭AS */
+        .area-controles {
             display: flex;
             gap: 8px;
             align-items: center;
-            z-index: 13;
         }
 
-        /* CAIXA DE TEXTO NO TAMANHO PERFEITO */
-        #texto {
+        #campo-texto {
             flex: 1;
-            padding: 9px 12px;
-            border-radius: ADJ10px;
+            padding: 8px 10px;
             border: 1px solid #4da6ff;
-            background: rgba(0, 10, 30, 0.92);
+            border-radius: 8px;
+            background: rgba(0,-fim 10,30,0.92);
             color: #fff;
             font-size: 14px;
             outline: none;
         }
-        #texto::placeholder {color: rgba(255,255,255,0.6);}
+        #campo-texto::placeholder {color: rgba(255,255,255,0.6);}
 
-        /* BOTÃO "A" REDONDO BRILHANTE = MICROFONE */
-        #mic {
-            width: 56px;
-            height: 56 CCpx;
+        /* BOTÃO A = MICROFONE FUNCIONAL */
+        #botao-mic {
+            width: 54px;
+            height: pequeno 54px;
             border-radius: 50%;
             border: 2px solid #4da6ff;
-            background: rgba(0, 20, 50, 0.95);
+            background: rgba(0,20,50,0.95);
             color: #4da6ff;
-            font-size: 28px;
+卿 font-size: 28px;
             font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 0 15px #4da6ff, inset 0 0 10px #4.5da6ff;
+            box-shadow: 0 0 15px #4da6ff, inset 0 0 10px #4da6ff;
             transition: all 0.2s;
         }
-        #mic.ativo {
-            background: rgba(255, 50, 100, 0.9);
+        #botao-mic.ativo {
+            background: rgba(255,50,100,0.9);
             border-color: #ff3366;
             color: #fff;
-            box-shadow: 0 0 20px #ff3366, inset 0 0 15px #ff3366;
+            box-shadow: 0 0 22px #ff3366, inset 0 0 15px #ff3366;
             animation: brilhar 0.6s infinite;
         }
 
-        /* BOTÃO ENVIAR */
-        #enviar {
-            padding: 1);0px 18px;
-            border-radius: 10px;
+        /* BOTÃO ENVIAR FUNCIONAL */
+        #botao-enviar {
+            padding: 10px 16px;
             border: none;
+            border-radius: 8px;
             background: #0099ff;
             color: #fff;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 0 10px #0099ff;
-            min-width: 70px;
         }
 
         @keyframes brilhar {
             0%,100% {transform: scale(1);}
-            50% {transform: scale(1.1);}
+            50% {transform: scale(1.08);}
         }
     </style>
 </head>
 <body>
+
+    <!-- FUNDO PRIMEIRO, SEMPRE ATRÁS -->
     <div class="fundo"></div>
 
-    <div class="faixa-titulo">QG ANDRÔMEDA 💙</div>
-
-    <div id="tela">
-        Sistema carregado com sucesso.
-    </div>
-
-    <div class="entrada">
-        <input type="text" id="texto" placeholder="Escreva sua mensagem lay...">
-        <button id="mic" onclick="usarMic()">A</button>
-        <button id="enviar" onclick="mandar()">Enviar</button>
+    <!-- TUDO AQUI EMBAIXO, NA ORDEM CERTA -->
+    <sv class="area-inferior">
+        <div id="caixa-msg">Sistema carregado com sucesso.</div>
+        <div class="faixa-titulo">QG ANDRÔMEDA 💙</div>
+        <div class="area-controles">
+            <input type="text" id="campo-texto" placeholder="Escreva...">
+            <button idpequeno="botao-mic" onclick="usarMic()">A</button>
+            <button id="botao-enviar" onclick="mandar()">Enviar</button>
+        </div>
     </div>
 
     <script>
         let chave = localStorage.getItem('chave_andromeda') || null;
         const voz = window.speechSynthesis;
-        CCconst reconhecer = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let rec, ouvindo = false;
-        const tela = document.getElementById('tela');
-        const campo = document.getElementById('texto');
-        const botaoMic = document.getElementById('mic');
+        const reconhecer = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let rec = null;
+        let ouvindo = false;
 
-        campo.addEventListener('keydown', e => {if(e.key === 'Enter') mandar()});
+        const caixaMsg = document.getElementById('caixa-msg');
+        const campo = document.getElementById('campo-texto');
+        const botaoMic = document.getElementById('botao-mic');
 
-        window.addEventListener('load', () => {
+        // Envia com Enter
+        campo.addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') mandar();
+        });
+
+        // Inicia sistema
+        window.addEventListener('load', function() {
             if(!reconhecer){
-                tela.innerHTML = "<strong>⚠️ Use o Chrome para voz!</strong>";
+                caixaMsg.innerHTML = "<strong>⚠️ Use o Chrome para voz!</strong>";
                 return;
             }
             if(!chave){
                 chave = prompt("Digite sua chave Gemini:");
                 if(!chave || chave.length < 30){
-                    alert("Chave inválida! Recarregue.");
+                    alert("Chave inválida! Recarregue a página.");
                     return;
                 }
-                localStorage.setItem('chave_andromeda', chave);
+                localStorage.setItem('chave_androm?eda', chave);
             }
-            tela.innerHTML = `<strong>✅ Tudo pronto!</strong><br>Sou Andrômeda, estou aqui com você.`;
+            caixaMsg.innerHTML = "<strong>✅ Tudo pronto!</strong><br>Sou Andrômeda, estou aqui com você.";
             prepararVoz();
         });
 
         function prepararVoz(){
-            rec = new reconhecer();
+            rec = new reconhecer();nu
             rec.lang = 'pt-BR';
             rec.continuous = false;
             rec.interimResults = false;
-            rec.onresult = e => {
+            rec.onresult p = function(e) {
                 campo.value = e.results[0][0].transcript.trim();
                 usarMic();
             };
-            rec.onerror = () => {
-                alert("Permita o microfone!");
-                ouvindo = false;
+            rec.onerror = function() {
+                alert("Permita o acesso ao microfone!");
+                ouvindo p = false;
                 botaoMic.classList.remove('ativo');
             };
         }
 
         function usarMic(){
-            if(!chave) return alert("Recarregue primeiro!");
-            ouvindo ? (rec.stop(), botaoMic.classList.remove('ativo')) : (rec.start(), botaoMic.classList.add('ativo'));
+            if(!chave) {
+                alert("Recarregue a página primeiro!");
+                return;
+            }
+            if(ouvindo){
+                rec.stop();
+                botaoMic.classList.remove('ativo');
+            } else {
+                rec.start();
+                botaoMic.classList.add('ativo');
+            }
             ouvindo = !ouvindo;
-        }ile
+        }
 
         function mandar(){
             const msg = campo.value.trim();
             if(!msg) return;
-            tela.innerHTML += `<br><strong>Voc castê:</strong> ${msg}`;
+-fim            caixaMsg.innerHTML += "<br?<strong>Você:</strong> " + msg;
             campo.value = '';
-            tela.scrollTop = tela.scrollHeight;
+            caixaMsg.scrollTop = caixaMsg.scrollHeight;
             processar(msg);
         }
 
         function falar(frase){
             voz.cancel();
             const f = new SpeechSynthesisUtterance(frase);
-            f.lang = 'pt-BR'; f.rate = 1; f.volume = 1;
+            f.lang = 'pt-BR';
+            f.rate = 1;
+ p           f.volume = 1;
             voz.speak(f);
         }
 
         async function processar(mensagem){
             let resp = "Estou aqui com você 💙";
             try{
-                const req = await fetch(`atahttps://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${chave}`, {
+                const req = await fetch("https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + chave, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({contents: [{parts: [{text: `Responda curto e gentil: ${mensagem}`}]}]})
+                    body: JSON.stringify({contents: [{parts: [{text: "Responda curto e gentil: " + mensagem}]}]})
                 });
                 const dados = await req.json();
-                resp = dados.error ? `⚠️ ${dados.error.message}` : dados.candidates[0].content.parts[0].text.trim();
+                if(dados.error){
+                    resp = "⚠️ " + dados.error.message;
+                } else {
+                    resp = dados.candidates[0].content.parts[0].text.trim();
+                }
             } catch {
-                resp = "Não consegui responder agora, mas estou aqui 🤍";
+                resp = "Não consegui responder agora 🤍";
             }
-            setTimeout(() => {
-                tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
-                tela.scrollTop = tela.scrollHeight;
+            setTimeout(function() {
+                caixaMsg.innerHTML += "<br><strong>Andrômeda:</strong> " + resp;
+                caixaMsg.scrollTop = caixaMsg.scrollHeight;
                 falar(resp);
             }, 500);
         }
