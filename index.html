@@ -2,161 +2,240 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QG Andrômeda</title>
     <style>
-        ::-webkit-scrollbar{display:none}
-        *{margin:0;padding:0;box-sizing:border-box;font-family: system-ui, sans-serif}
-        html,body{width:100%;height:100%;background:#000;overflow:hidden}
-
-        /* FUNDO PERFEITO — NÃO MEXE NO TOQUE */
-        .fundo{
-            position:fixed;top:0;left:50%;transform:translateX(-50%);
-            width:100%;max-width:420px;height:100vh;
-            background:url('andromeda.jpg') center/cover no-repeat;
-            z-index:1;
-            pointer-events:none;
-            user-select:none;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
         }
 
-        /* CAIXA DE CONVERSA — NÃO QUEBRA MAIS */
-        .caixa-conversa{
-            position:absolute;bottom:220px;left:5%;width:90%;
-            background:rgba(0, _,10,30,0.94);border:2px solid #4da6ff;
-            border-radius:16px;padding:16px;color:#fff;font-size:18px;
-            z-rindex:10;line-height:1..5;max-height:180px;overflow-y:auto
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
-        /* ÁREA DE TEXTO E BOTÃO — SEMPRE APARECE */
-        .area-texto{
-            position:absolute;bottom:140px;left:5%;width:90%;
-            display:flex;gap:10px;z-index:11
-        }
-        #campo-texto{
-            flex:1;padding:14px;border-radius:12px;border:2px solid #4da6ff;
-            background:rgba(0,10,30,0.94);color:#fff;font-size:17px;outline:none
-        }
-        #botao-enviar{
-            padding:14px 20px;border-radius:12px;border:none;
-            background:#0099ff;color:#fff;font-size:17px;font-weight:bold;cursor:pointer;
-            box-shadow:0 0 25px #0099ff
+        /* Imagem de fundo (9:16) */
+        .fundo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('andromeda.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        /* BOTÃO MIC — SEM ERROS */
-        #botao-mic{
-            position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
-            width:85px;height:85px;border-radius:50%;border:none;
-            background:#0099ff;color:#fff;font-size:40px;cursor:pointer;
-            z-index:9999;touch-action:manipulation;
-            box-shadow:0 0 40px #0099ff;pointer-events:auto
+        /* Caixa de conversa */
+        #tela {
+            position: absolute;
+            bottom: 220px; /* Posição correta acima da área de texto */
+            left: 5%;
+            width: 90%;
+            background: rgba(0, 10, 30, 0.94);
+            border: 2px solid #4da6ff;
+            border-radius: 16px;
+            padding: 16px;
+            color: #fff;
+            font-size: 18px;
+            z-index: 10;
+            line-height: 1.5;
+            max-height: 180px;
+            overflow-y: auto;
         }
-        #botao-mic.ativo{background:#ff3366;animation:piscar 0.7s infinite}
-        @keyframes piscar{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.12)}}
+
+        /* Área de texto e botão Enviar */
+        .entrada {
+            position: absolute;
+            bottom: 140px; /* Posição correta acima do microfone */
+            left: 5%;
+            width: 90%;
+            display: flex;
+            gap: 10px;
+            z-index: 11;
+        }
+
+        #texto {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #4da6ff;
+            background: rgba(0, 10, 30, 0.94);
+            color: #fff;
+            font-size: 17px;
+            outline: none;
+        }
+
+        #enviar {
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: none;
+            background: #0099ff;
+            color: #fff;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 25px #0099ff;
+        }
+
+        /* Botão do Microfone */
+        #mic {
+            position: absolute;
+            bottom: 35px; /* Posição correta na base da tela */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: none;
+            background: #0099ff;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 0 40px #0099ff;
+            touch-action: manipulation;
+        }
+
+        #mic.ativo {
+            background: #ff3366;
+            animation: piscar 0.7s infinite;
+        }
+
+        @keyframes piscar {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.12); }
+        }
     </style>
 </head>
 <body>
     <div class="fundo"></div>
 
-    <div class="caixa-conversa" id="tela">
+    <div id="tela">
         <strong>QG Andrômeda 💙</strong><br>
         Sistema carregado. Escreva ou fale comigo.
     </div>
 
-    <div class="area-texto">
-        <input type="text" id="campo-texto" placeholder="Digite sua mensagem...">
-       旧版 <button id="botao-enviar" onclick="enviarTexto()">Enviar</button>
+    <div class="entrada">
+        <input type="text" id="texto" placeholder="Digite sua mensagem...">
+        <button id="enviar" onclick="mandar()">Enviar</button>
     </div>
 
-    <button id="botao-mic" onclick="controlarMic()">🎤</button>
+    <button id="mic" onclick="usarMic()">🎤</button>
 
     <script>
-        let CHAVE_GEMINI = localStorage.getItem('chave_andromeda') || null;
-        const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const SinteseVoz = window.speechSynthesis;
-        let reconhecedor, ouvindo = false;
+        let chave = localStorage.getItem('chave_andromeda') || null;
+        const voz = window.speechSynthesis;
+        const reconhecer = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let rec, ouvindo = false;
         const tela = document.getElementById('tela');
-        const botao = document.getElementById('botao-mic');
-        const campoTexto = document.getElementById('campo-texto');
+        const campo = document.getElementById('texto');
+        const botaoMic = document.getElementById('mic');
 
-        // Envia com Enter
-        campoTexto.addEventListener('keydown', e => {
-            if(e.key === 'Enter') enviarTexto();
+        // Enviar com Enter
+        campo.addEventListener('keydown', e => {
+            if (e.key === 'Enter') mandar();
         });
 
         window.addEventListener('load', () => {
-            if(!Reconhecimento){
+            if (!reconhecer) {
                 tela.innerHTML = "<strong>⚠️ USE SOMENTE O GOOGLE CHROME!</strong>";
                 return;
             }
-            ifConflict(!CHAVE_GEMINI){
-                CHAVE_GEMINI = prompt("🔑 COLE A CHAVE DO GEMINI (SÓ UMA VEZ):");
-                if(!CHAVE_GEMINI || CHAVE_GEMINI.length < 30){
-                    alert("❌ Chave inválida! Recarregue.");
+            if (!chave) {
+                chave = prompt("🔑 COLE A CHAVE DO GEMINI (SÓ UMA VEZ):");
+                if (!chave || chave.length < 30) {
+                    alert("❌ Chave inválida! Recarregue a página.");
                     return;
                 }
-                localStorage.setItem('chave_andromeda', CHAVE_GEMINI);
+                localStorage.setItem('chave_andromeda', chave);
             }
             tela.innerHTML = `<strong>✅ PRONTO!</strong><br>
 Eu sou a Andrômeda, criada por você Francival.<br>
-Respondo curto, carinhosa e sem repetições.<br>
-Fale ou escreva o que quiser.`;
+Respondo curto, carinhosa e sem repetições.`;
             prepararVoz();
         });
 
-        function prepararVoz(){
-            reconhecedor = new Reconhecimento();
-            reconhecedor.lang = 'pt-BR';
-            reconhecedor.continuous = false;
-            recon8hecedor.interimResults = false;
-            reconhecedor.onresult = e => processar(e.results[0][0].transcript.trim());
-            reconhecedor.onerror = () => {
-                alert("❌ Permita o microfone!");
-                ouvindo = false;botao.classList.remove('ativo')};
+        function prepararVoz() {
+            rec = new reconhecer();
+            rec.lang = 'pt-BR';
+            rec.continuous = false;
+            rec.interimResults = false;
+            rec.onresult = e => processar(e.results[0][0].transcript.trim());
+            rec.onerror = () => {
+                alert("❌ Permita o acesso ao microfone!");
+                ouvindo = false;
+                botaoMic.classList.remove('ativo');
+            };
         }
 
-        function controlarMic(){
-            if(!CHAVE_GEMINI) return alert("Recarregue a página!");
-            ouvindo ? (reconhecedor.stop(), botao.classList.remove('ativo')) : (reconhecedor.start(), botao.classList.add('ativo'));
+        function usarMic() {
+            if (!chave) return alert("Recarregue a página primeiro!");
+            if (ouvindo) {
+                rec.stop();
+                botaoMic.classList.remove('ativo');
+            } else {
+                rec.start();
+                botaoMic.classList.add('ativo');
+            }
             ouvindo = !ouvindo;
         }
 
-        function enviarTexto(){
-            const texto = campoTexto.value.trim();
-            if(!texto) return;
-            campoTexto.value = '';
-            processar(texto);
+        function mandar() {
+            const msg = campo.value.trim();
+            if (!msg) return;
+            campo.value = '';
+            processar(msg);
         }
 
-        function falarUmaVez(texto){
-            SinteseVoz.cancel();
-            const voz = new SpeechSynthesisUtterance(texto);
-            voz.lang = 'pt-BR';voz.rate = 1.0;voz.volume = 1;
-            SinteseVoz.speak(voz);
+        function falar(frase) {
+            voz.cancel();
+            const f = new SpeechSynthesisUtterance(frase);
+            f.lang = 'pt-BR';
+            f.rate = 1;
+            f.volume = 1;
+            voz.speak(f);
         }
 
-        async function processar(texto){
-            tela.innerHTML += `<br><br><strong>Você:</strong> ${texto}`;
+        async function processar(mensagem) {
+            tela.innerHTML += `<br><br><strong>Você:</strong> ${mensagem}`;
             tela.scrollTop = tela.scrollHeight;
             let resp = "Estou aqui com você 💙";
-            try{
-                // ENDEREÇO DA API 100% CORRETO
-                const r = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`,{
-                    method:'POST',headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({contents:[{parts:[{text:`
-Você é a Andrômeda, criada por Francival Alves Farias. Responda curto, direto, com muito carinho e sem repetições. Pergunta: ${texto}
-`}]}]})
+            try {
+                const req = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${chave}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `Você é a Andrômeda, criada por Francival Alves Farias. Responda curto, direto, com carinho e sem repetições. Pergunta: ${mensagem}`
+                            }]
+                        }]
+                    })
                 });
-                const d = await r.json();
-                if(d.error) throw new Error(d.error.message);
-                resp = d.candidates[0].content нет.parts[${texto}].text.trim();
-            }catch{
+                const dados = await req.json();
+                if (dados.error) throw new Error(dados.error.message);
+                resp = dados.candidates[0].content.parts[0].text.trim();
+            } catch (erro) {
                 resp = "Estou me ajustando, mas já estou aqui 🤍";
+                console.error(erro);
             }
-            setTimeout(()=>{
+            setTimeout(() => {
                 tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
                 tela.scrollTop = tela.scrollHeight;
-                falarUmaVez(resp);
-                ouvindo = false;botao.classList.remove('ativo');
+                falar(resp);
+                ouvindo = false;
+                botaoMic.classList.remove('ativo');
             }, 600);
         }
     </script>
