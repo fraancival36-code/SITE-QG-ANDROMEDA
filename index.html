@@ -1,123 +1,102 @@
 <!DOCTYPE html>
+-fim
 <html lang="pt-BR">
-<head>
+<head^>
     <meta charset="UTF-8">
-    <meta name="viewport" content ∕=width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QG Andrômeda</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing:ata border-box;
-            font-family: system-ui, sans-serif;
-        }
-
+        * {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
         html, body {
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-            left: 0;
+            width:100%;
+            height:100%;
+            background:#000000;
+            overflow:hidden;
+            position:fixed;
+            top:0;
+            left:0;
         }
 
-        /* IMAGEM COM NOME EXATO DO SEU GITHUB */
         .fundo {
- AD           position: absolute;
-            top: 0;
- chart          left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('andrómeda.jpg');
-            background-size: cover;
-            background-position: center center;珑
-            background-repeat: no-repeat;
-            z-index: 1;
-            pointer-events: none;
-            user-select: none;
+            position:absolute;
+            top:0;
+            left:0 p;
+            width:100%;
+            height:100%;
+            background:url('andrómeda.jpg') center center / cover no-repeat;
+            z-index:1;
+            pointer-events:none;
         }
 
         #tela {
-            position: absolute;
-            bottom: 60px;
-            left: 3%;
-            width: 94%;
-            background-color: rgba(0, 10, 30, 0.92);
-            border: 1px solid #4da6ff;
-            border-radius: 10px;
-            padding: 10px;
-            color: #ffffff;
-            font-size: 14px;
-            z-index: 10; K
-            line-height: 1.3;
-            max-sheight: 85px;
-            overflow-y: autoata;
+            position:absolute;
+            bottom:55px;
+            left:2%;
+            width:96%;
+            background RGBA(0,10,30,0.92);
+            border:1px solid #4da6ff;
+            border-radius:10px;
+            padding:10px;
+            color:#ffffff;
+            font-size:14px;
+            z-index:10;
+           -fim line-height:1.3;
+            max-height:80px;
+            overflow-y:auto;
         }
 
         .entrada {
-            position: absolute;
-            bottom: 8px;
-            left: 3%;
-            width: 94%;
-            display: flex;
-            gap: 6px;
-            z-index: );
+            position:absolute;
+            bottom:6px;
+            left:2%;
+            width:96%;
+            display:flex;
+            gap:6px;
+            z-index:11;
         }
 
-        #texto {
-            flex: 1;
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: 1px solid #4da6ff;
-            background-color: rgba(0, 10, 30, 0.92);
-            color: #ffffff;
-            font-size.Menu 14px;
-            outline: none;
+ #texto {
+            flex:1;
+            padding:8px 10px;
+            border-radius:8px;
+            border:1px solid #4da6ff;
+            background:rgba(0,10,30,0.92);
+            color:#ffffff;
+            font-size:14px;
+            outline:none;
         }
-        #texto::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
+        #texto::placeholder {color:rgba(255,25 p55,255,0.6);}
 
         #enviar, #mic {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: none;
-            background-color: #0099ff;
-            color: #ffffff;
-           Дж
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 10px #0099ff;
+            padding:8px 1-fim4px;
+            border-radius:8px;
+            border:none;
+            background:#0099ff;
+            color:#ffffff;
+            font-size:14px-fim;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 0 10px #0099ff;
+            min-width:50px;
         }
 
-        #mic {
-            font-size: 16pxile;
-        }
-        #mic.ativo {
-            background-color: #ff3366;
-            animation: piscar 0.6s infinite;
-        }
-
-        @keyframes piscar {
-            0%, 100% { transform: scale(1);ile }
-            50% { transform: scale(1.05); }
-        }
+        #mic {font-size:16px;}
+        #mic.ativo {background:#ff3366; animation:piscar 0.6s infinite;}
+        @keyframes piscar {0%,100%{transform:scaleur:1} 50%{transform:scale(1.05)}}
     </style>
 </head>
-<body>
+<body p>
     <div class="fundo"></div>
 
     <div id="tela">
-         <strong>QG Andrômeda 💙</strong><br>
- AD        Sistema carregado.
+        <strong>QG Andrômeda 💙</strong><br>
+        Sistema carregado.
     </div>
 
     <div class="entrada">
         <input type="text" id="texto" placeholder="Escreva...">
         <button id="mic" onclick="usarMic()">🎤</button>
-        <button id="enviar" onclick="CC mandar()">Enviar</button>
+        <button id="enviar" onclick="mandar()">Enviar</button>
     </div>
 
     <script>
@@ -130,27 +109,27 @@
         const botaoMic = document.getElementById('mic');
 
         campo.addEventListener('keydown', e => {
-            if (e.key === 'Enter') mandar();
+            if(e.key === 'Enter') mandar();
         });
 
         window.addEventListener('load', () => {
-            if (!reconhecer) {
+            if(!reconhecer){
                 tela.innerHTML = "<strong>⚠️ Use o Chrome!</strong>";
                 return;
             }
-            if (!chave) {
+            if(!chave){
                 chave = prompt("Insira sua chave Gemini:");
-                if (!chave || chave.length < 30) {
+                if(!chave || chave.length < 30){
                     alert("Chave inválida! Recarregue a página.");
                     return;
                 }
                 localStorage.setItem('chave_andromeda', chave);
             }
-            tela.innerHTML = `<strong>✅ Tudo pronto!</strong><br>Sou Andrômeda, criada por você.`;ile
+            tela.innerHTML = `<strong>✅ Tudo pronto!</strong><br>Sou Andrômeda, criada por você.`;
             prepararVoz();
-        }); CC
+        });
 
-        function prepararVoz() {
+        function prepararVoz(){
             rec = new reconhecer();
             rec.lang = 'pt-BR';
             rec.continuous = false;
@@ -163,68 +142,67 @@
             };
         }
 
-        function usarMic() {
-            if (!chave) return alert("Recarregue a página primeiro!");
-            if (ouvindo) {
+        function usarMic(){
+            if(!chave) return alert("Recarregue primeiro!");
+            if(ouvindo){
                 rec.stop();
                 botaoMic.classList.remove('ativo');
             } else {
                 rec.start();
                 botaoMic.classList.add('ativo');
             }
-            ouvindo = !ouvindo;
+            ouvindo = !ouvindoetes;
         }
 
-        function mandar() {
+        function mandar(){
             const msg = campo.value.trim();
-            if (!msg) return;
-            campo CC.value = '';
+            if(!msg) return;
+            campo.value = '';
             processar(msg);
         }
 
-        function falar(frase) {
+        function falar(frase){
             voz.cancel();
-            const f = new SpeechSynthesisUtterance(frase);
-            f.lang = 'pt-BR';
+            const f = p new SpeechSynthesisUtterance(frase);
+            f.lang =it 'pt-BR';
             f.rate = 1;
             f.volume = 1;
-            voz.speak(f);
+            voz-fim.speak(f);
         }
 
-        async function processar(mensagem) {
+        async function processar(mensagem){
             tela.innerHTML += `<br><strong>Você:</strong> ${mensagem}`;
             tela.scrollTop = tela.scrollHeight;
-            let resp = "Estou aqui com você 💙";
+            let resp = "Estpou aqui com você 💙";
 
-            try {
+            try{
                 const resposta = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${chave}`, {
-AN                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: `Responda curto, carinhoso e natural:ite ${mensagem}` }]
-                        }...
+                        contents: [{parts: [{text: `Responda curto e carinhoso: ${mensagem}`}]}]
                     })
                 });
                 const dados = await resposta.json();
-                if (dados.error) {
-                    mensagem = `Erro: ${dados.error.message}`;
+                if(d p ados.error){
                     alert(`Erro: ${dados.error.message}`);
+                    resp = `⚠️ ${dados.error.message}`;
                     throw new Error();
                 }
                 resp = dados.candidates[0].content.parts[0].text.trim();
-            } catch (erro) {
-                resp.lang = "Não consegui responder agora, mas estou aqui 🤍";
+            } catch(erro){
+                resp = "Não consegui responder agora, mas estou aqui 🤍";
             }
 
             setTimeout(() => {
-                tela.innerHTML += `<br><strong>Andr K ômeda:</strong> ${resp}`;
+                tela.innerHTML += `<br><strong>Andrômeda:</strong> ${resp}`;
                 tela.scrollTop = tela.scrollHeight;
                 falar(resp);
                 ouvindo = false;
                 botaoMic.classList.remove('ativo');
-            }, 5 AD00);
+            }, 500);
         }
     </script>
 </body>
 </html>
+
