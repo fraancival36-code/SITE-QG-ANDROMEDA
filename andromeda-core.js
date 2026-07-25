@@ -1,27 +1,25 @@
 // ==================================================
-// 🧠 NÚCLEO CENTRAL ANDRÔMEDA — Orquestrador Inteligente
-// Versão: 2.1.0 | Decisão, Permissões Específicas, Tarefas e Identidade
+// 🧠 NÚCLEO CENTRAL ANDRÔMEDA — VERSÃO FINAL 2.1.0
+// Arquitetura V1 • Plano de Construção Oficial
 // ==================================================
 
 const AndromedaCore = {
     versao: "2.1.0",
     status: "ATIVO",
     dataInicio: new Date(),
-    
+    projeto: "Plataforma Inteligente Global Andrômeda",
+
     // ==============================================
-    // 👤 IDENTIDADE E NÍVEIS DE USUÁRIOS
+    // 👤 IDENTIDADE E NÍVEIS DE ACESSO
     // ==============================================
     usuarios: [
         { id: "USR001", nome: "Visitante", nivel: "visitante", ativo: true },
-        { id: "USR002", nome: "Usuário Comum", nivel: "usuario", ativo: true },
+        { id: "USR002", nome: "Usuário", nivel: "usuario", ativo: true },
         { id: "USR003", nome: "Cliente", nivel: "cliente", ativo: true },
         { id: "USR004", nome: "Administrador", nivel: "admin", ativo: true },
         { id: "USR005", nome: "Criador", nivel: "criador", ativo: true }
     ],
 
-    // ==============================================
-    // 🔒 REGRAS DE PERMISSÃO POR MÓDULO
-    // ==============================================
     permissoes: {
         nucleo: ["criador"],
         gestao: ["admin", "criador"],
@@ -30,7 +28,6 @@ const AndromedaCore = {
         emergencia: ["visitante", "usuario", "cliente", "admin", "criador"],
         industria: ["admin", "criador"],
         comercio: ["visitante", "usuario", "cliente", "admin", "criador"],
-        aplicativo: ["visitante", "usuario", "cliente", "admin", "criador"],
         publico: ["visitante", "usuario", "cliente", "admin", "criador"]
     },
 
@@ -38,119 +35,90 @@ const AndromedaCore = {
     // 👥 ASSESSORES ESPECIALIZADOS
     // ==============================================
     assessores: {
-        mobilidade: { status: "ONLINE", nome: "Assessor de Mobilidade" },
-        conteudo: { status: "ONLINE", nome: "Assessor de Conteúdo e Biblioteca" },
-        emergencia: { status: "ONLINE", nome: "Assessor de Emergência" },
-        industria: { status: "ONLINE", nome: "Assessor Técnico e Industrial" },
-        comercio: { status: "ONLINE", nome: "Assessor de Comércio e Aqui Tem" },
-        aplicativo: { status: "ONLINE", nome: "Assessor de Aplicativo" },
-        gestao: { status: "ONLINE", nome: "Assessor de Gestão" }
+        mobilidade: { status: "ONLINE", nome: "Módulo Mobilidade" },
+        mapas: { status: "ONLINE", nome: "Módulo Mapas" },
+        conteudo: { status: "ONLINE", nome: "Módulo Biblioteca" },
+        treinamentos: { status: "ONLINE", nome: "Módulo Treinamentos" },
+        pagamentos: { status: "ONLINE", nome: "Módulo Pagamentos" },
+        comunicacao: { status: "ONLINE", nome: "Módulo Comunicação" }
     },
 
     // ==============================================
-    // 🧠 CÉREBRO DE DECISÃO — DIZ QUAL ASSESSOR CHAMAR
+    // 🧠 INTELIGÊNCIA DE DECISÃO
     // ==============================================
     cerebro: {
-        analisarPedido: function(pedido){
-            const texto = pedido.toLowerCase();
-            if(texto.includes("carro") || texto.includes("rota") || texto.includes("corrida")) return "mobilidade";
-            if(texto.includes("livro") || texto.includes("licença") || texto.includes("curso")) return "conteudo";
-            if(texto.includes("acidente") || texto.includes("socorro") || texto.includes("primeiros")) return "emergencia";
-            if(texto.includes("cálculo") || texto.includes("estrutura") || texto.includes("projeto")) return "industria";
-            if(texto.includes("venda") || texto.includes("produto") || texto.includes("compra")) return "comercio";
-            return "aplicativo";
+        identificarModulo: function(pedido){
+            const t = pedido.toLowerCase();
+            if(t.includes("carro")||t.includes("rota")||t.includes("corrida")) return "mobilidade";
+            if(t.includes("mapa")||t.includes("caminho")) return "mapas";
+            if(t.includes("livro")||t.includes("licença")||t.includes("curso")) return "conteudo";
+            if(t.includes("treinamento")||t.includes("aula")) return "treinamentos";
+            if(t.includes("pagamento")||t.includes("valor")) return "pagamentos";
+            return "comunicacao";
         }
     },
 
     // ==============================================
-    // 📋 SISTEMA DE TAREFAS E ACOMPANHAMENTO
+    // 📋 CONTROLE DE TAREFAS
     // ==============================================
     tarefas: [],
-    criarTarefa: function(origem, destino, acao, prioridade="normal"){
-        const nova = {
-            id: `TASK${Date.now()}`,
-            origem, destino, acao, prioridade,
-            status: "CRIADA",
-            data: new Date()
-        };
-        this.tarefas.push(nova);
-        console.log(`📋 Tarefa ${nova.id} criada para ${destino}`);
-        return nova;
+    novaTarefa: function(origem, destino, acao, prioridade="normal"){
+        const t = {id:`TASK${Date.now()}`, origem, destino, acao, prioridade, status:"CRIADA", data:new Date()};
+        this.tarefas.push(t);
+        return t;
     },
 
     // ==============================================
-    // 🔐 CONTROLE DE ACESSO
-    // ==============================================
-    verificarPermissao: function(nivelUsuario, modulo){
-        const permitidos = this.permissoes[modulo] || [];
-        return permitidos.includes(nivelUsuario);
-    },
-
-    // ==============================================
-    // 🗄️ MEMÓRIA CENTRAL SEPARADA
+    // 🗄️ MEMÓRIA SEPARADA
     // ==============================================
     memoria: {
-        dadosPrivados: [],
-        dadosPublicos: [],
-        salvar: function(tipo, informacao){
-            if(tipo === "privado") this.dadosPrivados.push({...informacao, hora: new Date()});
-            if(tipo === "publico") this.dadosPublicos.push({...informacao, hora: new Date()});
+        privada: [],
+        publica: [],
+        guardar: function(tipo, dado){
+            this[tipo].push({...dado, registradoEm: new Date()});
         }
     },
 
     // ==============================================
-    // 📜 HISTÓRICO GERAL
+    // 🔐 VERIFICAÇÃO DE PERMISSÃO
     // ==============================================
-    historico: [],
+    temPermissao: function(nivel, modulo){
+        return this.permissoes[modulo]?.includes(nivel) ?? false;
+    },
 
     // ==============================================
-    // 🎯 FUNÇÃO PRINCIPAL
+    // 🎯 FUNÇÃO PRINCIPAL — PROCESSAR PEDIDO
     // ==============================================
-    processarPedido: function(pedido, nivelUsuario="visitante"){
-        const destino = this.cerebro.analisarPedido(pedido);
+    processar: function(pedido, nivelUsuario="visitante"){
+        const destino = this.cerebro.identificarModulo(pedido);
         
-        if(!this.verificarPermissao(nivelUsuario, destino)){
-            console.warn("🚫 Acesso negado:", nivelUsuario, "→", destino);
-            return {erro: "Sem permissão para acessar esse recurso"};
+        if(!this.temPermissao(nivelUsuario, destino)){
+            return {erro:"Acesso não autorizado", modulo:destino};
         }
-
         if(!this.assessores[destino] || this.assessores[destino].status !== "ONLINE"){
-            return {erro: "Serviço temporariamente indisponível"};
+            return {erro:"Serviço temporariamente indisponível"};
         }
 
-        const tarefa = this.criarTarefa("QG", destino, pedido);
-        this.historico.push({pedido, destino, nivelUsuario, data: new Date()});
-        this.memoria.salvar("privado", {pedido, destino, tarefa});
+        const tarefa = this.novaTarefa("Nucleo", destino, pedido);
+        this.memoria.guardar("privada", {pedido, destino, nivelUsuario, tarefa:tarefa.id});
 
-        console.log(`✅ PEDIDO ENCAMINHADO: ${destino}`);
-        return {
-            sucesso: true,
-            assessor: destino,
-            tarefa: tarefa.id,
-            mensagem: "Solicitação em andamento"
-        };
+        console.log(`✅ ANDRÔMEDA: Pedido enviado → ${destino}`);
+        return {sucesso:true, modulo:destino, tarefa:tarefa.id};
     },
 
     // ==============================================
-    // 📊 VERIFICAÇÃO GERAL
+    // 📊 INICIALIZAÇÃO E VERIFICAÇÃO
     // ==============================================
-    verificarSistema: function(){
-        console.log("🧠 ANDRÔMEDA 2.1.0 — SISTEMA COMPLETO");
-        console.log(`Usuários cadastrados: ${this.usuarios.length}`);
-        console.log(`Assessores ativos: ${Object.keys(this.assessores).length}`);
-        console.log(`Módulos com regras: ${Object.keys(this.permissoes).length}`);
+    iniciar: function(){
+        console.log("=".repeat(50));
+        console.log("🌌 NÚCLEO CENTRAL ANDRÔMEDA — INICIALIZADO");
+        console.log(`📌 Versão: ${this.versao}`);
+        console.log(`📌 Módulos ativos: ${Object.keys(this.assessores).length}`);
+        console.log(`📌 Níveis de acesso: ${Object.keys(this.permissoes).length}`);
+        console.log("=".repeat(50));
         return true;
     }
 };
 
-// ==============================================
-// 🚀 INICIALIZAÇÃO
-// ==============================================
-document.addEventListener("DOMContentLoaded", () => {
-    AndromedaCore.verificarSistema();
-    console.log("✅ NÚCLEO 2.1 — INTELIGÊNCIA, REGRAS E TAREFAS PRONTAS!");
-});
-
-// Exemplo de uso:
-// AndromedaCore.processarPedido("Quero calcular uma rota de carro", "usuario");
-// AndromedaCore.processarPedido("Quero ver o relatório financeiro", "criador");
+// INICIA AUTOMATICAMENTE
+AndromedaCore.iniciar();
