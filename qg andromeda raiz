@@ -1,0 +1,23 @@
+📂 qg-andromeda/  ← ===> RAIZ ÚNICA DE TUDO
+│
+├── 📄 index.html               ← Página de entrada
+├── 📄 README.md                ← Explicação oficial
+├── 📄 painel.html              ← Centro de Comando
+│
+├── 📁 core/                    ← CÉREBRO (não sai daqui)
+│   ├── andromeda-core.js
+│   ├── kernel.js
+│   └── seguranca.js
+│
+├── 📁 modules/                 ← TODOS OS SERVIÇOS (não sai daqui)
+│   ├── biblioteca.html
+│   ├── laboratorio.html
+│   ├── missoes.html
+│   ├── conversa.html
+│   └── 📁 mobilidade/          ← Depois o módulo de corridas fica aqui
+│
+├── 📁 assets/                   ← IMAGENS E ÍCONES
+│   ├── imagens/andrômeda.jpg
+│   └── icones/ícone-andromeda.png
+│
+└── 📁 data/                     ← DADOS E MEMÓRIA
