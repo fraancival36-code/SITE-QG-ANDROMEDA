@@ -1,0 +1,9 @@
+SITE-QG-ANDROMEDA/  ← RAIZ PRINCIPAL
+├── nucleo/
+│   └── andromeda-core.js  ✅ Nosso cérebro
+├── assessores/
+├── seguranca/
+├── memoria/
+├── comunicacao/
+├── interface/
+└── (se quiser manter) aviso-instalacao.txt  ← Deixe aqui fora, se precisar
