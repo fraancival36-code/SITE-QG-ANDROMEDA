@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🏛️ Painel Central — QG Andrômeda</title>
+    <meta name="theme-color" content="#050B18">
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif;}
+        html, body {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 9 / 16;
+            margin: 0 auto;
+            background: #050B18;
+            color: #E0EFFF;
+            padding: 15px 12px 80px;
+            overflow-x: hidden;
+        }
+
+        .topo {display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #A064FF; padding-bottom: 8px;}
+        .tit {font-size: 18px; font-weight: bold; color: #A064FF;}
+        .perfil {font-size: 12px; color: #8FB8E8;}
+        .nivel {color: #FFDD66; font-weight: bold;}
+
+        .linha {display: flex; gap: 8px; margin-bottom: 10px;}
+        .card {flex: 1; background: #0F1A30; border: 1px solid #203560; border-radius: 10px; padding: 10px; text-align: center; font-size: 12px;}
+        .card-grande {width: 100%; background: #0F1A30; border: 1px solid #203560; border-radius: 10px; padding: 10px; margin-bottom: 10px; font-size: 13px;}
+        .ok {color: #44FF99; font-weight: bold;}
+        .alerta {color: #FFDD66; font-weight: bold;}
+        .erro {color: #FF5555; font-weight: bold;}
+        .num {font-size: 18px; font-weight: bold; margin-top: 4px;}
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #A064FF;
+            color: #FFF;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-sec {background: #203560; color: #E0EFFF;}
+    </style>
+</head>
+<body>
+
+    <div class="topo">
+        <div class="tit">🏛️ PAINEL CENTRAL</div>
+        <div class="perfil">Acesso: <span class="nivel">Administrador</span></div>
+    </div>
+
+    <div class="linha">
+        <div class="card">
+            🧠 Núcleo<br><span class="ok">ONLINE</span>
+        </div>
+        <div class="card">
+            🛡️ Guardião<br><span class="ok">ATIVO</span>
+        </div>
+        <div class="card">
+            🚗 Corridas<br><span class="num">12</span>
+        </div>
+    </div>
+
+    <div class="linha">
+        <div class="card">
+            👤 Motoristas<br><span class="num">48</span>
+        </div>
+        <div class="card">
+            🙋 Passageiros<br><span class="num">93</span>
+        </div>
+        <div class="card">
+            ⚠️ Alertas<br><span class="alerta">0</span>
+        </div>
+    </div>
+
+    <div class="card-grande">
+        <strong>📡 ESTADO DOS MÓDULOS</strong><br>
+        ✅ Mapas e Rotas<br>
+        ✅ Mobilidade<br>
+        ✅ Segurança Inteligente<br>
+        ✅ Financeiro<br>
+        ✅ Academia Andrômeda<br>
+        ✅ Aqui Tem
+    </div>
+
+    <div class="card-grande">
+        <strong>📜 ÚLTIMOS EVENTOS</strong><br>
+        • Sistema inicializado com sucesso<br>
+        • Guardião iniciou monitoramento<br>
+        • Conexão com mapas estabelecida<br>
+        • Nenhuma ocorrência registrada
+    </div>
+
+    <a href="nucleo-controle.html" class="btn">🧠 CONTROLE DO NÚCLEO</a>
+    <a href="seguranca-interna.html" class="btn">🛡️ SEGURANÇA E GUARDIÃO</a>
+    <a href="laboratorio.html" class="btn-sec">🧪 LABORATÓRIO DE TESTES</a>
+    <a href="configuracoes.html" class="btn-sec">⚙️ CONFIGURAÇÕES GERAIS</a>
+    <a href="acesso-qg.html" class="btn-sec">🔒 SAIR DO QG</a>
+
+    <!-- LIGAÇÃO AO SISTEMA CENTRAL -->
+    <script src="../andromeda-config.js"></script>
+    <script src="../andromeda-nucleo-integracao.js"></script>
+    <script src="../modulos/guardiao.js"></script>
+
+</body>
+</html>
