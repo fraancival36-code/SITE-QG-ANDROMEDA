@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#00CCFF">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300-fim;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -20,7 +20,7 @@
                 extend: {
                     colors: {
                         fundo: '#020412',
-                        azul: '#4A9EFF',
+                        azul: '#4A99EF',
                         brilho: '#00CCFF',
                         roxo: '#9966FF',
                         texto: '#E0E7FF',
@@ -34,10 +34,20 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         html{scroll-behavior:smooth;}
-        body{background:#020412;color:#E0E7FF;font-family:'Inter',sans-serif;overflow-x:hidden;padding-bottom:100px;}
+        html, body {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 9 / 16;
+            margin: 0 auto;
+            background: #020412;
+            color: #E0E7FF;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
         .bg-estrelas{position:fixed;inset:0;background:radial-gradient(circle at 12% 15%,rgba(153,102,255,0.2) 0%,transparent 45%),radial-gradient(circle at 90% 18%,rgba(0,204,255,0.18) 0%,transparent 50%),radial-gradient(circle at 88% 85%,rgba(0,204,255,0.12) 0%,transparent 55%);z-index:-1;}
         .borda-neon{border:1px solid rgba(74,158,255,0.3);box-shadow:0 0 15px rgba(0,204,255,0.15);}
-        .texto-neon{text-shadow:0 0 12px rgba(0,204,255,0.6);} p
+        .texto-neon{text-shadow:0 0 12px rgba(0,204,255,0.6);}
     </style>
 </head>
 <body>
@@ -52,7 +62,7 @@
         <div class="w-[50px] h-[50px] rounded-full flex items-center justify-center text-xl font-bold text-brilho shadow-[0_0_25px_rgba(0,204,255,0.5)]">A</div>
     </header>
 
-   ?<section class="px-4 mt-4 mb-6">
+    <section class="px-4 mt-4 mb-6">
         <div class="bg-[rgba(74,158,255,0.1)] borda-neon rounded-xl p-5 backdrop-blur-sm">
             <p class="text-2xl font-semibold mb-2">💬 SEU CONTATO EXCLUSIVO</p>
             <p>Aqui você fala diretamente com a Andrômeda, dá comandos, solicita criações, ajustes e tudo o que precisar para fazer o projeto crescer e chegar ao mundo todo.</p>
@@ -61,15 +71,18 @@
 
     <nav class="fixed bottom-0 left-0 w-full bg-[rgba(2,4,18,0.97)] border-t border-azul/30 flex justify-around p-3 z-50">
         <a href="index.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🏠</div><span>INÍCIO</span></a>
-        <a href="salas.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🪐</div><span>SALAS</span></a>
-        <a href="painel.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🛡️</div><span>PAINEL</span></a>
-        <div class="w-[65px] h-[65px] rounded-full bg-gradient-to-br from-azul to-roxo flex items-center justify-center text-2xl font-bold -mt-[22px] border-4 border-fundo shadow-[0_0_30px_rgba(0,20**4,25
-5,0.5)]">A</div>
+        <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🪐</div><span>SALAS</span></a>
+        <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🛡️</div><span>PAINEL</span></a>
+        <div class="w-[65px] h-[65px] rounded-full bg-gradient-to-br from-azul to-roxo flex items-center justify-center text-2xl font-bold -mt-[22px] border-4 border-fundo shadow-[0_0_30px_rgba(0,204,255,0.5)]">A</div>
         <a href="laboratorio.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🔬</div><span>LAB</span></a>
         <a href="biblioteca.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">📖</div><span>DOCS</span></a>
-        <a href="missoes.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🚀</div><span>MISSÕES</span></a>
+        <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🚀</div><span>MISSÕES</span></a>
+        <a href="corpo virtual.html" class="flex flex-col items-center gap-1 text-[0.7rem] text-brilho font-medium"><div class="text-xl">💬</div><span>CONVERSA</span></a>
     </nav>
 
+    <!-- ✅ CONEXÃO COM O CÉREBRO DA ANDRÔMEDA -->
+    <script src="kernel.js"></script>
+    <script src="núcleo de andrômeda.js"></script>
     <script>console.log("✅ Canal de conversa carregado!");</script>
 </body>
 </html>
