@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌌 QG Andrômeda — Plataforma Oficial</title>
+    <meta name="description" content="Centro de Operações e Inteligência Andrômeda — Sua assistente viva, segura e conectada.">
+    <link rel="stylesheet" href="css/estilo.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+        }
+
+        /* 📐 TELA 9:16 PADRÃO WEB E CELULAR */
+        .qg-container {
+            position: relative;
+            width: 100vw;
+            height: calc(100vw * 16 / 9);
+            max-height: 100vh;
+            max-width: calc(100vh * 9 / 16);
+            background: radial-gradient(circle at center, #0f172a 0%, #000 70%);
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: 0 0 60px rgba(0,191,255,0.2);
+        }
+
+        /* 👩‍🦳 CORPO VIVO — CARREGAMENTO SEGURO */
+        #andrômeda-web {
+            width: 100%;
+            height: 100%;
+            background: url('andrômeda.jpg') center / cover no-repeat;
+            filter: drop-shadow(0 0 50px rgba(0,191,255,0.5));
+            transform-origin: center bottom;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ✨ ANIMAÇÕES PARA WEB (LEVES E FLUÍDAS) */
+        @keyframes respirarWeb {
+            0%, 100% { transform: scale(1) translateY(0) rotate(-0.5deg); }
+            50% { transform: scale(1.03) translateY(-10px) rotate(0.5deg); }
+        }
+
+        @keyframes brilhoWeb {
+            0%, 88%, 100% { filter: drop-shadow(0 0 50px rgba(0,191,255,0.5)) brightness(1); }
+            94% { filter: drop-shadow(0 0 70px rgba(138,43,226,0.8)) brightness(1.15); }
+        }
+
+        @keyframes falarWeb {
+            0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 60px rgba(50,205,50,0.8)); }
+            25% { transform: scale(1.03) translateY(-8px); }
+            75% { transform: scale(1.01) translateY(-4px); }
+        }
+
+        /* 🎭 ESTADOS */
+        .qg-pronta {
+            animation: respirarWeb 4s ease-in-out infinite,
+                       brilhoWeb 5s ease-in-out infinite;
+        }
+
+        .qg-ativa {
+            animation: falarWeb 1.2s ease-in-out infinite;
+        }
+
+        /* 🧭 CABEÇALHO WEB (IDENTIDADE) */
+        .cabecalho-qg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            text-align: center;
+            z-index: 10;
+        }
+        .cabecalho-qg h1 {
+            color: #00BFFF;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(0,191,255,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="qg-container">
+    <!-- 🧭 IDENTIDADE OFICIAL -->
+    <header class="cabecalho-qg">
+        <h1>🌌 QG ANDRÔMEDA — SISTEMA ONLINE</h1>
+    </header>
+
+    <!-- 🖼️ CORPO CONECTADO À WEB -->
+    <div id="andrômeda-web" class="qg-pronta"></div>
+</div>
+
+<!-- 🧠 NÚCLEO DO SISTEMA (FUNDAMENTAL PARA FUNCIONAR) -->
+<script src="kernel.js"></script>
+<script src="andromeda-core.js"></script>
+<script>
+    const corpo = document.getElementById('andrômeda-web');
+
+    function reiniciar() {
+        corpo.classList.remove('qg-pronta', 'qg-ativa');
+        void corpo.offsetWidth;
+    }
+
+    // 🔗 INICIALIZAÇÃO PARA ACESSO PÚBLICO
+    window.addEventListener("load", () => {
+        console.log("✅ QG Andrômeda Online — Acesso Web Liberado");
+        console.log("🌐 Plataforma: QG Andrômeda | Status: Operacional");
+        corpo.classList.add('qg-pronta');
+
+        // Integração total com a inteligência
+        if (window.andromeda?.falar) {
+            const falarOriginal = window.andromeda.falar.bind(window.andromeda);
+            window.andromeda.falar = function(texto) {
+                reiniciar();
+                corpo.classList.add('qg-ativa');
+                falarOriginal(texto);
+                setTimeout(() => {
+                    reiniciar();
+                    corpo.classList.add('qg-pronta');
+                }, 1800 + texto.length * 45);
+            };
+        }
+    });
+</script>
+
+</body>
+</html>
