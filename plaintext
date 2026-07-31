@@ -1,36 +1,38 @@
 qg-andromeda/
 ├── 📁 core/                          🧠 CÉREBRO CENTRAL
-│   ├── andromeda-core.js             ✅ Nosso núcleo principal
-│   ├── kernel.js                     ✅ Motor interno
-│   ├── seguranca.js                  ✅ Guardião de acesso
-│   └── permissoes.js                 ✅ Regras de permissão
+│   ├── andromeda-core.js             ✅ Lógica, Voz, Comandos
+│   ├── kernel.js                     ✅ Motor de execução
+│   ├── seguranca.js                  ✅ Criptografia, Login, LGPD
+│   └── permissoes.js                 ✅ Níveis de Acesso
 │
-├── 📁 data/                          🗄️ MEMÓRIA SEPARADA
+├── 📁 data/                          🗄️ MEMÓRIA PERMANENTE
 │   ├── memoria-publica.json
-│   ├── memoria-qg.json
-│   └── registros-atividades.json
+│   ├── memoria-qg.json               # Dados principais
+│   └── registros-atividades.json     # Auditoria
 │
 ├── 📁 modules/                       ⚙️ ASSESSORES ESPECIALIZADOS
 │   ├── biblioteca/
 │   │   └── biblioteca.html
 │   ├── laboratorio/
-│   │   └── laboratório.html
+│   │   └── laboratorio.html
 │   ├── missoes/
 │   │   └── missoes.html
 │   └── comunicacao/
 │       └── conversa.html
 │
-├── 📁 interface/                     🖥️ O QUE SE VÊ E USA
-│   ├── index.html                    ✅ Entrada principal
-│   ├── painel.html                   ✅ Sala de Comando QG
+├── 📁 interface/                    🖥️ INTERFACE DO USUÁRIO
+│   ├── index.html                    # Tela de Login/Entrada
+│   ├── painel.html                  # Dashboard Principal
 │   ├── css/
+│   │   └── estilo.css
 │   └── js/
+│       └── rotas.js
 │
-├── 📁 assets/                        🎨 RECURSOS VISUAIS
+├── 📁 assets/                        🎨 RECURSOS
 │   ├── imagens/
 │   │   └── andrômeda.jpg
 │   └── icones/
 │       └── ícone-andromeda.png
 │
-├── servidor.js
-└── package.json
+├── servidor.js                      # Servidor Node.js
+└── package.json                     # Dependências
