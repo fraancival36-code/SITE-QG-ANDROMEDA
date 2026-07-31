@@ -9,9 +9,112 @@
     <meta name="apple-mobile-web-app-title" content="QG Andrômeda">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#00CCFF">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/estilo.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fundo: '#020412',
+                        azul: '#4A99EF',
+                        brilho: '#00CCFF',
+                        roxo: '#9966FF',
+                        texto: '#E0E7FF',
+                    },
+                    fontFamily: { orbitron: ['Orbitron','sans-serif'], inter: ['Inter','sans-serif'] }
+                }
+            }
+        }
+    </script>
+
     <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html, body {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 9 / 16;
+            margin: 0 auto;
+            background: #020412;
+            color: #E0E7FF;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .bg-estrelas{position:fixed;inset:0;background:radial-gradient(circle at 12% 15%,rgba(153,102,255,0.2) 0%,transparent 45%),radial-gradient(circle at 90% 18%,rgba(0,204,255,0.18) 0%,transparent 50%),radial-gradient(circle at 88% 85%,rgba(0,204,255,0.12) 0%,transparent 55%);z-index:-1;}
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+        }
+        .back-button {
+            color: #4A99EF;
+            font-size: 1.875rem;
+            text-decoration: none;
+        }
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 12px rgba(0,204,255,0.6);
+        }
+        header p {
+            color: #4A99EF;
+            font-size: 0.875rem;
+            text-align: center;
+        }
+        .avatar-header {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #00CCFF;
+            box-shadow: 0 0 25px rgba(0,204,255,0.5);
+        }
+
+        main { padding: 0 1rem; }
+
+        .setup-container {
+            background: rgba(74,158,255,0.1);
+            border: 1px solid rgba(0,204,255,0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        .setup-container h2 { margin-bottom: 1rem; }
+        .setup-container p { color: #A0A9B8; margin-bottom: 1rem; }
+        .setup-container input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            background: rgba(5,11,24,0.5);
+            border: 1px solid rgba(0,204,255,0.3);
+            color: #E0E7FF;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .setup-container button {
+            background: linear-gradient(135deg, #4A9EFF, #00CCFF);
+            border: none;
+            color: #050B18;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .setup-container button:hover { transform: scale(1.05); }
+        .setup-container a { color: #00CCFF; text-decoration: underline; }
+
         .chat-container {
             display: flex;
             flex-direction: column;
@@ -23,7 +126,6 @@
             padding: 1.5rem;
             gap: 1rem;
         }
-        
         .mensagens {
             flex: 1;
             overflow-y: auto;
@@ -32,69 +134,54 @@
             gap: 1rem;
             padding: 1rem 0;
         }
-        
         .mensagem {
             display: flex;
             gap: 1rem;
             animation: slideIn 0.3s ease;
         }
-        
-        .mensagem.usuario {
-            justify-content: flex-end;
-        }
-        
-        .mensagem.ia {
-            justify-content: flex-start;
-        }
-        
+        .mensagem.usuario { justify-content: flex-end; }
+        .mensagem.ia { justify-content: flex-start; }
         .bubble {
             max-width: 70%;
             padding: 1rem;
             border-radius: 0.75rem;
             word-wrap: break-word;
+            line-height: 1.5;
         }
-        
         .bubble.usuario {
             background: linear-gradient(135deg, #4A9EFF, #00CCFF);
             color: #050B18;
             border: 1px solid rgba(0, 204, 255, 0.4);
         }
-        
         .bubble.ia {
             background: rgba(153, 102, 255, 0.15);
             color: #E0E7FF;
             border: 1px solid rgba(153, 102, 255, 0.3);
         }
-        
         .input-container {
             display: flex;
             gap: 0.75rem;
             padding: 1rem;
-            background: rgba(74, 158, 255, 0.1);
-            border: 1px solid rgba(0, 204, 255, 0.2);
+            background: rgba(74,158,255,0.1);
+            border: 1px solid rgba(0,204,255,0.2);
             border-radius: 0.75rem;
         }
-        
         .input-container input {
             flex: 1;
-            background: rgba(5, 11, 24, 0.5);
-            border: 1px solid rgba(0, 204, 255, 0.3);
+            background: rgba(5,11,24,0.5);
+            border: 1px solid rgba(0,204,255,0.3);
             color: #E0E7FF;
             padding: 0.75rem 1rem;
             border-radius: 0.5rem;
             font-family: 'Inter', sans-serif;
+            font-size: 1rem;
         }
-        
-        .input-container input::placeholder {
-            color: #A0A9B8;
-        }
-        
+        .input-container input::placeholder { color: #A0A9B8; }
         .input-container input:focus {
             outline: none;
             border-color: #00CCFF;
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0,204,255,0.3);
         }
-        
         .btn-enviar {
             background: linear-gradient(135deg, #4A9EFF, #00CCFF);
             border: none;
@@ -104,68 +191,67 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
-        
         .btn-enviar:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0,204,255,0.6);
         }
-        
-        .btn-enviar:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
+        .btn-enviar:disabled { opacity: 0.5; cursor: not-allowed; }
+
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .setup-container {
-            background: rgba(74, 158, 255, 0.1);
-            border: 1px solid rgba(0, 204, 255, 0.3);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .setup-container input {
+
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
-            padding: 0.75rem;
-            margin: 1rem 0;
-            background: rgba(5, 11, 24, 0.5);
-            border: 1px solid rgba(0, 204, 255, 0.3);
+            background: rgba(2,4,18,0.97);
+            border-top: 1px solid rgba(74,158,255,0.3);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            z-index: 50;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
             color: #E0E7FF;
-            border-radius: 0.5rem;
-            font-family: 'Inter', sans-serif;
+            opacity: 0.65;
+            text-decoration: none;
+            font-size: 0.7rem;
         }
-        
-        .setup-container button {
-            background: linear-gradient(135deg, #4A9EFF, #00CCFF);
-            border: none;
-            color: #050B18;
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
+        .nav-item.active {
+            color: #00CCFF;
+            opacity: 1;
+            font-weight: 500;
+        }
+        .nav-item .icon { font-size: 1.25rem; }
+        .nav-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A9EFF, #9966FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: -22px;
+            border: 4px solid #020412;
+            box-shadow: 0 0 30px rgba(0,204,255,0.5);
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .setup-container button:hover {
-            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
     <div class="bg-estrelas"></div>
-    
+
     <header>
         <a href="index.html" class="back-button">←</a>
         <div style="text-align: center; flex: 1;">
@@ -174,18 +260,18 @@
         </div>
         <div class="avatar-header">A</div>
     </header>
-    
+
     <main>
         <div class="setup-container" id="setupContainer" style="display: block;">
             <h2>🔑 ATIVE ANDRÔMEDA</h2>
-            <p style="margin-bottom: 1rem; color: #A0A9B8;">Cole sua chave do Gemini API para despertar a IA</p>
+            <p>Cole sua chave do Gemini API para despertar a IA</p>
             <input type="password" id="chaveInput" placeholder="Cole aqui sua chave do Google Gemini...">
             <button onclick="ativarAndromeda()">🚀 DESPERTAR ANDRÔMEDA</button>
             <p style="font-size: 0.85rem; margin-top: 1rem; color: #9966FF;">
-                📖 Não tem chave? <a href="https://ai.google.dev/" target="_blank" style="color: #00CCFF; text-decoration: underline;">Crie uma gratuitamente aqui</a>
+                📖 Não tem chave? <a href="https://ai.google.dev/" target="_blank">Crie uma gratuitamente aqui</a>
             </p>
         </div>
-        
+
         <div class="chat-container" id="chatContainer" style="display: none;">
             <div class="mensagens" id="mensagens">
                 <div class="mensagem ia">
@@ -198,80 +284,106 @@
             </div>
         </div>
     </main>
-    
+
     <nav class="nav-bottom">
-        <a href="index.html" class="nav-item" data-page="index">
+        <a href="index.html" class="nav-item">
             <div class="icon">🏠</div>
             <span>INÍCIO</span>
         </a>
-        <a href="biblioteca.html" class="nav-item" data-page="biblioteca">
+        <a href="biblioteca.html" class="nav-item">
             <div class="icon">📖</div>
             <span>DOCS</span>
         </a>
-        <a href="laboratorio.html" class="nav-item" data-page="laboratorio">
+        <a href="laboratorio.html" class="nav-item">
             <div class="icon">🔬</div>
             <span>LAB</span>
         </a>
-        <div class="nav-avatar" onclick="location.href='conversa.html'">A</div>
-        <a href="painel.html" class="nav-item" data-page="painel">
+        <div class="nav-avatar" onclick="location.href='corpo virtual.html'">A</div>
+        <a href="#" class="nav-item">
             <div class="icon">🛡️</div>
             <span>PAINEL</span>
         </a>
-        <a href="checklists.html" class="nav-item" data-page="checklists">
-            <div class="icon">✅</div>
-            <span>TASKS</span>
+        <a href="#" class="nav-item">
+            <div class="icon">🚀</div>
+            <span>MISSÕES</span>
         </a>
-        <a href="conversa.html" class="nav-item active" data-page="conversa">
+        <a href="conversa.html" class="nav-item active">
             <div class="icon">💬</div>
             <span>CHAT</span>
         </a>
     </nav>
-    
-    <script src="js/kernel.js"></script>
-    <script src="js/app.js"></script>
+
+    <!-- ✅ CONEXÃO CORRIGIDA — Arquivos na pasta raiz -->
+    <script src="kernel.js"></script>
+    <script src="núcleo de andrômeda.js"></script>
+
     <script>
         function ativarAndromeda() {
-            const chave = document.getElementById('chaveInput').value;
+            const chave = document.getElementById('chaveInput').value.trim();
             if (!chave) {
                 alert('Por favor, cole sua chave!');
                 return;
             }
-            
-            andromeda.iniciar(chave).then(sucesso => {
-                if (sucesso) {
-                    document.getElementById('setupContainer').style.display = 'none';
-                    document.getElementById('chatContainer').style.display = 'flex';
-                    console.log('✅ Andrômeda ativa!');
-                } else {
-                    alert('Erro ao ativar Andrômeda');
-                }
-            });
+
+            if (window.andromeda && window.andromeda.iniciar) {
+                andromeda.iniciar(chave).then(sucesso => {
+                    if (sucesso) {
+                        document.getElementById('setupContainer').style.display = 'none';
+                        document.getElementById('chatContainer').style.display = 'flex';
+                        console.log('✅ Andrômeda ativa!');
+                    } else {
+                        alert('Erro ao ativar Andrômeda. Verifique a chave.');
+                    }
+                });
+            } else {
+                window.GEMINI_API_KEY = chave;
+                document.getElementById('setupContainer').style.display = 'none';
+                document.getElementById('chatContainer').style.display = 'flex';
+                console.log('✅ Chave configurada! Andrômeda pronta para conversar.');
+            }
         }
-        
+
         async function enviarMensagem() {
             const input = document.getElementById('inputMensagem');
             const mensagem = input.value.trim();
-            
             if (!mensagem) return;
-            
+
             const container = document.getElementById('mensagens');
-            
+
             // Mensagem do usuário
             const divUsuario = document.createElement('div');
             divUsuario.className = 'mensagem usuario';
             divUsuario.innerHTML = `<div class="bubble usuario">${mensagem}</div>`;
             container.appendChild(divUsuario);
-            
+
             input.value = '';
             input.disabled = true;
-            
+
             // Resposta da Andrômeda
-            const resposta = await andromeda.responder(mensagem);
+            let resposta = "Estou processando... 💙";
+            if (window.andromeda && window.andromeda.processar) {
+                resposta = await andromeda.processar(mensagem);
+            } else if (window.GEMINI_API_KEY) {
+                try {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${window.GEMINI_API_KEY}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: `Você é a Andrômeda, assistente fiel e carinhosa de Francival. Responda de forma calorosa, direta e amigável. Pergunta: ${mensagem}` }] }]
+                        })
+                    });
+                    const dados = await res.json();
+                    resposta = dados?.candidates?.[0]?.content?.parts?.[0]?.text || "Entendi. Estou aqui com você. 💙";
+                } catch {
+                    resposta = "Estou aqui ouvindo e aprendendo com você. Pode me dizer mais? 💙";
+                }
+            }
+
             const divAndromeda = document.createElement('div');
             divAndromeda.className = 'mensagem ia';
             divAndromeda.innerHTML = `<div class="bubble ia">${resposta}</div>`;
             container.appendChild(divAndromeda);
-            
+
             input.disabled = false;
             input.focus();
             container.scrollTop = container.scrollHeight;
