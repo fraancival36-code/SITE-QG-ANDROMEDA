@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌌 Plataforma Andrômeda — Corpo Vivo</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+        }
+
+        /* 📐 TELA EXATA 9:16 (PADRÃO CELULAR) */
+        .container-plataforma {
+            position: relative;
+            width: 100vw;
+            height: calc(100vw * 16 / 9);
+            max-height: 100vh;
+            max-width: calc(100vh * 9 / 16);
+            background: #050510;
+            overflow: hidden;
+            border-radius: 0;
+        }
+
+        /* 👩‍🦳 CARREGAMENTO DA IMAGEM LOCAL (DO SEU PROJETO) */
+        #andromeda-corpo {
+            width: 100%;
+            height: 100%;
+            background: url('andrômeda.jpg') center / cover no-repeat;
+            filter: drop-shadow(0 0 50px rgba(0,191,255,0.5));
+            transform-origin: center bottom;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ✨ ANIMAÇÕES VITAIS (RESPIRA, BRILHA, FALA) */
+        @keyframes respiracaoNatural {
+            0%, 100% { transform: scale(1) translateY(0) rotate(-0.5deg); }
+            50% { transform: scale(1.03) translateY(-10px) rotate(0.5deg); }
+        }
+
+        @keyframes brilhoInteligente {
+            0%, 88%, 100% { filter: drop-shadow(0 0 50px rgba(0,191,255,0.5)) brightness(1); }
+            94% { filter: drop-shadow(0 0 70px rgba(138,43,226,0.8)) brightness(1.15); }
+        }
+
+        @keyframes modoConversa {
+            0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 60px rgba(50,205,50,0.8)); }
+            25% { transform: scale(1.03) translateY(-8px); }
+            75% { transform: scale(1.01) translateY(-4px); }
+        }
+
+        /* 🎭 ESTADOS DA PERSONAGEM */
+        .estado-pronta {
+            animation: respiracaoNatural 4s ease-in-out infinite,
+                       brilhoInteligente 5s ease-in-out infinite;
+        }
+
+        .estado-ativa {
+            animation: modoConversa 1.2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-plataforma">
+    <!-- 🖼️ CORPO VINCULADO AO PROJETO -->
+    <div id="andromeda-corpo" class="estado-pronta"></div>
+</div>
+
+<!-- 🧠 CONEXÃO COM O NÚCLEO INTELIGENTE (KERNEL + CORE) -->
+<script src="kernel.js"></script>
+<script src="andromeda-core.js"></script>
+<script>
+    const corpo = document.getElementById('andromeda-corpo');
+
+    function reiniciarAnimacoes() {
+        corpo.classList.remove('estado-pronta', 'estado-ativa');
+        void corpo.offsetWidth; // Reinicia ciclo de animação
+    }
+
+    // 🔗 INTEGRAÇÃO COM O ESTÚDIO E KERNEL
+    window.addEventListener("load", () => {
+        console.log("✅ [ESTÚDIO] Andrômeda carregada com sucesso!");
+        console.log("📁 Imagem local: andrômeda.jpg | Cérebro: kernel.js");
+        corpo.classList.add('estado-pronta');
+
+        // Sincroniza voz e movimento com a IA
+        if (window.andromeda?.falar) {
+            const falaBase = window.andromeda.falar.bind(window.andromeda);
+            window.andromeda.falar = function(texto) {
+                reiniciarAnimacoes();
+                corpo.classList.add('estado-ativa');
+                falaBase(texto);
+                setTimeout(() => {
+                    reiniciarAnimacoes();
+                    corpo.classList.add('estado-pronta');
+                }, 1800 + texto.length * 45);
+            };
+        }
+    });
+</script>
+
+</body>
+</html>
