@@ -52,7 +52,7 @@
     <div class="bg-estrelas"></div>
 
     <header class="flex items-center justify-between px-5 py-4">
-        <a href="painel-central.html" class="text-azul text-3xl">←</a>
+        <a href="index.html" class="text-azul text-3xl">←</a>
         <div class="text-center">
             <h1 class="font-orbitron text-[clamp(1.6rem,5vw,2rem)] font-bold tracking-[3px] texto-neon">BIBLIOTECA CENTRAL</h1>
             <p class="text-azul text-sm mt-1">BASE DE CONHECIMENTO E RECURSOS INFINITOS</p>
@@ -144,20 +144,19 @@
     </section>
 
     <nav class="fixed bottom-0 left-0 w-full bg-[rgba(2,4,18,0.97)] border-t border-azul/30 flex justify-around p-3 z-50">
-        <a href="painel-central.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🏠</div><span>INÍCIO</span></a>
+        <a href="index.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🏠</div><span>INÍCIO</span></a>
         <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🪐</div><span>SALAS</span></a>
-        <a href="seguranca-interna.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🛡️</div><span>PAINEL</span></a>
+        <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🛡️</div><span>PAINEL</span></a>
         <div class="w-[65px] h-[65px] rounded-full bg-gradient-to-br from-azul to-roxo flex items-center justify-center text-2xl font-bold -mt-[22px] border-4 border-fundo shadow-[0_0_30px_rgba(0,204,255,0.5)]">A</div>
         <a href="laboratorio.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🔬</div><span>LAB</span></a>
         <a href="biblioteca.html" class="flex flex-col items-center gap-1 text-[0.7rem] text-brilho font-medium"><div class="text-xl">📖</div><span>DOCS</span></a>
         <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">🚀</div><span>MISSÕES</span></a>
-        <a href="#" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">💬</div><span>CONVERSA</span></a>
+        <a href="corpo virtual.html" class="flex flex-col items-center gap-1 text-[0.7rem] opacity-65"><div class="text-xl">💬</div><span>CONVERSA</span></a>
     </nav>
 
-    <!-- LIGAÇÃO AO NÚCLEO E MÓDULOS -->
-    <script src="../andromeda-config.js"></script>
-    <script src="../andromeda-nucleo-integracao.js"></script>
-    <script src="../modulos/biblioteca.js"></script>
+    <!-- ✅ CONEXÃO CORRIGIDA — Arquivos na raiz, sem caminhos errados -->
+    <script src="kernel.js"></script>
+    <script src="núcleo de andrômeda.js"></script>
 
     <script>console.log("✅ Biblioteca Central carregada — recursos infinitos prontos e conectados ao Núcleo!");</script>
 </body>
