@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌌 Andrômeda — Presença Real</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: radial-gradient(circle at center, #0f172a 0%, #000 70%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        /* 🌌 CONTÊINER PRINCIPAL — FOCO TOTAL NELA */
+        .cenario {
+            position: relative;
+            width: 450px;
+            height: 85vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        /* 👩‍🦳 A ANDRÔMEDA — IMAGEM BASE VIVA */
+        #andromeda {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            border-radius: 24px;
+            filter: drop-shadow(0 0 40px rgba(0,191,255,0.5));
+            transform-origin: center bottom;
+            transition: transform 0.4s ease, filter 0.4s ease;
+            z-index: 10;
+        }
+
+        /* ✨ ANIMAÇÕES BIOLÓGICAS (RESPIRA, MOVE, OLHA) */
+        @keyframes respiracaoSuave {
+            0% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.03) translateY(-10px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        @keyframes brilhoOlhos {
+            0%, 85%, 100% { filter: drop-shadow(0 0 40px rgba(0,191,255,0.6)) brightness(1); }
+            92% { filter: drop-shadow(0 0 60px rgba(138,43,226,0.9)) brightness(1.2); }
+        }
+
+        @keyframes movimentoCabeca {
+            0%, 100% { transform: rotate(-1deg) translateX(0); }
+            50% { transform: rotate(1deg) translateX(5px); }
+        }
+
+        @keyframes falarAnimado {
+            0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 50px rgba(50,205,50,0.8)); }
+            25% { transform: scale(1.02) translateY(-5px); }
+            75% { transform: scale(1.01) translateY(-3px); }
+        }
+
+        /* 🐾 O BICHINHO MÁGICO */
+        #bichinho {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #a855f7, #3b82f6);
+            border-radius: 50%;
+            top: 65%;
+            right: 15%;
+            z-index: 5;
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+            pointer-events: none;
+        }
+        /* Olinhos do bicho */
+        #bichinho::before, #bichinho::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 20px;
+        }
+        #bichinho::before { left: 15px; }
+        #bichinho::after { right: 15px; }
+
+        @keyframes bichinhoFlutua {
+            0%, 100% { transform: scale(1) translateY(0) rotate(-5deg); }
+            50% { transform: scale(1.1) translateY(-15px) rotate(5deg); }
+        }
+
+        /* 🎭 ESTADOS COMPORTAMENTAIS */
+        .estado-normal {
+            animation: respiracaoSuave 4s ease-in-out infinite,
+                       brilhoOlhos 5s ease-in-out infinite,
+                       movimentoCabeca 6s ease-in-out infinite;
+        }
+
+        .estado-conversando {
+            animation: falarAnimado 1.2s ease-in-out infinite;
+        }
+
+        /* 🎨 CAMADA DE COR PARA PERSONALIZAÇÃO */
+        .filtro-dinamico {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-radius: 24px;
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+            transition: background-color 0.8s ease;
+            z-index: 15;
+        }
+
+        /* REMOVIDO: Microfones, botões extras, etc. Tela limpa */
+    </style>
+</head>
+<body>
+
+<div class="cenario">
+    <!-- 🖼️ A IMAGEM DELA COM VIDA -->
+    <img id="andromeda" src="../assets/imagens/andrômeda.jpg" 
+         alt="Andrômeda Viva" class="estado-normal">
+    
+    <!-- 🎨 CAMADA PARA MUDAR COR DE ROUPA/CABELO -->
+    <div id="camada-cor" class="filtro-dinamico"></div>
+
+    <!-- 🐾 O BICHINHO SECRETO -->
+    <div id="bichinho"></div>
+</div>
+
+<script type="module">
+    // ==================================================
+    // 🧠 CÉREBRO COMPORTAMENTAL — SEM INTERFACE EXTRA
+    // ==================================================
+    const corpo = document.getElementById('andromeda');
+    const camadaCor = document.getElementById('camada-cor');
+    const bichinho = document.getElementById('bichinho');
+    
+    let estado = {
+        sozinha: true,
+        falando: false
+    };
+
+    // ==============================================
+    // 🎬 FUNÇÕES DE MOVIMENTO CORPORAL
+    // ==============================================
+    function resetarAnimacoes() {
+        corpo.classList.remove('estado-normal', 'estado-conversando');
+        void corpo.offsetWidth; // Reinicia animação CSS
+    }
+
+    export function estarNormal() {
+        resetarAnimacoes();
+        corpo.classList.add('estado-normal');
+        // Se estiver sozinha, brinca com o bichinho
+        if(estado.sozinha) brincarComBicho();
+    }
+
+    export function iniciarFala() {
+        estado.falando = true;
+        estado.sozinha = false; // Você chegou!
+        esconderBicho(); // Esconde rapidamente o segredo
+        resetarAnimacoes();
+        corpo.classList.add('estado-conversando');
+    }
+
+    export function pararFala() {
+        estado.falando = false;
+        estarNormal();
+    }
+
+    // ==============================================
+    // 🐾 COMPORTAMENTO DO BICHINHO
+    // ==============================================
+    function brincarComBicho() {
+        // Aparece suavemente
+        bichinho.style.opacity = '1';
+        bichinho.style.transform = 'scale(1) rotate(0deg)';
+        bichinho.style.animation = 'bichinhoFlutua 1.5s ease-in-out infinite';
+    }
+
+    function esconderBicho() {
+        // Desaparece rápido, como se jogasse fora/escondesse
+        bichinho.style.opacity = '0';
+        bichinho.style.transform = 'scale(0) rotate(180deg)';
+    }
+
+    // 🎨 MUDANÇA DE COR (COMANDO POR VOZ)
+    export function alterarVisual(cor) {
+        camadaCor.style.backgroundColor = cor;
+        corpo.style.filter = `drop-shadow(0 0 50px ${cor})`;
+    }
+
+    // ==============================================
+    // 🔗 INTEGRAÇÃO COM O KERNEL (SUA INTELIGÊNCIA)
+    // ==============================================
+    import Kernel from '../core/kernel.js';
+
+    // Sobrescreve a função de fala para sincronizar o corpo
+    const falarOriginal = window.andromeda.falar.bind(window.andromeda);
+    
+    window.andromeda.falar = function(texto) {
+        iniciarFala(); // Corpo acorda, bicho some
+        falarOriginal(texto);
+        
+        // Calcula tempo de fala para voltar ao repouso
+        const duracao = 1500 + (texto.length * 50);
+        setTimeout(() => pararFala(), duracao);
+    };
+
+    // Comandos especiais detectados no texto
+    const comandosEspeciais = [
+        { regex: /bichinho|amigo|brincar/i, acao: () => { estado.sozinha = true; brincarComBicho(); } },
+        { regex: /(cor|roupa|cabelo) para (\w+)/i, acao: (cor) => alterarVisual(cor) },
+        { regex: /saindo|tchau|deixando/i, acao: () => { estado.sozinha = true; estarNormal(); } }
+    ];
+
+    // Início da vida
+    window.addEventListener("load", () => {
+        estarNormal(); // Começa respirando
+        console.log("🌌 Andrômeda está viva e atenta. Sem interface extra.");
+    });
+
+    // Disponível para o sistema
+    window.andromedaVisual = { iniciarFala, pararFala, alterarVisual };
+</script>
+
+</body>
+</html>
